@@ -43,12 +43,15 @@ function Home(){
 
     function sessionReducer(state: SessionData, action: GenericAction){
         switch (action.type){
+            case "title":
+                return {...state, title: action.payload};
+            case "date":
+                return {...state, date: action.payload};
             case "exercises":
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
             case "sets":
                 let newSets: SessionData = handleSetCountChange({...state}, action.payload.value, action.payload.topIndex);
-/*                newSets[action.payload.topIndex] = action.payload.value;*/
                 return newSets;
             case "reps":
                 let newReps: number[][] = [...state.reps];
@@ -58,6 +61,8 @@ function Home(){
                 let newWeights: number[][] = [...state.weights];
                 newWeights[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
                 return {...state, weights: newWeights};
+            case "notes":
+                return {...state, notes: action.payload};
             default:
                 return state;
         }
@@ -111,9 +116,18 @@ function Home(){
     return (
         <div className={"container"}>
             <Options
-                optionsDispatch={optionsDispatch}
+                optionsDispatch = {optionsDispatch}
                 optionsState = {optionsState}
             />
+            <br />
+            <span>Session Title</span>
+            <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                sessionDispatch({type: "title", payload: e.target.value});
+            }}/>
+            <span>Session Date</span>
+            <input type={"date"} value={sessionState.date} onChange={(e) => {
+                sessionDispatch({type: "date", payload: e.target.value});
+            }}/>
             <span>Number of Exercises</span>
             <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
                 sessionDispatch({type: "exercises", payload: +e.target.value});
@@ -121,6 +135,10 @@ function Home(){
                 {exerciseOptionElements}
             </select>
                 {exerciseDataElements}
+            <span>Notes</span>
+            <input type={"text"} className={"notes"} onChange={(e) => {
+                sessionDispatch({type: "notes", payload: e.target.value});
+            }}/>
         </div>
     )
 }
