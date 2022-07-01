@@ -1,23 +1,19 @@
-import {Dispatch, SetStateAction, useReducer} from "react";
-import {formInterface, formActionInterface, OptionsData, OptionsAction} from "./utilities/interfaces";
+import {Dispatch, SetStateAction, useReducer, useState} from "react";
+import {formInterface, formActionInterface, OptionsData, OptionsAction, SessionData, GenericAction} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
-
-let cc= console.log;
-    const ACTIONS = {
-
-    }
+let cc = console.log;
 
 function Home(){
     let defaultOptions: OptionsData = {
-        exercises: 3,
+        exercises: 2,
         sets: 3,
         reps: 5,
         weights: 100,
     }
 
-    const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions)
+    const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions);
 
-    function optionsReducer(state: OptionsData, action: OptionsAction){
+    function optionsReducer(state: OptionsData, action: GenericAction){
         switch (action.type){
             case "exercises":
                 return {...state, exercises: action.payload}
@@ -29,11 +25,32 @@ function Home(){
                 return {...state, weights: action.payload}
             default:
                 return state;
+        }
+    }
 
+    let defaultSession: SessionData = { //TODO Update to useLocalStorage
+        title: "Session Title",
+        date: "2022-02-02", //TODO Update
+        exerciseCount: optionsState.exercises,
+        exerciseNames: undefined,
+        sets: optionsState.sets,
+        reps: getStartingValuesArray(optionsState.sets, optionsState.reps),
+        weights: getStartingValuesArray(optionsState.sets, optionsState.weights),
+    }
+
+    const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
+
+    function sessionReducer(state: SessionData, action: GenericAction){
+        switch (action.type){
+            case "exercises":
+                return {...state, exercises: action.payload}
+            default:
+                return state;
         }
     }
 
 
+    let exerciseOptions: JSX.Element[] = arrayOfOptions(12);
 
 
     return (
@@ -42,16 +59,19 @@ function Home(){
                 optionsDispatch={optionsDispatch}
                 optionsState = {optionsState}
             />
+            <select value={sessionState.exerciseCount || optionsState.exercises} onChange={(e) => {
+                sessionDispatch({type: "exercises", payload: e.target.value});
+            }}>
+                {exerciseOptions}
+            </select>
         </div>
     )
 }
 
 function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<OptionsAction>, optionsState: OptionsData}) {
-    let exerciseOptions: JSX.Element[] = arrayOfOptions(12)
-    let setOptions: JSX.Element[] = arrayOfOptions(12)
-    let repOptions: JSX.Element[] = arrayOfOptions(20)
-
-
+    let exerciseOptions: JSX.Element[] = arrayOfOptions(12);
+    let setOptions: JSX.Element[] = arrayOfOptions(12);
+    let repOptions: JSX.Element[] = arrayOfOptions(20);
 
     return (
         <div className={"optionsContainer"}>
@@ -74,9 +94,24 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Opt
                 {repOptions}
             </select>
             <span>Default weight</span>
-
+            <input type={"number"} value={optionsState.weights} onChange={(e) => {
+                optionsDispatch({type: "weights", payload: +e.target.value});
+            }}/>
         </div>
     );
+}
+
+function getStartingValuesArray(sets: number, value: number){
+    let arrayOfValues: number[][] = [];
+
+    for (let i = 0; i < sets; i++){
+        let temp = Array.from({length: sets}).map((_e) => {
+            return value;
+        });
+        arrayOfValues.push(temp);
+    }
+
+    return arrayOfValues;
 }
 
 export default Home;
