@@ -1,5 +1,5 @@
 import {Dispatch, SetStateAction, useReducer, useState} from "react";
-import {formInterface, formActionInterface, OptionsData, OptionsAction, SessionData, GenericAction} from "./utilities/interfaces";
+import {OptionsData, OptionsAction, SessionData, GenericAction} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
 let cc = console.log;
 
@@ -45,15 +45,15 @@ function Home(){
         switch (action.type){
             case "exercises":
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
-                return {...state, exerciseCount: action.payload}
+                return {...newSession, exerciseCount: action.payload}
+            case "sets":
+                let newSets: SessionData = handleSetCountChange({...state}, action.payload.value, action.payload.topIndex);
+/*                newSets[action.payload.topIndex] = action.payload.value;*/
+                return newSets;
             case "reps":
                 let newReps: number[][] = [...state.reps];
                 newReps[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
                 return {...state, newReps};
-            case "sets":
-                let newSets: number[] = [...state.sets];
-                newSets[action.payload.topIndex] = action.payload.value;
-                return {...state, sets: newSets};
             case "weights":
                 let newWeights: number[][] = [...state.weights];
                 newWeights[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
@@ -64,19 +64,33 @@ function Home(){
     }
 
     function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
-            cc(session.sets)
-            cc(session.reps)
-
             while (session.reps.length > newExerciseCount){
                 session.reps.pop();
                 session.weights.pop();
                 session.sets.pop();
             }
 
+            while (session.reps.length < newExerciseCount){
+                session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
+                session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
+                session.sets = [...session.sets, optionsState.sets];
+            }
 
-/*            while (session.reps.length < newExerciseCount){
+        return session;
+    }
 
-            }*/
+    function handleSetCountChange(session: SessionData, value: number, topIndex: number){
+        while (session.sets[topIndex] > value){
+            session.sets[topIndex]--;
+            session.reps[topIndex].pop();
+            session.weights[topIndex].pop();
+        }
+
+        while (session.sets[topIndex] < value){
+            session.sets[topIndex]++;
+            session.reps[topIndex].push(optionsState.reps);
+            session.weights[topIndex].push(optionsState.weights);
+        }
 
         return session;
     }
@@ -103,7 +117,6 @@ function Home(){
             <span>Number of Exercises</span>
             <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
                 sessionDispatch({type: "exercises", payload: +e.target.value});
-                cc(sessionState.reps)
             }}>
                 {exerciseOptionElements}
             </select>
@@ -112,7 +125,7 @@ function Home(){
     )
 }
 
-function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<OptionsAction>, optionsState: OptionsData}) {
+function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData}) {
     const exerciseOptions: JSX.Element[] = arrayOfOptions(12);
     const setOptions: JSX.Element[] = arrayOfOptions(12);
     const repOptions: JSX.Element[] = arrayOfOptions(20);
@@ -219,7 +232,6 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
           </select>
           <span>Set Count</span>
           <select value={sessionState.sets[parentIndex]} onChange={(e) => {
-              cc(sessionState.sets)
               sessionDispatch({ type: "sets", payload: {
                   topIndex: parentIndex,
                   value: +e.target.value,
@@ -231,6 +243,14 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
           {repAndWeightInputs}
       </>
     );
+}
 
+function addArrayEntryToSession(arrayLength: number, value: number){
+    let temp: number[] = [];
 
+    for (let i = 0; i < arrayLength; i++){
+        temp[i] = value;
+    }
+
+    return temp;
 }
