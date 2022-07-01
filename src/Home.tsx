@@ -33,9 +33,10 @@ function Home(){
         date: "2022-02-02", //TODO Correct this value
         exerciseCount: optionsState.exercises,
         exerciseNames: undefined, //TODO Set an unnamed top Option in DOM.
-        sets: optionsState.sets,
-        reps: getStartingValuesArray(optionsState.sets, optionsState.reps),
-        weights: getStartingValuesArray(optionsState.sets, optionsState.weights),
+        sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
+        reps: getStartingValuesNestedArray(optionsState.sets, optionsState.reps),
+        weights: getStartingValuesNestedArray(optionsState.sets, optionsState.weights),
+        notes: undefined,
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -44,18 +45,31 @@ function Home(){
         switch (action.type){
             case "exercises":
                 return {...state, exerciseCount: action.payload}
+            case "reps":
+                let newReps: number[][] = [...state.reps];
+                newReps[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
+                return {...state, newReps};
+            case "sets":
+                let newSets: number[] = [...state.sets];
+                newSets[action.payload.topIndex] = action.payload.value;
+                return {...state, sets: newSets};
+            case "weights":
+                let newWeights: number[][] = [...state.weights];
+                newWeights[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
+                return {...state, weights: newWeights};
             default:
                 return state;
         }
     }
-
 
     const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
     const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
         return(
             <div key={k}>
                 <ExerciseElements
-                    parentInstance = {k}
+                    parentIndex = {k}
+                    sessionState = {sessionState}
+                    sessionDispatch = {sessionDispatch}
                 />
             </div>
         );
@@ -67,9 +81,10 @@ function Home(){
                 optionsDispatch={optionsDispatch}
                 optionsState = {optionsState}
             />
+            <span>Number of Exercises</span>
             <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
                 sessionDispatch({type: "exercises", payload: +e.target.value});
-                cc(sessionState.exerciseCount)
+                cc(sessionState.reps)
             }}>
                 {exerciseOptionElements}
             </select>
@@ -77,8 +92,6 @@ function Home(){
         </div>
     )
 }
-
-
 
 function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<OptionsAction>, optionsState: OptionsData}) {
     const exerciseOptions: JSX.Element[] = arrayOfOptions(12);
@@ -113,7 +126,7 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Opt
     );
 }
 
-function getStartingValuesArray(sets: number, value: number){
+function getStartingValuesNestedArray(sets: number, value: number){
     let arrayOfValues: number[][] = [];
 
     for (let i = 0; i < sets; i++){
@@ -126,51 +139,75 @@ function getStartingValuesArray(sets: number, value: number){
     return arrayOfValues;
 }
 
+function getStartingValuesArray(sets: number, value: number){
+    let arrayOfValues: number[] = Array.from({length: sets}).map((_e) => {
+        return value;
+    });
+
+    return arrayOfValues;
+}
+
 export default Home;
 
-function ExerciseElements({parentInstance}: {parentInstance: number}){
+function ExerciseElements({parentIndex, sessionState, sessionDispatch}: 
+                              {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>}){
+
+    const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
+        return (<option key={k}>{k+1}</option>);
+    })
+
+    const setOptions: JSX.Element[] = Array.from({length: 12}).map((_e, k) => {
+        return (<option key={k}>{k+1}</option>);
+    });
+
+    const repAndWeightInputs: JSX.Element[] = Array.from({length: sessionState.sets[parentIndex]}).map((_element, childIndex) => {
+        return (
+            <div key={childIndex}>
+                <span>Rep Count</span>
+                <select onChange={(event) => {
+                    sessionDispatch({ type: "reps", payload: {
+                        topIndex: parentIndex,
+                        bottomIndex: childIndex,
+                        value: +event.target.value,
+                    }});
+                }}>
+                    {repOptions}
+                </select>
+
+                <span>Weight</span>
+                <input type={"text"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                       className={"shortNumberInput"} onChange={(e) => {
+                    sessionDispatch({type: "weights", payload: {
+                        topIndex: parentIndex,
+                        bottomIndex: childIndex,
+                        value: +e.target.value,
+                    }});
+                }}/>
+            </div>
+        );
+    });
+
 
     return (
-      <> test</>
+      <>
+          <span>Exercise Name</span>
+          <select>
+              <option>placeholder</option>
+          </select>
+          <span>Set Count</span>
+          <select value={sessionState.sets[parentIndex]} onChange={(e) => {
+              cc(sessionState.sets)
+              sessionDispatch({ type: "sets", payload: {
+                  topIndex: parentIndex,
+                  value: +e.target.value,
+                  }})
+          }}>
+              {setOptions}
+          </select>
+
+          {repAndWeightInputs}
+      </>
     );
+
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-/*    const [formState, formReducer] = useReducer(formReducer, initialFormValue);
-
-
-/!*
-let initialFormValue: formInterface = {
-    reps: [[5, 5, 5], [5, 5, 5]],
-    notacounter: 5,
-    type: "Default",
-    name: "w",
-}
-
-function formReducer(formState: formInterface, action: formActionInterface){
-    return formState;
-*!/}*/
-
-
-
-{/*            {formState.counter}
-            <button onClick={(e) => {
-                formReducer({type: "increment"})
-            }}>+</button>
-            <br />
-            <input type={"text"} value={formState.name} onChange={(e) => {
-                formReducer({type: "increment", payload: [5, 5]})
-            }}/> Name
-
-
-            {formState.notacounter }*/}

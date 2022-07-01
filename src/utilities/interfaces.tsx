@@ -35,4 +35,5 @@ export interface SessionData{
     sets: number[];
     reps: number[][];
     weights: number[][];
+    notes: string | undefined;
 }
