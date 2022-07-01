@@ -25,3 +25,16 @@ export interface SessionData{
     weights: number[][];
     notes: string | undefined;
 }
+
+export interface submissionData {
+    title?: string | null;
+    date?: string | null;
+    exercises?: string[] | null[];
+    reps?: number[][] | null;
+    weights?: number[][] | null
+}
+
+export interface specificSessionOutput {
+    date: string;
+    title: string;
+}
