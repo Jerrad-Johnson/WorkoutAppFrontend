@@ -34,8 +34,8 @@ function Home(){
         exerciseCount: optionsState.exercises,
         exerciseNames: undefined, //TODO Set an unnamed top Option in DOM.
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
-        reps: getStartingValuesNestedArray(optionsState.sets, optionsState.reps),
-        weights: getStartingValuesNestedArray(optionsState.sets, optionsState.weights),
+        reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
+        weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
         notes: undefined,
     }
 
@@ -44,6 +44,7 @@ function Home(){
     function sessionReducer(state: SessionData, action: GenericAction){
         switch (action.type){
             case "exercises":
+                let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...state, exerciseCount: action.payload}
             case "reps":
                 let newReps: number[][] = [...state.reps];
@@ -60,6 +61,24 @@ function Home(){
             default:
                 return state;
         }
+    }
+
+    function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
+            cc(session.sets)
+            cc(session.reps)
+
+            while (session.reps.length > newExerciseCount){
+                session.reps.pop();
+                session.weights.pop();
+                session.sets.pop();
+            }
+
+
+/*            while (session.reps.length < newExerciseCount){
+
+            }*/
+
+        return session;
     }
 
     const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
@@ -126,10 +145,10 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Opt
     );
 }
 
-function getStartingValuesNestedArray(sets: number, value: number){
+function getStartingValuesNestedArray(exercises: number, sets: number, value: number){
     let arrayOfValues: number[][] = [];
 
-    for (let i = 0; i < sets; i++){
+    for (let i = 0; i < exercises; i++){
         let temp: number[] = Array.from({length: sets}).map((_e) => {
             return value;
         });
@@ -164,7 +183,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
         return (
             <div key={childIndex}>
                 <span>Rep Count</span>
-                <select onChange={(event) => {
+                <select value={sessionState.reps[parentIndex][childIndex]} onChange={(event) => {
                     sessionDispatch({ type: "reps", payload: {
                         topIndex: parentIndex,
                         bottomIndex: childIndex,
@@ -175,12 +194,12 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
                 </select>
 
                 <span>Weight</span>
-                <input type={"text"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
-                       className={"shortNumberInput"} onChange={(e) => {
+                <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                       className={"shortNumberInput"} onChange={(event) => {
                     sessionDispatch({type: "weights", payload: {
                         topIndex: parentIndex,
                         bottomIndex: childIndex,
-                        value: +e.target.value,
+                        value: +event.target.value,
                     }});
                 }}/>
             </div>
@@ -188,8 +207,12 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
     });
 
 
+    /*TODO Add increment number input and apply button. Add auto-increment checkbox (database).
+    TODO Add Notes field.*/
+
     return (
       <>
+          <br />
           <span>Exercise Name</span>
           <select>
               <option>placeholder</option>
