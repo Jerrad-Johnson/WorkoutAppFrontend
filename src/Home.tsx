@@ -4,7 +4,7 @@ import {arrayOfOptions} from "./utilities/sharedFns";
 let cc = console.log;
 
 function Home(){
-    let defaultOptions: OptionsData = {
+    const defaultOptions: OptionsData = {
         exercises: 2,
         sets: 3,
         reps: 5,
@@ -28,11 +28,11 @@ function Home(){
         }
     }
 
-    let defaultSession: SessionData = { //TODO Update to useLocalStorage
+    const defaultSession: SessionData = { //TODO Update to useLocalStorage
         title: "Session Title",
-        date: "2022-02-02", //TODO Update
+        date: "2022-02-02", //TODO Correct this value
         exerciseCount: optionsState.exercises,
-        exerciseNames: undefined,
+        exerciseNames: undefined, //TODO Set an unnamed top Option in DOM.
         sets: optionsState.sets,
         reps: getStartingValuesArray(optionsState.sets, optionsState.reps),
         weights: getStartingValuesArray(optionsState.sets, optionsState.weights),
@@ -43,15 +43,23 @@ function Home(){
     function sessionReducer(state: SessionData, action: GenericAction){
         switch (action.type){
             case "exercises":
-                return {...state, exercises: action.payload}
+                return {...state, exerciseCount: action.payload}
             default:
                 return state;
         }
     }
 
 
-    let exerciseOptions: JSX.Element[] = arrayOfOptions(12);
-
+    const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
+    const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
+        return(
+            <div key={k}>
+                <ExerciseElements
+                    parentInstance = {k}
+                />
+            </div>
+        );
+    });
 
     return (
         <div className={"container"}>
@@ -59,19 +67,23 @@ function Home(){
                 optionsDispatch={optionsDispatch}
                 optionsState = {optionsState}
             />
-            <select value={sessionState.exerciseCount || optionsState.exercises} onChange={(e) => {
-                sessionDispatch({type: "exercises", payload: e.target.value});
+            <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
+                sessionDispatch({type: "exercises", payload: +e.target.value});
+                cc(sessionState.exerciseCount)
             }}>
-                {exerciseOptions}
+                {exerciseOptionElements}
             </select>
+                {exerciseDataElements}
         </div>
     )
 }
 
+
+
 function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<OptionsAction>, optionsState: OptionsData}) {
-    let exerciseOptions: JSX.Element[] = arrayOfOptions(12);
-    let setOptions: JSX.Element[] = arrayOfOptions(12);
-    let repOptions: JSX.Element[] = arrayOfOptions(20);
+    const exerciseOptions: JSX.Element[] = arrayOfOptions(12);
+    const setOptions: JSX.Element[] = arrayOfOptions(12);
+    const repOptions: JSX.Element[] = arrayOfOptions(20);
 
     return (
         <div className={"optionsContainer"}>
@@ -105,7 +117,7 @@ function getStartingValuesArray(sets: number, value: number){
     let arrayOfValues: number[][] = [];
 
     for (let i = 0; i < sets; i++){
-        let temp = Array.from({length: sets}).map((_e) => {
+        let temp: number[] = Array.from({length: sets}).map((_e) => {
             return value;
         });
         arrayOfValues.push(temp);
@@ -116,7 +128,12 @@ function getStartingValuesArray(sets: number, value: number){
 
 export default Home;
 
+function ExerciseElements({parentInstance}: {parentInstance: number}){
 
+    return (
+      <> test</>
+    );
+}
 
 
 
