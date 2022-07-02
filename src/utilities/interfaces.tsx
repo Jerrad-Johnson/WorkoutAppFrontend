@@ -19,11 +19,13 @@ export interface SessionData{
     title: string;
     date: string;
     exerciseCount: number[];
-    exerciseNames: string[] | undefined;
+    exerciseNames: string[];
     sets: number[];
     reps: number[][];
     weights: number[][];
     notes: string | undefined;
+    previousSessions: {sessionDate: string, session_title: string}[] | undefined;
+
 }
 
 export interface submissionData {
@@ -37,4 +39,14 @@ export interface submissionData {
 export interface specificSessionOutput {
     date: string;
     title: string;
+}
+
+export interface DatabaseData{
+    previousSessions: {
+        session_date: string | undefined,
+        session_title: string | undefined,
+    }[];
+    exercises: string[];
+    loadPrevSessionsNow: boolean;
+    loadExerciseListNow: true;
 }

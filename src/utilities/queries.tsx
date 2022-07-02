@@ -19,6 +19,28 @@ export function login() {
         .then(data => cc(data));
 }
 
+export async function loginV2(){
+    let entry: object = {
+        "password": "abc",
+        "username": "elseif",
+    };
+
+    const response = await fetch("http://localhost:80/php/login.php", {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(entry),
+        credentials: "include",
+        headers: {
+            'Content-Type': 'application/json' }
+    });
+
+    const responseJSON = await response.json();
+
+    return responseJSON;
+}
+
+
+
 export function submitSession(entries: submissionData) {
     fetch("http://localhost:80/php/sessionentry.php", {
         method: 'POST',
@@ -33,32 +55,34 @@ export function submitSession(entries: submissionData) {
 }
 
 
-export function getExercises(){
-    let dataToBeReturned = fetch("http://localhost:80/php/getexercises.php", {
+export async function getExercises(){
+    let response = await fetch("http://localhost:80/php/getexercises.php", {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
-        .then(data => data);
+    });
 
-    return dataToBeReturned;
+    let responseJSON = await response.json();
+
+    return responseJSON;
 }
 
-export function getRecentSessions(){
-    let dataToBeReturned = fetch("http://localhost:80/php/getrecentsessions.php", {
+export async function getRecentSessions(){
+    const response = await fetch("http://localhost:80/php/getrecentsessions.php", {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
-        .then(data => data);
+    });
 
-    return dataToBeReturned;
+    const responseJSON = await response.json();
+
+    return responseJSON;
 }
 
 export function getSpecificSession(sessionDate: string, sessionTitle: string){

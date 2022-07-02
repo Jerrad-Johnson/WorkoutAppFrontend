@@ -1,9 +1,11 @@
-import {Dispatch, SetStateAction, useReducer, useState} from "react";
-import {OptionsData, OptionsAction, SessionData, GenericAction} from "./utilities/interfaces";
+import {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
+import {OptionsData, OptionsAction, SessionData, GenericAction, DatabaseData} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
+import {getRecentSessions, loginV2, getExercises} from "./utilities/queries";
 let cc = console.log;
 
 function Home(){
+
     const defaultOptions: OptionsData = {
         exercises: 2,
         sets: 3,
@@ -32,11 +34,12 @@ function Home(){
         title: "Session Title",
         date: "2022-02-02", //TODO Correct this value
         exerciseCount: optionsState.exercises,
-        exerciseNames: undefined, //TODO Set an unnamed top Option in DOM.
+        exerciseNames: ["Add an Exercise"],
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
         notes: undefined,
+        previousSessions: undefined,
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -63,9 +66,61 @@ function Home(){
                 return {...state, weights: newWeights};
             case "notes":
                 return {...state, notes: action.payload};
+            case "loadedPrevSessions":
+                return {...state, previousSessions: action.payload}
+            case "loadedExercises":
+                return {...state, exerciseNames: action.payload}
+            case "exerciseNameChange":
+                let newExerciseNames: string[] = state.exerciseNames;
+                newExerciseNames[action.payload.index] = action.payload.value;
+                return {...state, exerciseNames: newExerciseNames};
             default:
                 return state;
         }
+    }
+
+    const loadedDataTemplate: DatabaseData = {
+        previousSessions: [{
+            session_date: undefined,
+            session_title: undefined,
+        }],
+        exercises: [],
+        loadPrevSessionsNow: true,
+        loadExerciseListNow: true,
+    }
+
+    function loaderReducer(state: DatabaseData, action: GenericAction){
+        switch (action.type){
+            case "GetPreviousSess":
+                return {...state, loadPrevSessionsNow: action.payload};
+            case "GetExercises":
+                return {...state, loadExerciseListNow: action.payload};
+            case "loadedExercises":
+                return {...state, exercises: action.payload}
+            default:
+                return state;
+        }
+    }
+
+    const [loaderState, loaderDispatcher] = useReducer(loaderReducer, loadedDataTemplate);
+
+    if (loaderState.loadPrevSessionsNow === true) {
+        loaderDispatcher({type: "GetPreviousSess", payload: false})
+        loadPrevSessions();
+    }
+
+    if (loaderState.loadExerciseListNow === true){
+        loaderDispatcher({type: "GetExercises", payload: false});
+        loadExerciseList();
+    }
+
+
+    function loadPrevSessions(){
+        getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
+    }
+
+    function loadExerciseList(){
+        getExercises().then(exercises => loaderDispatcher({type: "loadedExercises", payload: exercises.data}));
     }
 
     function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
@@ -108,26 +163,60 @@ function Home(){
                     parentIndex = {k}
                     sessionState = {sessionState}
                     sessionDispatch = {sessionDispatch}
+                    loaderDispatcher = {loaderDispatcher}
+                    loaderState = {loaderState}
                 />
             </div>
         );
     });
 
+    let previousSessionSelector: JSX.Element[] = [];
+    let previousSessionOptions: JSX.Element[] = [];
+
+    if (sessionState.previousSessions !== undefined){
+        previousSessionOptions = sessionState.previousSessions.map((e: {session_date: string, session_title: string}, k: number) => {
+            return (
+                <option key={k}>{e.session_title} @ {e.session_date}</option>
+            );
+        });
+
+
+        previousSessionSelector = Array.of(1).map((_e, k) => {
+            return (
+              <select key={k}>
+                  {previousSessionOptions}
+              </select>
+            );
+        });
+    }
+
+
+
     return (
         <div className={"container"}>
+            <button onClick={() => {
+                cc(sessionState)
+                cc(loaderState)
+            }}>For testing: Log sesssion state</button>
+            <br />
+            <br />
             <Options
                 optionsDispatch = {optionsDispatch}
                 optionsState = {optionsState}
             />
+            {previousSessionSelector}
+            <br />
             <br />
             <span>Session Title</span>
             <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
                 sessionDispatch({type: "title", payload: e.target.value});
             }}/>
+            <br />
             <span>Session Date</span>
             <input type={"date"} value={sessionState.date} onChange={(e) => {
                 sessionDispatch({type: "date", payload: e.target.value});
             }}/>
+            <br />
             <span>Number of Exercises</span>
             <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
                 sessionDispatch({type: "exercises", payload: +e.target.value});
@@ -199,8 +288,9 @@ function getStartingValuesArray(sets: number, value: number){
 
 export default Home;
 
-function ExerciseElements({parentIndex, sessionState, sessionDispatch}: 
-                              {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>}){
+function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
+                              {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
+                                  loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){
 
     const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
         return (<option key={k}>{k+1}</option>);
@@ -237,6 +327,17 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
         );
     });
 
+    let previousExercises: JSX.Element[] = [];
+
+    if (Array.isArray(sessionState.exerciseNames)) {
+        previousExercises = loaderState.exercises.map((e, k) => {
+            return (
+              <option key={k}>{e}</option>
+            );
+        });
+    }
+
+
 
     /*TODO Add increment number input and apply button. Add auto-increment checkbox (database).
     TODO Add Notes field.*/
@@ -245,8 +346,11 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch}:
       <>
           <br />
           <span>Exercise Name</span>
-          <select>
-              <option>placeholder</option>
+          <select value={loaderState.exercises[parentIndex] || ""} onChange={(e) => {
+              loaderDispatcher({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
+          }}>
+              {previousExercises}
+              <option></option>
           </select>
           <span>Set Count</span>
           <select value={sessionState.sets[parentIndex]} onChange={(e) => {
