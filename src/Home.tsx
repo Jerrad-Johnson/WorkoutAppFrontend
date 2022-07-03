@@ -35,6 +35,7 @@ function Home(){
         date: "2022-02-02", //TODO Correct this value
         exerciseCount: optionsState.exercises,
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
+        exerciseSelectorOrInput: [0, 0],
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
@@ -78,6 +79,14 @@ function Home(){
                 let initialExercises: string[] = state.exerciseNames;
                 initialExercises[action.payload.index] = action.payload.exercise;
                 return {...state, exerciseNames: initialExercises}*/
+            case "addOrSelectExercise":
+                let newSelectorOrInput: number[] = state.exerciseSelectorOrInput;
+                newSelectorOrInput[action.payload.index] = action.payload.value
+                return {...state, exerciseSelectorOrInput: newSelectorOrInput}
+            case "changedExerciseEntryToSelector":
+                let newExerciseNamesAfterClickingAdd: string[] = state.exerciseNames;
+                newExerciseNamesAfterClickingAdd[action.payload.index] = action.payload.value;
+                return {...state, exerciseNames: newExerciseNamesAfterClickingAdd};
             default:
                 return state;
         }
@@ -359,23 +368,45 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
         });
     }
 
-
+    let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
+        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){
+            return (
+                <div key={k}>
+                    <select defaultValue={""} onChange={(e) => {
+                        sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
+                    }}>
+                        <option></option>
+                        {previousExercises}
+                    </select>
+                    <button onClick={(e) => {
+                        sessionDispatch({ type: "addOrSelectExercise", payload: {value: 1, index: parentIndex }});
+                        sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
+                    }}>Add Exercise Title</button>
+                </div>
+            );
+        } else {
+            return (
+                <div key={k}>
+                    <input type={"text"} defaultValue={""} onChange={(e) => {
+                        sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
+                    }} />
+                    <button onClick={(e) => {
+                        sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
+                        sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
+                    }}>Select Previous Exercise</button>
+                </div>
+            );
+        }
+    });
 
     /*TODO Add increment number input and apply button. Add auto-increment checkbox (database).
     TODO Add Notes field.*/
-
 
     // loaderState.exercises[parentIndex] ||
     return (
       <>
           <br />
-          <span>Exercise Name</span>
-          <select defaultValue={""} onChange={(e) => {
-              sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
-          }}>
-              <option></option>
-              {previousExercises}
-          </select>
+          {exerciseSelectorOrInput}
           <span>Set Count</span>
           <select value={sessionState.sets[parentIndex]} onChange={(e) => {
               sessionDispatch({ type: "sets", payload: {

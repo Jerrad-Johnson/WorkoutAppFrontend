@@ -25,7 +25,7 @@ export interface SessionData{
     weights: number[][];
     notes: string | undefined;
     previousSessions: {sessionDate: string, session_title: string}[] | undefined;
-
+    exerciseSelectorOrInput: number[];
 }
 
 export interface submissionData {
