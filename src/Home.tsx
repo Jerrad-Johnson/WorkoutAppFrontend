@@ -34,7 +34,7 @@ function Home(){
         title: "Session Title",
         date: "2022-02-02", //TODO Correct this value
         exerciseCount: optionsState.exercises,
-        exerciseNames: ["Add an Exercise"],
+        exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
@@ -74,6 +74,10 @@ function Home(){
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
                 return {...state, exerciseNames: newExerciseNames};
+/*            case "initialExercises":
+                let initialExercises: string[] = state.exerciseNames;
+                initialExercises[action.payload.index] = action.payload.exercise;
+                return {...state, exerciseNames: initialExercises}*/
             default:
                 return state;
         }
@@ -114,12 +118,20 @@ function Home(){
         loadExerciseList();
     }
 
+/*    function initialSessionExercises(){
+        let index = 0;
+        while (loaderState.exercises.length > index && sessionState.reps.length > index){
+            index++;
+            sessionDispatch({type: "initialExercises", payload: { exercise: loaderState.exercises[index], position: [index]}} )
+        }
+    }*/
 
-    function loadPrevSessions(){
-        getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
+
+    async function loadPrevSessions(){
+        let prevSessions: any = await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
     }
 
-    function loadExerciseList(){
+    async function loadExerciseList(){
         getExercises().then(exercises => loaderDispatcher({type: "loadedExercises", payload: exercises.data}));
     }
 
@@ -128,12 +140,14 @@ function Home(){
                 session.reps.pop();
                 session.weights.pop();
                 session.sets.pop();
+                session.exerciseNames.pop();
             }
 
             while (session.reps.length < newExerciseCount){
                 session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
                 session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
                 session.sets = [...session.sets, optionsState.sets];
+                session.exerciseNames = [...session.exerciseNames, ""];
             }
 
         return session;
@@ -286,6 +300,14 @@ function getStartingValuesArray(sets: number, value: number){
     return arrayOfValues;
 }
 
+function getStartingValuesStringArray(sets: number, value: string){
+    let arrayOfValues: string[] = Array.from({length: sets}).map((_e) => {
+        return value;
+    });
+
+    return arrayOfValues;
+}
+
 export default Home;
 
 function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
@@ -342,15 +364,17 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     /*TODO Add increment number input and apply button. Add auto-increment checkbox (database).
     TODO Add Notes field.*/
 
+
+    // loaderState.exercises[parentIndex] ||
     return (
       <>
           <br />
           <span>Exercise Name</span>
-          <select value={loaderState.exercises[parentIndex] || ""} onChange={(e) => {
-              loaderDispatcher({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
+          <select defaultValue={""} onChange={(e) => {
+              sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
           }}>
-              {previousExercises}
               <option></option>
+              {previousExercises}
           </select>
           <span>Set Count</span>
           <select value={sessionState.sets[parentIndex]} onChange={(e) => {
@@ -359,6 +383,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                   value: +e.target.value,
                   }})
           }}>
+
               {setOptions}
           </select>
 
