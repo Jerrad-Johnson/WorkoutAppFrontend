@@ -2,6 +2,8 @@ import {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} fr
 import {OptionsData, OptionsAction, SessionData, GenericAction, DatabaseData} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
 import {getRecentSessions, loginV2, getExercises} from "./utilities/queries";
+import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
+
 let cc = console.log;
 
 function Home(){
@@ -30,9 +32,9 @@ function Home(){
         }
     }
 
-    const defaultSession: SessionData = { //TODO Update to useLocalStorage
+    const defaultSession: SessionData = { //TODO Considered using localStorage, but instead: use a confirmation when trying nav away.
         title: "Session Title",
-        date: "2022-02-02", //TODO Correct this value
+        date: todaysDateForHTMLCalendar(),
         exerciseCount: optionsState.exercises,
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
         exerciseSelectorOrInput: [0, 0],
@@ -75,10 +77,6 @@ function Home(){
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
                 return {...state, exerciseNames: newExerciseNames};
-/*            case "initialExercises":
-                let initialExercises: string[] = state.exerciseNames;
-                initialExercises[action.payload.index] = action.payload.exercise;
-                return {...state, exerciseNames: initialExercises}*/
             case "addOrSelectExercise":
                 let newSelectorOrInput: number[] = state.exerciseSelectorOrInput;
                 newSelectorOrInput[action.payload.index] = action.payload.value
@@ -369,7 +367,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     }
 
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
-        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){
+        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ //"0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
                     <select defaultValue={""} onChange={(e) => {
