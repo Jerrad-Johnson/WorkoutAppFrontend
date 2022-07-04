@@ -51,3 +51,11 @@ export interface DatabaseData{
     loadPrevSessionsNow: boolean;
     loadExerciseListNow: true;
 }
+
+export interface SessionEntry {
+    date: string;
+    title: string;
+    reps: number[][];
+    weights: number[][];
+    exercises: string[];
+}

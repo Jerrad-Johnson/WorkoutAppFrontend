@@ -41,8 +41,8 @@ export async function loginV2(){
 
 
 
-export function submitSession(entries: submissionData) {
-    fetch("http://localhost:80/php/sessionentry.php", {
+export async function submitSession(entries: submissionData) {
+    let response = await fetch("http://localhost:80/php/sessionentry.php", {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(entries),
@@ -50,8 +50,9 @@ export function submitSession(entries: submissionData) {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(response => response.json())
-        .then(data => cc(data));
+    })
+
+    return await response.json();
 }
 
 

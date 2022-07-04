@@ -1,7 +1,14 @@
 import {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
-import {OptionsData, OptionsAction, SessionData, GenericAction, DatabaseData} from "./utilities/interfaces";
+import {
+    OptionsData,
+    OptionsAction,
+    SessionData,
+    GenericAction,
+    DatabaseData,
+    SessionEntry
+} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
-import {getRecentSessions, loginV2, getExercises, getSpecificSession} from "./utilities/queries";
+import {getRecentSessions, loginV2, getExercises, getSpecificSession, submitSession} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
@@ -244,7 +251,7 @@ function Home(){
                   </select>
                  <button onClick={() => {
                      applySpecificSessionHandler();
-                 }}>Load</button>
+                 }}>Load Previous Session</button>
                 </div>
             );
         });
@@ -261,6 +268,19 @@ function Home(){
     function getSelectorSession(selectedSession: string){
         let splitSessionString: string[] = selectedSession.split(" @ ");
         return splitSessionString;
+    }
+
+    async function handleSessionSubmission(){
+        let entries: SessionEntry = {
+            date: sessionState.date,
+            title: sessionState.title,
+            reps: sessionState.reps,
+            weights: sessionState.weights,
+            exercises: sessionState.exerciseNames
+        }
+
+        let response = await submitSession(entries).then(data => cc(data));
+
     }
 
 
@@ -300,6 +320,10 @@ function Home(){
             <input type={"text"} className={"notes"} onChange={(e) => {
                 sessionDispatch({type: "notes", payload: e.target.value});
             }}/>
+            <br />
+            <button onClick={() => {
+                handleSessionSubmission();
+            }}>Submit</button>
         </div>
     )
 }
