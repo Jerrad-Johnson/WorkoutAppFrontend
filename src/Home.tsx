@@ -10,6 +10,7 @@ import {
 import {arrayOfOptions} from "./utilities/sharedFns";
 import {getRecentSessions, loginV2, getExercises, getSpecificSession, submitSession} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
+import Nav from "./Nav";
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
 let cc = console.log;

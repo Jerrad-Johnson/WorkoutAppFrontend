@@ -1,4 +1,4 @@
-import {submissionData} from "./interfaces";
+import {SessionEntry, submissionData} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
 
@@ -39,9 +39,7 @@ export async function loginV2(){
     return responseJSON;
 }
 
-
-
-export async function submitSession(entries: submissionData) {
+export async function submitSession(entries: SessionEntry) {
     let response = await fetch("http://localhost:80/php/sessionentry.php", {
         method: 'POST',
         mode: 'cors',
@@ -54,7 +52,6 @@ export async function submitSession(entries: submissionData) {
 
     return await response.json();
 }
-
 
 export async function getExercises(){
     let response = await fetch("http://localhost:80/php/getexercises.php", {
