@@ -4,7 +4,9 @@ import {arrayOfOptions} from "./utilities/sharedFns";
 import {getRecentSessions, loginV2, getExercises, getSpecificSession} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 
+//TODO Handle user deleting an exercise; will screw up exercise selector
 let cc = console.log;
+
 
 function Home(){
 
@@ -88,6 +90,27 @@ function Home(){
                 return {...state, exerciseNames: newExerciseNamesAfterClickingAddOrSelect};
             case "sessionLoadSelector":
                 return {...state, selectedSessionToLoad: action.payload}
+            case "insertPreviousSession":
+                let allReps: number[][] = [];
+                let allWeights: number[][] = [];
+                let allExerciseNames: string[] = [];
+                let numbersOfSets: number[] = [];
+                let newTitle: string = action.payload[0]?.session_title;
+
+                for (let i = 0; i < action.payload.length; i++){
+                    let repsSets: string[] = action.payload[i].reps.split(",");
+                    let repsAsNumbers: number[] = repsSets.map((e) => +e);
+                    let weightSets: string[] = action.payload[i].weight_lifted.split(",");
+                    let weightsAsNumbers: number[] = weightSets.map((e) => +e);
+                    let exerciseName: string = action.payload[i].exercise;
+                    numbersOfSets[i] = repsSets.length;
+                    allReps.push(repsAsNumbers);
+                    allWeights.push(weightsAsNumbers);
+                    allExerciseNames.push(exerciseName);
+                }
+
+                return {...state, reps: allReps, weights: allWeights, exerciseNames: allExerciseNames,
+                    exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle}
             default:
                 return state;
         }
@@ -215,26 +238,25 @@ function Home(){
                       {previousSessionOptions}
                   </select>
                  <button onClick={() => {
-                     if (sessionState.selectedSessionToLoad !== undefined && sessionState.selectedSessionToLoad.length !== 0) {
-                         let [sessionDate, sessionTitle]: string[] = getSelectorSession();
-                         let sessionDataFromDB = getSpecificSession(sessionDate, sessionTitle)
-                         cc(sessionDataFromDB)
-                     }
+                     applySpecificSessionHandler();
                  }}>Load</button>
                 </div>
             );
         });
     }
 
-    function getSelectorSession(){
-            let splitSessionString: string[] = sessionState.selectedSessionToLoad.split(" @ ");
-            return splitSessionString;
+    function applySpecificSessionHandler(){
+        if (sessionState.selectedSessionToLoad !== undefined && sessionState.selectedSessionToLoad.length !== 0) {
+            let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
+            let sessionResponseFromDB = getSpecificSession(sessionDate, sessionTitle).then(response =>
+                sessionDispatch({type: "insertPreviousSession", payload: response.data}));
+        }
     }
 
-    function getSessionSeletorDate(){
-        /*let title = sessionState.*/
+    function getSelectorSession(selectedSession: string){
+        let splitSessionString: string[] = selectedSession.split(" @ ");
+        return splitSessionString;
     }
-
 
 
     return (
