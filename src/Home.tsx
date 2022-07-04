@@ -96,6 +96,7 @@ function Home(){
                 let allExerciseNames: string[] = [];
                 let numbersOfSets: number[] = [];
                 let newTitle: string = action.payload[0]?.session_title;
+                let selectorOrInput: number[] = [];
 
                 for (let i = 0; i < action.payload.length; i++){
                     let repsSets: string[] = action.payload[i].reps.split(",");
@@ -103,14 +104,18 @@ function Home(){
                     let weightSets: string[] = action.payload[i].weight_lifted.split(",");
                     let weightsAsNumbers: number[] = weightSets.map((e) => +e);
                     let exerciseName: string = action.payload[i].exercise;
+
+                    selectorOrInput.push(0);
                     numbersOfSets[i] = repsSets.length;
                     allReps.push(repsAsNumbers);
                     allWeights.push(weightsAsNumbers);
                     allExerciseNames.push(exerciseName);
+
                 }
 
                 return {...state, reps: allReps, weights: allWeights, exerciseNames: allExerciseNames,
-                    exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle}
+                    exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle,
+                    exerciseSelectorOrInput: selectorOrInput}
             default:
                 return state;
         }
@@ -413,10 +418,10 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     }
 
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
-        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ //"0" just means it will return a selector. Use "1" for input-text.
+        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
-                    <select defaultValue={""} onChange={(e) => {
+                    <select value={sessionState.exerciseNames[parentIndex]} onChange={(e) => {
                         sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
                     }}>
                         <option></option>
