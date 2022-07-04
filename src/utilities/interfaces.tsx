@@ -26,6 +26,7 @@ export interface SessionData{
     notes: string | undefined;
     previousSessions: {sessionDate: string, session_title: string}[] | undefined;
     exerciseSelectorOrInput: number[];
+    selectedSessionToLoad: string | undefined;
 }
 
 export interface submissionData {

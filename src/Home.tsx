@@ -1,7 +1,7 @@
 import {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
 import {OptionsData, OptionsAction, SessionData, GenericAction, DatabaseData} from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
-import {getRecentSessions, loginV2, getExercises} from "./utilities/queries";
+import {getRecentSessions, loginV2, getExercises, getSpecificSession} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 
 let cc = console.log;
@@ -43,6 +43,7 @@ function Home(){
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
         notes: undefined,
         previousSessions: undefined,
+        selectedSessionToLoad: undefined,
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -82,9 +83,11 @@ function Home(){
                 newSelectorOrInput[action.payload.index] = action.payload.value
                 return {...state, exerciseSelectorOrInput: newSelectorOrInput}
             case "changedExerciseEntryToSelector":
-                let newExerciseNamesAfterClickingAdd: string[] = state.exerciseNames;
-                newExerciseNamesAfterClickingAdd[action.payload.index] = action.payload.value;
-                return {...state, exerciseNames: newExerciseNamesAfterClickingAdd};
+                let newExerciseNamesAfterClickingAddOrSelect: string[] = state.exerciseNames;
+                newExerciseNamesAfterClickingAddOrSelect[action.payload.index] = action.payload.value;
+                return {...state, exerciseNames: newExerciseNamesAfterClickingAddOrSelect};
+            case "sessionLoadSelector":
+                return {...state, selectedSessionToLoad: action.payload}
             default:
                 return state;
         }
@@ -204,11 +207,32 @@ function Home(){
 
         previousSessionSelector = Array.of(1).map((_e, k) => {
             return (
-              <select key={k}>
-                  {previousSessionOptions}
-              </select>
+                <div key={k}>
+                  <select key={k} onChange={(e) => {
+                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                  }}>
+                      <option></option>
+                      {previousSessionOptions}
+                  </select>
+                 <button onClick={() => {
+                     if (sessionState.selectedSessionToLoad !== undefined && sessionState.selectedSessionToLoad.length !== 0) {
+                         let [sessionDate, sessionTitle]: string[] = getSelectorSession();
+                         let sessionDataFromDB = getSpecificSession(sessionDate, sessionTitle)
+                         cc(sessionDataFromDB)
+                     }
+                 }}>Load</button>
+                </div>
             );
         });
+    }
+
+    function getSelectorSession(){
+            let splitSessionString: string[] = sessionState.selectedSessionToLoad.split(" @ ");
+            return splitSessionString;
+    }
+
+    function getSessionSeletorDate(){
+        /*let title = sessionState.*/
     }
 
 
@@ -228,7 +252,7 @@ function Home(){
             {previousSessionSelector}
             <br />
             <br />
-            <span>Session Title</span>
+            <span>Session Title</span> {/*TODO Check entry to make sure it does not contain  " @ "*/}
             <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
                 sessionDispatch({type: "title", payload: e.target.value});
             }}/>
