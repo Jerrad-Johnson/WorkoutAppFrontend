@@ -15,8 +15,28 @@ import Nav from "./Nav";
 //TODO Handle user deleting an exercise; will screw up exercise selector
 let cc = console.log;
 
-
 function Home(){
+
+    let testString: string = "810J-&J2KAn98mLwgi5on&*nuij"; //@ts-ignore
+    let convertedString: string = convertString(testString);
+
+    function convertString(testString: string){
+        let strippedString: string = testString.replace(/\D/g, ''); //@ts-ignore
+        let setsOfThree: string[] = strippedString.match(/.{1,3}/g);
+        //@ts-ignore
+        if (setsOfThree.at(-1).length === 1) { //@ts-ignore
+            let stringToMoveCharacterFrom: string = setsOfThree.at(-2)
+            let characterToMove: string = stringToMoveCharacterFrom.charAt(2);
+            let shortenedString: string = stringToMoveCharacterFrom.substr(0, stringToMoveCharacterFrom.length -1);
+            let finalString: string[] | string = setsOfThree;
+            let lengthenedString: string = characterToMove + finalString.at(-1);
+            finalString.splice(-2);
+            finalString.push(shortenedString, lengthenedString);
+            return finalString.join("-");
+        } else {
+            return setsOfThree.join("-");
+        }
+    }
 
     const defaultOptions: OptionsData = {
         exercises: 2,
