@@ -118,3 +118,18 @@ export async function logout(){
 
     return dataToBeReturned;
 }
+
+export async function queryCheckLogin(){
+    const response = await fetch("http://localhost:80/php/checkLogin.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}

@@ -59,3 +59,8 @@ export interface SessionEntry {
     weights: number[][];
     exercises: string[];
 }
+
+export interface standardBackendResponse {
+    message: string;
+    data: any;
+}
