@@ -2,7 +2,6 @@ import checkLogin from "./utilities/checkLogin";
 import {standardBackendResponse} from "./utilities/interfaces";
 import {Dispatch, SetStateAction, useState} from "react";
 import {CircularProgress} from "@mui/material";
-import {log} from "util";
 let cc = console.log;
 
 function handleCheckLogin(response: standardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
@@ -13,25 +12,30 @@ function handleCheckLogin(response: standardBackendResponse, setLoginState: Disp
 function Login(){
     let [loginState, setLoginState] = useState("pending");
     checkLogin().then((response) => handleCheckLogin(response, setLoginState));
-
-    if (loginState === "pending"){
+    if (loginState === "true"){
         return (
-            <div className={"loginOverlay"}>
-                <CircularProgress size={150}/>
-                <span>Checking login.</span>
-            </div>
-        )
-    } else if (loginState === "false"){
-        return (
-            <div className={"loginOverlay"}>
-                    Please Login.
+            <div className={"loginContainer"}>
+                Logged in, please proceed.
             </div>
         )
     } else {
         return (
-            <div className={"loginOverlay"}>
-            Logged in, please proceed.
-        </div>
+            <>
+            {loginState === "pending" &&
+                <div className={"loginContainer"}>
+                    <CircularProgress size={150}/>
+                    <span>Checking login.</span>
+                </div>
+            }
+            <div className={"loginContainer"}>
+                <span> Please Login.</span>
+                <form>
+                    <input type={"text"} className={"loginInputs"} />
+                    <input type={"password"} className={"loginInputs"} />
+                </form>
+                <span> Don't have an account? Create one here.</span>
+            </div>
+            </>
         )
     }
 }
