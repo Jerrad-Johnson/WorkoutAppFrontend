@@ -1,22 +1,31 @@
-import checkLogin from "./utilities/checkLogin";
 import {StandardBackendResponse, LoginCredentials} from "./utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
-import {loginQuery} from "./utilities/queries";
+import {loginQuery, queryCheckLogin} from "./utilities/queries";
 let cc = console.log;
 
-function handleCheckLogin(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
+function handleLoginFormEntry(usernameState: string, passwordState: string, setLoginState: Dispatch<SetStateAction<string>>){
+    if (!checkFormEntry(usernameState, passwordState)) return;
+    setLoginState("pending");
+    doLogin(usernameState, passwordState);
+    checkLogin().then((response) => {
+        handleCheckIfLoggedIn(response, setLoginState);
+    });
+}
+
+function checkFormEntry(usernameState: string, passwordState: string){
+    if (usernameState === "" || passwordState === "") return false; //TODO Error message
+    return true;
+}
+
+function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
     if (response.data.loggedin === true) window.location.href="Home";
     setLoginState("false");
 }
 
-function handleCheckFormEntry(usernameState: string, passwordState: string, setLoginState: Dispatch<SetStateAction<string>>){
-    cc(usernameState, passwordState)
-
-    doLogin(usernameState, passwordState);
-    checkLogin().then((response) => {
-        handleCheckLogin(response, setLoginState);
-    });
+async function checkLogin(){
+    let response = await queryCheckLogin();
+    return response;
 }
 
 function doLogin(usernameState: string, passwordState: string){
@@ -32,7 +41,7 @@ function Login(){
     let [loginState, setLoginState] = useState("pending");
     let [usernameState, setUsernameState] = useState("");
     let [passwordState, setPasswordState] = useState("");
-    checkLogin().then((response) => handleCheckLogin(response, setLoginState));
+    checkLogin().then((response) => handleCheckIfLoggedIn(response, setLoginState));
     useEffect(() => {
         loginState === "pending" ? cc(5) : cc(7); //TODO Set to change opacity of loginContainer
     }, [loginState]);
@@ -56,8 +65,7 @@ function Login(){
                 <span> Please Login.</span>
                 <form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
-                        handleCheckFormEntry(usernameState, passwordState, setLoginState);
-                        setLoginState("pending");
+                        handleLoginFormEntry(usernameState, passwordState, setLoginState);
                     }//TODO Does not redirect if login is attempted too quickly. Fix this.
                 }}>
                     <input type={"text"} value={usernameState} placeholder={"Username"} className={"textInputsShort"}
@@ -72,8 +80,7 @@ function Login(){
                     }}/>
                     <button onClick={(e) => {
                         e.preventDefault();
-                        setLoginState("pending");
-                        handleCheckFormEntry(usernameState, passwordState, setLoginState)
+                        handleLoginFormEntry(usernameState, passwordState, setLoginState)
                     }}>Submit</button>
                 </form>
                 <span> Don't have an account? Create one here.</span>
