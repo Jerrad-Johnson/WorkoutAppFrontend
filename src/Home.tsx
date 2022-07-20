@@ -1,4 +1,4 @@
-import {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
+import React, {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
 import {
     OptionsData,
     OptionsAction,
@@ -13,6 +13,8 @@ import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 import Nav from "./Nav";
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
+//TODO Handle getting logged out; script will still try to run queries.
+
 let cc = console.log;
 
 function Home(){
@@ -306,6 +308,8 @@ function Home(){
 
 
     return (
+        <>
+        <Nav />
         <div className={"container"}>
             <button onClick={() => {
                 cc(sessionState)
@@ -346,6 +350,7 @@ function Home(){
                 handleSessionSubmission();
             }}>Submit</button>
         </div>
+        </>
     )
 }
 

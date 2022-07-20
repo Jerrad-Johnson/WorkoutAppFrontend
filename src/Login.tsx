@@ -8,7 +8,6 @@ let cc = console.log;
 function handleCheckLogin(response: standardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
     if (response.data.loggedin === true) window.location.href="Home";
     setLoginState("false");
-
 }
 
 function Login(){
@@ -25,12 +24,15 @@ function Login(){
     } else if (loginState === "false"){
         return (
             <div className={"loginOverlay"}>
-                    Please Login
+                    Please Login.
             </div>
         )
     } else {
-        if (loginState === "true") window.location.href="Home";
-        return (<>Logged in, please proceed</>)
+        return (
+            <div className={"loginOverlay"}>
+            Logged in, please proceed.
+        </div>
+        )
     }
 }
 

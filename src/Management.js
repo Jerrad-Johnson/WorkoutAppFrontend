@@ -1,8 +1,11 @@
 import {logout} from "./utilities/queries";
+import Nav from "./Nav";
 let cc = console.log;
 
 function Management(){
     return (
+        <>
+        <Nav />
         <div>
             <button onClick={() => {
                 handleLogout();
@@ -27,6 +30,7 @@ function Management(){
             }}>Change Password</button>
 
         </div>
+        </>
     );
 }
 
