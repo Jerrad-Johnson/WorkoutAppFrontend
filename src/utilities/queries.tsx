@@ -2,7 +2,7 @@ import {SessionEntry, submissionData, LoginCredentials} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
 
-export function login(data: LoginCredentials) {
+export function loginQuery(data: LoginCredentials) {
     /*let entry: object = {
         "password": "abc",
         "username": "elseif",

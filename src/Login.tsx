@@ -2,7 +2,7 @@ import checkLogin from "./utilities/checkLogin";
 import {StandardBackendResponse, LoginCredentials} from "./utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
-import {login} from "./utilities/queries";
+import {loginQuery} from "./utilities/queries";
 let cc = console.log;
 
 function handleCheckLogin(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
@@ -25,12 +25,10 @@ function doLogin(usernameState: string, passwordState: string){
         password: passwordState,
     }
 
-    login(data);
-
+    loginQuery(data);
 }
 
 function Login(){
-
     let [loginState, setLoginState] = useState("pending");
     let [usernameState, setUsernameState] = useState("");
     let [passwordState, setPasswordState] = useState("");
@@ -57,7 +55,10 @@ function Login(){
             <div className={"loginContainer"}>
                 <span> Please Login.</span>
                 <form onKeyPress={(e) => {
-                    if (e.key === 'Enter') handleCheckFormEntry(usernameState, passwordState, setLoginState) //TODO Does not redirect if login is attempted too quickly. Fix this.
+                    if (e.key === 'Enter') {
+                        handleCheckFormEntry(usernameState, passwordState, setLoginState);
+                        setLoginState("pending");
+                    }//TODO Does not redirect if login is attempted too quickly. Fix this.
                 }}>
                     <input type={"text"} value={usernameState} placeholder={"Username"} className={"textInputsShort"}
                            onChange={(e) => {
@@ -71,6 +72,7 @@ function Login(){
                     }}/>
                     <button onClick={(e) => {
                         e.preventDefault();
+                        setLoginState("pending");
                         handleCheckFormEntry(usernameState, passwordState, setLoginState)
                     }}>Submit</button>
                 </form>
