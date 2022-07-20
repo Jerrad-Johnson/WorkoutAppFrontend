@@ -23,3 +23,14 @@ body {
     @apply
     mb-2
 }
+
+.overlay {
+    position: absolute;
+    max-width: 400px;
+    overflow: hidden;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 40%;
+    z-index: 999;
+    background-color: #fff;
+}

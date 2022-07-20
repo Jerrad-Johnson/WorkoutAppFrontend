@@ -1,17 +1,17 @@
-import {SessionEntry, submissionData} from "./interfaces";
+import {SessionEntry, submissionData, LoginCredentials} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
 
-export function login() {
-    let entry: object = {
+export function login(data: LoginCredentials) {
+    /*let entry: object = {
         "password": "abc",
         "username": "elseif",
-    };
+    };*/
 
     fetch("http://localhost:80/php/login.php", {
         method: 'POST',
         mode: 'cors',
-        body: JSON.stringify(entry),
+        body: JSON.stringify(data),
         credentials: "include",
         headers: {
             'Content-Type': 'application/json' }

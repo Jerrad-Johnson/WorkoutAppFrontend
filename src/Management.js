@@ -9,6 +9,7 @@ function Management(){
         <div>
             <button onClick={() => {
                 handleLogout();
+
             }}>Log Out</button>
             <br />
             <button onClick={() => {
@@ -35,7 +36,9 @@ function Management(){
 }
 
 async function handleLogout(){
-    await logout().then(data => cc(data));
+    await logout().then(response => {
+      if (response.data.loggedout === "true") window.location.href="/";
+    });
 
 
 }
