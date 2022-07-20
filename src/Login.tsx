@@ -12,6 +12,7 @@ function handleCheckLogin(response: standardBackendResponse, setLoginState: Disp
 function Login(){
     let [loginState, setLoginState] = useState("pending");
     checkLogin().then((response) => handleCheckLogin(response, setLoginState));
+
     if (loginState === "true"){
         return (
             <div className={"loginContainer"}>
@@ -22,7 +23,7 @@ function Login(){
         return (
             <>
             {loginState === "pending" &&
-                <div className={"loginContainer"}>
+                <div className={"loginOverlay"}>
                     <CircularProgress size={150}/>
                     <span>Checking login.</span>
                 </div>
@@ -30,8 +31,8 @@ function Login(){
             <div className={"loginContainer"}>
                 <span> Please Login.</span>
                 <form>
-                    <input type={"text"} className={"loginInputs"} />
-                    <input type={"password"} className={"loginInputs"} />
+                    <input type={"text"} className={"textInputsShort"} />
+                    <input type={"password"} className={"textInputsShort"} />
                 </form>
                 <span> Don't have an account? Create one here.</span>
             </div>

@@ -5,5 +5,21 @@
 body {
     @apply
     bg-black
-    text-amber-500
+    text-slate-400
+}
+
+.textInputsShort {
+    @apply
+    w-40
+    rounded
+    pl-2
+    outline
+    outline-2
+    outline-slate-800
+    block
+    mt-4
+}
+.textInputsShort:last-child{
+    @apply
+    mb-2
 }
