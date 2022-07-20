@@ -60,7 +60,12 @@ export interface SessionEntry {
     exercises: string[];
 }
 
-export interface standardBackendResponse {
+export interface StandardBackendResponse {
     message: string;
     data: any;
+}
+
+export interface LoginCredentials {
+    username: string;
+    password: string;
 }
