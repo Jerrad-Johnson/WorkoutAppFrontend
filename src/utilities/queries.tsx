@@ -68,6 +68,22 @@ export async function getExercises(){
     return responseJSON;
 }
 
+export async function deleteExercise(exercise: string){
+    let response = await fetch("http://localhost:80/php/exercisedelete.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(exercise),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let responseJSON = await response.json();
+
+    return responseJSON;
+}
+
 export async function getRecentSessions(){
     const response = await fetch("http://localhost:80/php/getrecentsessions.php", {
         method: 'POST',

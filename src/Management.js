@@ -1,4 +1,4 @@
-import {getExercises, logout} from "./utilities/queries";
+import {deleteExercise, getExercises, logout} from "./utilities/queries";
 import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
@@ -8,22 +8,45 @@ let cc = console.log;
 
 async function handleGetSessions(setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
     let response = await getAllSessions();
-    let listOfSessions: JSX.Element[] = response.data.map((e, k) => {
-        return (
-            <span className={"sessionSpan"} key={k}>{e.session_title + " --- " + e.session_date}</span>
-        )
-    });
-    setDataState(listOfSessions);
+
+    if (response.message === "Success") {
+        let listOfSessions: JSX.Element[] = response.data.map((e, k) => {
+            return (
+                <span className={"listQuery"} key={k}>{e.session_title + " --- " + e.session_date}</span>
+            )
+        });
+        setDataState(listOfSessions);
+    } else {
+        setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+    }
 }
 
 async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
     let response = await getExercises();
-    let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
-        return (
-            <span className={"sessionSpan"} key={k}>{e}</span>
-        )
-    });
-    setDataState(listOfExercises);
+
+    if (response.data[0]) {
+        let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
+            return (
+                <span className={"listQuery"} key={k} onClick={(event) => {
+                    handleDeleteExercise(e, setDataState);
+                }}>{e}</span>
+            )
+        });
+        setDataState(listOfExercises);
+    } else {
+        setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+    }
+}
+
+async function handleDeleteExercise(exercise: string, setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
+    let response = await deleteExercise(exercise);
+
+    if (response.message === "Success"){
+        //TODO Add mui
+        handleGetAllExercises(setDataState);
+    } else {
+        //TODO Add mui
+    }
 }
 
 function Management(){
@@ -51,10 +74,12 @@ function Management(){
 
             <button onClick={() => {
 
-            }}>Change E-mail Address</button>
+            }}>Change E-mail Address</button> -- Not yet functional
             <br />
 
             <button>Change Password</button>
+            <br />
+            <br />
 
             {dataState &&
                 <div className={"listContainer"}>
