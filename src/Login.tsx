@@ -9,6 +9,7 @@ function handleLoginFormEntry(usernameState: string, passwordState: string, setL
     setLoginState("pending");
     doLogin(usernameState, passwordState);
     checkLogin().then((response) => {
+
         handleCheckIfLoggedIn(response, setLoginState);
     });
 }
@@ -25,6 +26,7 @@ function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState:
 
 async function checkLogin(){
     let response = await queryCheckLogin();
+
     return response;
 }
 

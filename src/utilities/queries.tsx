@@ -104,6 +104,21 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
     return dataToBeReturned;
 }
 
+export async function getAllSessions(){
+    const response = await fetch("http://localhost:80/php/getallsessions.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}
+
 export async function logout(){
     const response = await fetch("http://localhost:80/php/logout.php", {
         method: 'POST',

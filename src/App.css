@@ -2,13 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+body{
     @apply
     bg-black
     text-slate-400
 }
 
-.textInputsShort {
+.textInputsShort{
     @apply
     w-40
     rounded
@@ -24,7 +24,7 @@ body {
     mb-2
 }
 
-.overlay {
+.overlay{
     position: absolute;
     max-width: 400px;
     overflow: hidden;
@@ -33,4 +33,9 @@ body {
     top: 40%;
     z-index: 999;
     background-color: #fff;
+}
+
+.sessionSpan{
+    @apply
+    block;
 }
