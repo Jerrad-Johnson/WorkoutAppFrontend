@@ -5,7 +5,7 @@ import {
     SessionData,
     GenericAction,
     DatabaseData,
-    SessionEntry
+    SessionEntry, StandardBackendResponse
 } from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
 import {getRecentSessions, loginV2, getExercises, getSpecificSession, submitSession} from "./utilities/queries";
@@ -89,6 +89,10 @@ function Home(){
             case "exercises":
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
+            case "exercisesFromSesssionsAndExercisesDBTables": // TODO Prevent empty-string exercise entries to DB
+                let newSession2: SessionData = handleExerciseCountChange({...state}, action.payload.length);
+                cc(action.payload)
+                return {...newSession2, exerciseNames: action.payload, exerciseCount: action.payload.length}
             case "sets":
                 let newSets: SessionData = handleSetCountChange({...state}, action.payload.value, action.payload.topIndex);
                 return newSets;
@@ -133,17 +137,17 @@ function Home(){
                     let repsAsNumbers: number[] = repsSets.map((e) => +e);
                     let weightSets: string[] = action.payload[i].weight_lifted.split(",");
                     let weightsAsNumbers: number[] = weightSets.map((e) => +e);
-                    let exerciseName: string = action.payload[i].exercise;
+                    //let exerciseName: string = action.payload[i].exercise;
 
                     selectorOrInput.push(0);
                     numbersOfSets[i] = repsSets.length;
                     allReps.push(repsAsNumbers);
                     allWeights.push(weightsAsNumbers);
-                    allExerciseNames.push(exerciseName);
+                    //allExerciseNames.push(exerciseName);
 
                 }
 
-                return {...state, reps: allReps, weights: allWeights, exerciseNames: allExerciseNames,
+                return {...state, reps: allReps, weights: allWeights,
                     exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle,
                     exerciseSelectorOrInput: selectorOrInput}
             default:
@@ -284,14 +288,36 @@ function Home(){
         if (sessionState.selectedSessionToLoad !== undefined && sessionState.selectedSessionToLoad.length !== 0) {
             let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
             let sessionResponseFromDB = getSpecificSession(sessionDate, sessionTitle).then(response =>
-                sessionDispatch({type: "insertPreviousSession", payload: response.data}));
+                handleSessionResponseFromDB({type: "insertPreviousSession", payload: response.data}));
         }
+    }
+
+    async function handleSessionResponseFromDB(loadedSessionData: OptionsAction){
+        let exercisesResponse = await getExercises();
+        let allExercises: string[] = [...exercisesResponse.data, ...extractExercisesFromSessionData(loadedSessionData.payload)];
+        sessionDispatch({type: "exercisesFromSesssionsAndExercisesDBTables", payload: allExercises});
+        //sessionDispatch({type: "insertPreviousSession", payload: loadedSessionData.payload});
+    }
+
+    function extractExercisesFromSessionData(sessions: any[]){
+        let map: any = {};
+        let filteredArray: string[] = [];
+
+        for (let element of sessions){
+            if (!map[element.exercise]){
+                map[element.exercise] = 1;
+                filteredArray.push(element.exercise);
+            }
+        }
+
+        return filteredArray;
     }
 
     function getSelectorSession(selectedSession: string){
         let splitSessionString: string[] = selectedSession.split(" @ ");
         return splitSessionString;
     }
+
 
     async function handleSessionSubmission(){
         let entries: SessionEntry = {
@@ -459,7 +485,14 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
     let previousExercises: JSX.Element[] = [];
 
-    if (Array.isArray(sessionState.exerciseNames)) {
+    if (typeof(sessionState.exerciseNames[0]) === 'string' && sessionState.exerciseNames[0] !== "") {
+        cc(sessionState.exerciseNames.length)
+        previousExercises = sessionState.exerciseNames.map((e, k) => {
+           return (
+               <option key={k}>{e}</option>
+           );
+        });
+    } else if (Array.isArray(loaderState.exercises)){
         previousExercises = loaderState.exercises.map((e, k) => {
             return (
               <option key={k}>{e}</option>
