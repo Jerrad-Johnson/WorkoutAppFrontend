@@ -76,6 +76,7 @@ function Home(){
         notes: undefined,
         previousSessions: undefined,
         selectedSessionToLoad: undefined,
+        staticExerciseNames: undefined,
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -87,6 +88,7 @@ function Home(){
             case "date":
                 return {...state, date: action.payload};
             case "exercises":
+                cc(action.payload)
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
             case "sets":
@@ -105,7 +107,7 @@ function Home(){
             case "loadedPrevSessions":
                 return {...state, previousSessions: action.payload}
             case "loadedExercises":
-                return {...state, exerciseNames: action.payload}
+                return {...state, exerciseNames: action.payload, staticExerciseNames: action.payload}
             case "exerciseNameChange":
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
@@ -121,6 +123,7 @@ function Home(){
             case "sessionLoadSelector":
                 return {...state, selectedSessionToLoad: action.payload}
             case "insertPreviousSession":
+                let combinedExercises = combineExerciseLists(state.staticExerciseNames, action.payload);
                 let allReps: number[][] = [];
                 let allWeights: number[][] = [];
                 let allExerciseNames: string[] = [];
@@ -133,22 +136,41 @@ function Home(){
                     let repsAsNumbers: number[] = repsSets.map((e) => +e);
                     let weightSets: string[] = action.payload[i].weight_lifted.split(",");
                     let weightsAsNumbers: number[] = weightSets.map((e) => +e);
-                    let exerciseName: string = action.payload[i].exercise;
+                    //let exerciseName: string = action.payload[i].exercise;
 
                     selectorOrInput.push(0);
                     numbersOfSets[i] = repsSets.length;
                     allReps.push(repsAsNumbers);
                     allWeights.push(weightsAsNumbers);
-                    allExerciseNames.push(exerciseName);
+                    //allExerciseNames.push(exerciseName);
 
                 }
 
-                return {...state, reps: allReps, weights: allWeights, exerciseNames: allExerciseNames,
+                return {...state, reps: allReps, weights: allWeights, exerciseNames: combinedExercises,
                     exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle,
                     exerciseSelectorOrInput: selectorOrInput}
             default:
                 return state;
         }
+    }
+
+    function combineExerciseLists(a: string[] | undefined = [], b: any){
+        let newArrayOfExercises: string[] = [];
+        let duplicatesRemoved: string[] = [];
+
+        for (let entry of b){
+            newArrayOfExercises.push(entry.exercise);
+        }
+
+        if (a.length > 0) {
+            duplicatesRemoved = a.filter((v) => {
+               return newArrayOfExercises.indexOf(v) == -1;
+            });
+        }
+
+        newArrayOfExercises = newArrayOfExercises.concat(duplicatesRemoved);
+
+        return newArrayOfExercises;
     }
 
     const loadedDataTemplate: DatabaseData = {
@@ -182,7 +204,7 @@ function Home(){
     }
 
     if (loaderState.loadExerciseListNow === true){
-        loaderDispatcher({type: "GetExercises", payload: false});
+        loaderDispatcher({type: "GetExercises", payload: false}); // TODO Set pending until fetch. Then update.
         loadExerciseList();
     }
 
@@ -200,7 +222,10 @@ function Home(){
     }
 
     async function loadExerciseList(){
-        getExercises().then(exercises => loaderDispatcher({type: "loadedExercises", payload: exercises.data}));
+        getExercises().then(exercises => {
+            cc(exercises)
+            sessionDispatch({type: "loadedExercises", payload: exercises.data})
+        });
     }
 
     function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
@@ -460,7 +485,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     let previousExercises: JSX.Element[] = [];
 
     if (Array.isArray(sessionState.exerciseNames)) {
-        previousExercises = loaderState.exercises.map((e, k) => {
+        previousExercises = sessionState.exerciseNames.map((e, k) => {
             return (
               <option key={k}>{e}</option>
             );
