@@ -143,7 +143,6 @@ function Home(){
                     allReps.push(repsAsNumbers);
                     allWeights.push(weightsAsNumbers);
                     //allExerciseNames.push(exerciseName);
-
                 }
 
                 return {...state, reps: allReps, weights: allWeights, exerciseNames: combinedExercises,
@@ -233,14 +232,14 @@ function Home(){
                 session.reps.pop();
                 session.weights.pop();
                 session.sets.pop();
-                session.exerciseNames.pop();
+                //session.exerciseNames.pop();
             }
 
             while (session.reps.length < newExerciseCount){
                 session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
                 session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
                 session.sets = [...session.sets, optionsState.sets];
-                session.exerciseNames = [...session.exerciseNames, ""];
+                //session.exerciseNames = [...session.exerciseNames, ""];
             }
 
         return session;
