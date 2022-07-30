@@ -73,4 +73,5 @@ export interface LoginCredentials {
 
 export interface HandleActionsData{
     confirmationBox: boolean;
+    functionToPerform: any; //TODO Update once defined
 }

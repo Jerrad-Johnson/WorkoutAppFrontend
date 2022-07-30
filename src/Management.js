@@ -22,14 +22,16 @@ async function handleGetSessions(setDataState: SetStateAction<Dispatch<JSX.Eleme
     }
 }
 
-async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
+async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.Element[]>>,
+                                    handleActionsDispatch: GenericAction){
     let response = await getExercises();
 
     if (response.data[0]) {
         let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
             return (
                 <span className={"listQuery"} key={k} onClick={(event) => {
-                    handleDeleteExerciseRequest(e, setDataState);
+                    handleActionsDispatch({type: "confirmation", payload: true})
+                    handleDeleteExerciseRequest(e, setDataState, handleActionsDispatch);
                 }}>{e}</span>
             )
         });
@@ -39,7 +41,15 @@ async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.E
     }
 }
 
-async function handleDeleteExerciseRequest(exercise: string){
+async function handleDeleteExerciseRequest(exercise: string, setDataState: SetStateAction<Dispatch<JSX.Element[]>>,
+                                            handleActionsDispatch: GenericAction){
+
+    handleActionsDispatch({type: "defineFunction", payload: () => {cc(6)} });
+    handleActionsDispatch({type: "performFunction", payload: "No payload."});
+
+
+
+
     /*let response = await deleteExercise(exercise);
 
     if (response.message === "Success"){
@@ -55,13 +65,30 @@ function Management(){
 
     let handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
+        functionToPerform: undefined,
     }
 
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
 
-
     function handleActionsReducer(state: HandleActionsData, action: GenericAction){
-
+        switch (action.type){
+            case "confirmation":
+                return {...state, confirmationBox: action.payload};
+                break;
+            case "test":
+                cc(action.payload);
+                break;
+            case "defineFunction":
+                return {...state, functionToPerform: action.payload};
+                break;
+            case "performFunction":
+                state.functionToPerform();
+                return state;
+                break;
+            default:
+                cc("failed");
+                return state;
+        }
     }
 
     let confirmationPopup = (<div>
@@ -96,7 +123,7 @@ function Management(){
             <br />
 
             <button onClick={() => {
-                handleGetAllExercises(setDataState);
+                handleGetAllExercises(setDataState, handleActionsDispatch);
             }}>Get List of Exercises</button>
             <br />
             <br />
