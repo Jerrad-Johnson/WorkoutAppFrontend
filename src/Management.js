@@ -4,6 +4,7 @@ import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
 import {SetStateAction} from "react";
 import {Dispatch} from "react";
+import {HandleActionsData, GenericAction} from "./utilities/interfaces";
 let cc = console.log;
 
 async function handleGetSessions(setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
@@ -28,7 +29,7 @@ async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.E
         let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
             return (
                 <span className={"listQuery"} key={k} onClick={(event) => {
-                    handleDeleteExercise(e, setDataState);
+                    handleDeleteExerciseRequest(e, setDataState);
                 }}>{e}</span>
             )
         });
@@ -38,24 +39,52 @@ async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.E
     }
 }
 
-async function handleDeleteExercise(exercise: string, setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
-    let response = await deleteExercise(exercise);
+async function handleDeleteExerciseRequest(exercise: string){
+    /*let response = await deleteExercise(exercise);
 
     if (response.message === "Success"){
         //TODO Add mui
         handleGetAllExercises(setDataState);
     } else {
         //TODO Add mui
-    }
+    }*/
 }
 
 function Management(){
     const [dataState, setDataState] = useState(undefined);
 
+    let handleActionsDefaultState: HandleActionsData = {
+        confirmationBox: false,
+    }
+
+    const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
+
+
+    function handleActionsReducer(state: HandleActionsData, action: GenericAction){
+
+    }
+
+    let confirmationPopup = (<div>
+        <button onClick={(e) => {
+            e.preventDefault();
+        }}>Cancel</button> &nbsp;
+        <button onClick={(e) => {
+            e.preventDefault();
+        }}>Confirm</button>
+    </div>);
+
+
     return (
         <>
         <Nav />
         <div>
+
+            <button onClick={() => {
+                cc(handleActionsState);
+            }}>Log Data</button>
+            <br />
+            <br />
+
             <button onClick={() => {
                 handleLogout();
             }}>Log Out</button>
@@ -87,6 +116,7 @@ function Management(){
                 </div>
             }
 
+            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
 
         </div>
         </>
