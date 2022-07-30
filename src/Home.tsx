@@ -343,10 +343,8 @@ function Home(){
         let titleMap: any = {};
         let length = entries.reps.length;
 
-        cc(entries)
-
         for (let i = 0; i < length; i++){
-            if (titleMap[entries.exercises[i]] === 1) throw new Error("Do not use the same exercise name more than once.")
+            if (titleMap[entries.exercises[i]] === 1) throw new Error("Do not use the same exercise name more than once.");
             titleMap[entries.exercises[i]] = 1;
         }
 
@@ -357,7 +355,7 @@ function Home(){
         }
 
         for (let i = 0; i < length; i++){
-            for (let j = 0; j < entries.weights[i].length; j++) {
+            for (let j = 0; j < entries.weights[i].length; j++){
                 if (!isNumeric(entries.weights[i][j])) throw new Error("Please only enter numbers in the weight fields.");
                 if (entries.weights[i][j] === 0 || entries.weights[i][j] < 0) throw new Error("Please enter a value greater than 0 in every weight field.");
             }
