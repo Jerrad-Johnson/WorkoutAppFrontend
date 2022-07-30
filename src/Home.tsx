@@ -232,7 +232,7 @@ function Home(){
                 session.reps.pop();
                 session.weights.pop();
                 session.sets.pop();
-                //session.exerciseNames.pop();
+                //session.exerciseNames.pop(); //TODO Because of this change, when I pull the data to submit to the DB I need to check exercisename length.
             }
 
             while (session.reps.length < newExerciseCount){
@@ -326,8 +326,28 @@ function Home(){
             exercises: sessionState.exerciseNames
         }
 
+        try {
+            let errorCheckStatus = checkSessionData(entries);
+            if (errorCheckStatus !== "Passed") return errorCheckStatus;
+        } catch (err) {
+            //errorHandler(err);
+        }
+
         let response = await submitSession(entries).then(data => cc(data));
 
+    }
+
+    function checkSessionData(entries: SessionEntry){
+        let titleMap: any = {};
+
+        cc(entries)
+
+        for (let i = 0; i < entries.reps.length; i++){
+            if (titleMap[entries.exercises[i]] === 1) throw new Error("Do not use the same exercise name more than once.")
+            titleMap[entries.exercises[i]] = 1;
+        }
+
+        return "Passed";
     }
 
 
