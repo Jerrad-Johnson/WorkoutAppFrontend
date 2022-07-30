@@ -341,7 +341,7 @@ function Home(){
 
     function checkSessionData(entries: SessionEntry){
         let titleMap: any = {};
-        let length = entries.reps.length;
+        let length: number = entries.reps.length;
 
         for (let i = 0; i < length; i++){
             if (titleMap[entries.exercises[i]] === 1) throw new Error("Do not use the same exercise name more than once.");
