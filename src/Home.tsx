@@ -11,6 +11,7 @@ import {arrayOfOptions} from "./utilities/sharedFns";
 import {getRecentSessions, loginV2, getExercises, getSpecificSession, submitSession} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 import Nav from "./Nav";
+import {isNumeric} from "./utilities/genericFns";
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.
@@ -325,27 +326,45 @@ function Home(){
             weights: sessionState.weights,
             exercises: sessionState.exerciseNames
         }
-
+        let errorCheckStatus;
         try {
-            let errorCheckStatus = checkSessionData(entries);
-            if (errorCheckStatus !== "Passed") return errorCheckStatus;
+            errorCheckStatus = checkSessionData(entries);
         } catch (err) {
-            //errorHandler(err);
+            cc(err);
+            //errorHandler(err); TODO Add handler
         }
 
+        if (errorCheckStatus !== "Passed") return errorCheckStatus;
         let response = await submitSession(entries).then(data => cc(data));
 
     }
 
     function checkSessionData(entries: SessionEntry){
         let titleMap: any = {};
+        let length = entries.reps.length;
 
         cc(entries)
 
-        for (let i = 0; i < entries.reps.length; i++){
+        for (let i = 0; i < length; i++){
             if (titleMap[entries.exercises[i]] === 1) throw new Error("Do not use the same exercise name more than once.")
             titleMap[entries.exercises[i]] = 1;
         }
+
+        for (let i = 0; i < length; i++){
+            for (let j = 0; j < entries.reps[i].length; j++){
+                if (entries.reps[i][j] > 20 || entries.reps[i][j] < 1) throw new Error("Rep count outside of 1-20 range.");
+            }
+        }
+
+        for (let i = 0; i < length; i++){
+            for (let j = 0; j < entries.weights[i].length; j++) {
+                if (!isNumeric(entries.weights[i][j])) throw new Error("Please only enter numbers in the weight fields.");
+                if (entries.weights[i][j] === 0 || entries.weights[i][j] < 0) throw new Error("Please enter a value greater than 0 in every weight field.");
+            }
+        }
+
+        if (!entries.title || entries.title === "") throw new Error("Please enter a session title.");
+        if (!entries.date) throw new Error("Please enter a date."); // TODO Add validation with moment.js or other.
 
         return "Passed";
     }
