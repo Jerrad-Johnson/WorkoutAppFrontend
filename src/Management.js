@@ -2,8 +2,6 @@ import {deleteExercise, deleteSession, getExercises, logout} from "./utilities/q
 import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
-import {SetStateAction} from "react";
-import {Dispatch} from "react";
 import {HandleActionsData, GenericAction} from "./utilities/interfaces";
 let cc = console.log;
 
@@ -40,7 +38,6 @@ function Management(){
             case "performFunction":
                 if (state.functionToPerform) {
                     state.functionToPerform();
-                    //handleGetAllExercises();
                 } else {
                     //TODO Handle error
                 }
@@ -168,6 +165,10 @@ function Management(){
 
             {dataState &&
                 <div className={"listContainer"}>
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        setDataState(undefined);
+                    }}>Close</button>
                     {dataState}
                 </div>
             }
