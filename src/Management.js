@@ -41,10 +41,10 @@ function Management(){
             case "test":
                 cc(action.payload);
                 break;
-            case "defineItemToDelete":
-                return {...state, itemToDelete: action.payload};
-                break;
-            case "defineFunctionAndItemToDelete":
+/*            case "defineItemToDelete":
+                return state;
+                break;*/
+            case "defineFunctionToPerform":
                 cc(action.payload)
                 cc(state);
                 return {...state, functionToPerform: action.payload};
@@ -57,7 +57,7 @@ function Management(){
                     //TODO Handle error
                 }
 
-                return {...state, functionToPerform: undefined, confirmationBox: false};
+                return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined};
                 break;
             default:
                 cc("failed");
@@ -74,7 +74,6 @@ function Management(){
             handleActionsDispatch({type: "performFunction"});
         }}>Confirm</button>
     </div>);
-
 
     async function handleGetAllExercises(){
         let response = await getExercises();
@@ -95,19 +94,15 @@ function Management(){
     }
 
     function handleDeleteExerciseRequest(exercise: string){
-        handleActionsDispatch({type: "defineItemToDelete", payload: exercise});
-
-        handleActionsDispatch({type: "defineFunctionAndItemToDelete", payload: async () => {
+        handleActionsDispatch({type: "defineFunctionToPerform", payload: async () => {
             let response = await deleteExercise(exercise);
 
             if (response.message === "Success") {
-                //TODO Add mui
-                handleGetAllExercises();
+                handleGetAllExercises(); //TODO Add mui
             } else {
                 //TODO Add mui
             }
         }});
-        //handleActionsDispatch({type: "performFunction"});
     }
 
     return (
