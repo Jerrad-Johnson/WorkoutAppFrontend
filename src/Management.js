@@ -22,50 +22,13 @@ async function handleGetSessions(setDataState: SetStateAction<Dispatch<JSX.Eleme
     }
 }
 
-async function handleGetAllExercises(setDataState: SetStateAction<Dispatch<JSX.Element[]>>,
-                                    handleActionsDispatch: GenericAction){
-    let response = await getExercises();
-
-    if (response.data[0]) {
-        let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
-            return (
-                <span className={"listQuery"} key={k} onClick={(event) => {
-                    handleActionsDispatch({type: "confirmation", payload: true})
-                    handleDeleteExerciseRequest(e, setDataState, handleActionsDispatch);
-                }}>{e}</span>
-            )
-        });
-        setDataState(listOfExercises);
-    } else {
-        setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
-    }
-}
-
-async function handleDeleteExerciseRequest(exercise: string, setDataState: SetStateAction<Dispatch<JSX.Element[]>>,
-                                            handleActionsDispatch: GenericAction){
-
-    handleActionsDispatch({type: "defineFunction", payload: () => {cc(6)} });
-    handleActionsDispatch({type: "performFunction", payload: "No payload."});
-
-
-
-
-    /*let response = await deleteExercise(exercise);
-
-    if (response.message === "Success"){
-        //TODO Add mui
-        handleGetAllExercises(setDataState);
-    } else {
-        //TODO Add mui
-    }*/
-}
-
 function Management(){
     const [dataState, setDataState] = useState(undefined);
 
     let handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
         functionToPerform: undefined,
+        itemToDelete: undefined,
     }
 
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
@@ -78,12 +41,23 @@ function Management(){
             case "test":
                 cc(action.payload);
                 break;
-            case "defineFunction":
+            case "defineItemToDelete":
+                return {...state, itemToDelete: action.payload};
+                break;
+            case "defineFunctionAndItemToDelete":
+                cc(action.payload)
+                cc(state);
                 return {...state, functionToPerform: action.payload};
                 break;
             case "performFunction":
-                state.functionToPerform();
-                return state;
+                if (state.functionToPerform) {
+                    state.functionToPerform();
+                    //handleGetAllExercises();
+                } else {
+                    //TODO Handle error
+                }
+
+                return {...state, functionToPerform: undefined, confirmationBox: false};
                 break;
             default:
                 cc("failed");
@@ -97,9 +71,44 @@ function Management(){
         }}>Cancel</button> &nbsp;
         <button onClick={(e) => {
             e.preventDefault();
+            handleActionsDispatch({type: "performFunction"});
         }}>Confirm</button>
     </div>);
 
+
+    async function handleGetAllExercises(){
+        let response = await getExercises();
+
+        if (response.data[0]) {
+            let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
+                return (
+                    <span className={"listQuery"} key={k} onClick={(event) => {
+                        handleActionsDispatch({type: "confirmation", payload: true})
+                        handleDeleteExerciseRequest(e, setDataState, handleActionsDispatch);
+                    }}>{e}</span>
+                )
+            });
+            setDataState(listOfExercises);
+        } else {
+            setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+        }
+    }
+
+    function handleDeleteExerciseRequest(exercise: string){
+        handleActionsDispatch({type: "defineItemToDelete", payload: exercise});
+
+        handleActionsDispatch({type: "defineFunctionAndItemToDelete", payload: async () => {
+            let response = await deleteExercise(exercise);
+
+            if (response.message === "Success") {
+                //TODO Add mui
+                handleGetAllExercises();
+            } else {
+                //TODO Add mui
+            }
+        }});
+        //handleActionsDispatch({type: "performFunction"});
+    }
 
     return (
         <>
