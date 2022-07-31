@@ -1,4 +1,4 @@
-import {SessionEntry, submissionData, LoginCredentials} from "./interfaces";
+import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
 
@@ -44,6 +44,22 @@ export async function submitSession(entries: SessionEntry) {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(entries),
+        credentials: "include",
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return await response.json();
+}
+
+export async function deleteSession(title: string, date: string) {
+    let entry: SessionToDelete = {"title": title, "date": date};
+
+    let response = await fetch("http://localhost:80/php/sessiondelete.php", {
+        method: 'POST',
+        mode: 'cors',
+        body: JSON.stringify(entry),
         credentials: "include",
         headers: {
             'Content-Type': 'application/json'

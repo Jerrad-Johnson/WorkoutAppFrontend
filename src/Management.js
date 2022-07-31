@@ -1,4 +1,4 @@
-import {deleteExercise, getExercises, logout} from "./utilities/queries";
+import {deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
 import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
@@ -7,25 +7,10 @@ import {Dispatch} from "react";
 import {HandleActionsData, GenericAction} from "./utilities/interfaces";
 let cc = console.log;
 
-async function handleGetSessions(setDataState: SetStateAction<Dispatch<JSX.Element[]>>){
-    let response = await getAllSessions();
-
-    if (response.message === "Success") {
-        let listOfSessions: JSX.Element[] = response.data.map((e, k) => {
-            return (
-                <span className={"listQuery"} key={k}>{e.session_title + " --- " + e.session_date}</span>
-            )
-        });
-        setDataState(listOfSessions);
-    } else {
-        setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
-    }
-}
-
 function Management(){
     const [dataState, setDataState] = useState(undefined);
 
-    let handleActionsDefaultState: HandleActionsData = {
+    const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
         functionToPerform: undefined,
         itemToDelete: undefined,
@@ -36,7 +21,10 @@ function Management(){
     function handleActionsReducer(state: HandleActionsData, action: GenericAction){
         switch (action.type){
             case "confirmation":
-                return {...state, confirmationBox: action.payload};
+                return {...state, confirmationBox: action.payload}
+                break;
+            case "cancel":
+                return {...state, confirmationBox: false, functionToPerform: undefined}
                 break;
             case "test":
                 cc(action.payload);
@@ -47,7 +35,7 @@ function Management(){
             case "defineFunctionToPerform":
                 cc(action.payload)
                 cc(state);
-                return {...state, functionToPerform: action.payload};
+                return {...state, functionToPerform: action.payload}
                 break;
             case "performFunction":
                 if (state.functionToPerform) {
@@ -57,7 +45,7 @@ function Management(){
                     //TODO Handle error
                 }
 
-                return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined};
+                return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
                 break;
             default:
                 cc("failed");
@@ -65,15 +53,52 @@ function Management(){
         }
     }
 
-    let confirmationPopup = (<div>
+    const confirmationPopup = (<div>
         <button onClick={(e) => {
             e.preventDefault();
+            handleActionsDispatch({type: "cancel"});
         }}>Cancel</button> &nbsp;
+
         <button onClick={(e) => {
             e.preventDefault();
             handleActionsDispatch({type: "performFunction"});
         }}>Confirm</button>
     </div>);
+
+    async function handleGetSessions(){
+        let response = await getAllSessions();
+
+        if (response.message === "Success") {
+            let listOfSessions: JSX.Element[] = response.data.map((entry, k) => {
+                return (
+                    <div key={k}>
+                        <span className={"listQuery"}>{entry.session_title + " --- " + entry.session_date}</span> &nbsp;
+                        <button onClick={(event) => {
+                            event.preventDefault();
+                            handleDeleteSessionRequest(entry.session_title, entry.session_date);
+                        }}>Delete</button>
+                    </div>
+                );
+            });
+            setDataState(listOfSessions);
+        } else {
+            setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+        }
+    }
+
+    function handleDeleteSessionRequest(title: string, date: string){
+        handleActionsDispatch({type: "defineFunctionToPerform", payload: async () => {
+            let response = await deleteSession(title, date);
+
+            if (response.message === "Success") {
+                handleGetSessions(); //TODO Add mui
+            } else {
+                //TODO Add mui
+            }
+        }});
+
+        handleActionsDispatch({type: "confirmation", payload: true});
+    }
 
     async function handleGetAllExercises(){
         let response = await getExercises();
@@ -83,7 +108,7 @@ function Management(){
                 return (
                     <span className={"listQuery"} key={k} onClick={(event) => {
                         handleActionsDispatch({type: "confirmation", payload: true})
-                        handleDeleteExerciseRequest(e, setDataState, handleActionsDispatch);
+                        handleDeleteExerciseRequest(e);
                     }}>{e}</span>
                 )
             });
@@ -122,12 +147,12 @@ function Management(){
             <br />
 
             <button onClick={() => {
-                handleGetSessions(setDataState);
+                handleGetSessions();
             }}>Get List of  Sessions</button>
             <br />
 
             <button onClick={() => {
-                handleGetAllExercises(setDataState, handleActionsDispatch);
+                handleGetAllExercises();
             }}>Get List of Exercises</button>
             <br />
             <br />

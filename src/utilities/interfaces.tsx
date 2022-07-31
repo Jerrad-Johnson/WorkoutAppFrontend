@@ -76,3 +76,8 @@ export interface HandleActionsData{
     functionToPerform: any; //TODO Update once defined
     itemToDelete: string | undefined; //TODO Check type
 }
+
+export interface SessionToDelete{
+    title: string;
+    date: string;
+}
