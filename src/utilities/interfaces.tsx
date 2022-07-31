@@ -74,7 +74,6 @@ export interface LoginCredentials {
 export interface HandleActionsData{
     confirmationBox: boolean;
     functionToPerform: () => Promise<void> | undefined;
-    oldPassword: string;
     changePassword: boolean;
 }
 

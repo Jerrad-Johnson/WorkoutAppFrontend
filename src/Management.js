@@ -11,11 +11,9 @@ function Management(){
     const [newPasswordState, setNewPasswordState] = useState("");
     const [newPasswordVerifyState, setNewPasswordVerifyState] = useState("");
 
-
     const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
         functionToPerform: undefined,
-        oldPassword: "",
         changePassword: false,
     }
 
@@ -70,6 +68,11 @@ function Management(){
                 return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
                 break;
             case "changePasswordDisplayForm":
+                if (action.payload === false){
+                    setOldPasswordState("");
+                    setNewPasswordState("");
+                    setNewPasswordVerifyState("");
+                }
                 return {...state, changePassword: action.payload}
             default:
                 cc("failed");
@@ -183,6 +186,9 @@ function Management(){
             <br />
             <br />
 
+            {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
+            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
+
             {dataState &&
                 <div className={"listContainer"}>
                     <button onClick={(e) => {
@@ -193,8 +199,6 @@ function Management(){
                 </div>
             }
 
-            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
-            {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
 
         </div>
         </>
