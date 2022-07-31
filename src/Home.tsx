@@ -46,7 +46,7 @@ function Home(){
         sets: 3,
         reps: 5,
         weights: 100,
-    }
+    } //TODO Save to / load from database.
 
     const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions);
 

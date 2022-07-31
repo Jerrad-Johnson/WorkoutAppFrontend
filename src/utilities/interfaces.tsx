@@ -73,8 +73,9 @@ export interface LoginCredentials {
 
 export interface HandleActionsData{
     confirmationBox: boolean;
-    functionToPerform: any; //TODO Update once defined
-    itemToDelete: string | undefined; //TODO Check type
+    functionToPerform: () => Promise<void> | undefined;
+    oldPassword: string;
+    changePassword: boolean;
 }
 
 export interface SessionToDelete{

@@ -7,49 +7,19 @@ let cc = console.log;
 
 function Management(){
     const [dataState, setDataState] = useState(undefined);
+    const [oldPasswordState, setOldPasswordState] = useState("");
+    const [newPasswordState, setNewPasswordState] = useState("");
+    const [newPasswordVerifyState, setNewPasswordVerifyState] = useState("");
+
 
     const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
         functionToPerform: undefined,
-        itemToDelete: undefined,
+        oldPassword: "",
+        changePassword: false,
     }
 
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
-
-    function handleActionsReducer(state: HandleActionsData, action: GenericAction){
-        switch (action.type){
-            case "confirmation":
-                return {...state, confirmationBox: action.payload}
-                break;
-            case "cancel":
-                return {...state, confirmationBox: false, functionToPerform: undefined}
-                break;
-            case "test":
-                cc(action.payload);
-                break;
-/*            case "defineItemToDelete":
-                return state;
-                break;*/
-            case "defineFunctionToPerform":
-                cc(action.payload)
-                cc(state);
-                return {...state, functionToPerform: action.payload}
-                break;
-            case "performFunction":
-                if (state.functionToPerform) {
-                    state.functionToPerform();
-                } else {
-                    //TODO Handle error
-                }
-
-                return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
-                break;
-            default:
-                cc("failed");
-                return state;
-        }
-    }
-
     const confirmationPopup = (<div>
         <button onClick={(e) => {
             e.preventDefault();
@@ -61,6 +31,52 @@ function Management(){
             handleActionsDispatch({type: "performFunction"});
         }}>Confirm</button>
     </div>);
+    const changePasswordForm = (<div>
+        <button onClick={(e) => {
+            handleActionsDispatch({type: "changePasswordDisplayForm", payload: false});
+        }}>Cancel</button>
+        <form>
+            <input type={"password"} value={oldPasswordState} onChange={(e) => {
+                setOldPasswordState(e.target.value);
+            }}/>
+            <br />
+            <input type={"password"} value={newPasswordState} onChange={(e) => {
+                setNewPasswordState(e.target.value);
+            }}/>
+            <br />
+            <input type={"password"} value={newPasswordVerifyState} onChange={(e) => {
+                setNewPasswordVerifyState(e.target.value);
+            }}/>
+        </form>
+    </div>);
+
+    function handleActionsReducer(state: HandleActionsData, action: GenericAction){
+        switch (action.type){
+            case "confirmation":
+                return {...state, confirmationBox: action.payload}
+                break;
+            case "cancel":
+                return {...state, confirmationBox: false, functionToPerform: undefined}
+                break;
+            case "defineFunctionToPerform":
+                return {...state, functionToPerform: action.payload}
+                break;
+            case "performFunction":
+                if (state.functionToPerform) {
+                    state.functionToPerform();
+                } else {
+                    //TODO Handle error
+                }
+                return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
+                break;
+            case "changePasswordDisplayForm":
+                return {...state, changePassword: action.payload}
+            default:
+                cc("failed");
+                return state;
+        }
+    }
+
 
     async function handleGetSessions(){
         let response = await getAllSessions();
@@ -159,7 +175,11 @@ function Management(){
             }}>Change E-mail Address</button> -- Not yet functional
             <br />
 
-            <button>Change Password</button>
+            <button onClick={(e) => {
+                e.preventDefault();
+                handleActionsDispatch({type: "changePasswordDisplayForm", payload: true});
+                cc(handleActionsState)
+            }}>Change Password</button>
             <br />
             <br />
 
@@ -174,6 +194,7 @@ function Management(){
             }
 
             {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
+            {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
 
         </div>
         </>
