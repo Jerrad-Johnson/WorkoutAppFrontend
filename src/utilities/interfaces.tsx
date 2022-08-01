@@ -75,6 +75,7 @@ export interface HandleActionsData{
     confirmationBox: boolean;
     functionToPerform: () => Promise<void> | undefined;
     changePassword: boolean;
+    changeEmail: boolean;
 }
 
 export interface SessionToDelete{

@@ -10,11 +10,14 @@ function Management(){
     const [oldPasswordState, setOldPasswordState] = useState("");
     const [newPasswordState, setNewPasswordState] = useState("");
     const [newPasswordVerifyState, setNewPasswordVerifyState] = useState("");
+    const [newEmailState, setNewEmailState] = useState("");
+    const [newEmailVerifyState, setNewEmailVerifyState] = useState("");
 
     const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
         functionToPerform: undefined,
         changePassword: false,
+        changeEmail: false,
     }
 
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
@@ -54,6 +57,21 @@ function Management(){
             }}>Submit</button>
         </form>
     </div>);
+    const changeEmailForm = (<div>
+        <form>
+            <input type={"text"} value={newEmailState} onChange={(e) => {
+                setNewEmailState(e.target.value);
+            }}/>
+            <br />
+            <input type={"text"} value={newEmailVerifyState} onChange={(e) => {
+                setNewEmailVerifyState(e.target.value);
+            }}/>
+            <br />
+            <button onClick={(e) => {
+                e.preventDefault();
+            }}>Submit</button>
+        </form>
+    </div>);
 
     function handleActionsReducer(state: HandleActionsData, action: GenericAction){
         switch (action.type){
@@ -78,6 +96,8 @@ function Management(){
                     setNewPasswordVerifyState("");
                 }
                 return {...state, changePassword: action.payload}
+            case "displayChangeEmailForm":
+                return {...state, changeEmail: action.payload}
             default:
                 cc("failed");
                 return state;
@@ -196,9 +216,10 @@ function Management(){
             <br />
             <br />
 
-            <button onClick={() => {
-
-            }}>Change E-mail Address</button> -- Not yet functional
+            <button onClick={(e) => {
+                e.preventDefault()
+                handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
+            }}>Change E-mail Address</button>
             <br />
 
             <button onClick={(e) => {
@@ -210,6 +231,7 @@ function Management(){
             <br />
 
             {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
+            {handleActionsState.changeEmail === true && <>{changeEmailForm}</>}
             {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
 
             {dataState &&
