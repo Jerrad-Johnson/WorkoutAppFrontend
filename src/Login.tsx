@@ -4,6 +4,8 @@ import {CircularProgress} from "@mui/material";
 import {loginQuery, queryCheckLogin} from "./utilities/queries";
 let cc = console.log;
 
+//TODO Add password reset option to login page
+
 function handleLoginFormEntry(usernameState: string, passwordState: string, setLoginState: Dispatch<SetStateAction<string>>){
     if (!checkFormEntry(usernameState, passwordState)) return;
     setLoginState("pending");
