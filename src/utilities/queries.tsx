@@ -180,3 +180,24 @@ export async function queryCheckLogin(){
 
     return dataToBeReturned;
 }
+
+export async function changePassword(oldPw: string, newPw: string){
+    let passwords: any = {
+        oldPassword: oldPw,
+        newPassword: newPw,
+    }
+
+    const response = await fetch("http://localhost:80/php/changepassword.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(passwords),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}

@@ -58,13 +58,10 @@ function Management(){
         switch (action.type){
             case "confirmation":
                 return {...state, confirmationBox: action.payload}
-                break;
             case "cancel":
                 return {...state, confirmationBox: false, functionToPerform: undefined}
-                break;
             case "defineFunctionToPerform":
                 return {...state, functionToPerform: action.payload}
-                break;
             case "performFunction":
                 if (state.functionToPerform) {
                     state.functionToPerform();
