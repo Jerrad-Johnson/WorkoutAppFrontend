@@ -201,3 +201,23 @@ export async function changePassword(oldPw: string, newPw: string){
 
     return dataToBeReturned;
 }
+
+export async function changeEmail(newEmail: string){
+    let email: any = {
+        newEmailAddress: newEmail,
+    }
+
+    const response = await fetch("http://localhost:80/php/changeemail.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(email),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}

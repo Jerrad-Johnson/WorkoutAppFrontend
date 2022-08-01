@@ -1,4 +1,4 @@
-import {changePassword, deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
+import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
 import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
@@ -69,7 +69,11 @@ function Management(){
             <br />
             <button onClick={(e) => {
                 e.preventDefault();
+                handleChangeEmail();
             }}>Submit</button>
+            <button onClick={(e) => {
+                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+            }}>Cancel</button>
         </form>
     </div>);
 
@@ -88,7 +92,6 @@ function Management(){
                     //TODO Handle error
                 }
                 return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
-                break;
             case "displayChangePasswordForm":
                 if (action.payload === false){
                     setOldPasswordState("");
@@ -118,12 +121,31 @@ function Management(){
         }
     }
 
+    async function handleChangeEmail(){
+        try {
+            verifyEmailForm();
+            let response = await changeEmail(newEmailState);
+            cc(response);
+        } catch (e) {
+            cc(e);
+        }
+
+    }
+
     function verifyPasswordForms(){
         if (newPasswordState !== newPasswordVerifyState) throw new Error("New passwords must match");
         if (oldPasswordState === "") throw new Error("Old password field must not be blank.");
         if (newPasswordState === "") throw new Error("New password must not be blank.");
         //return true;
     }
+
+    function verifyEmailForm(){
+        if (newEmailState !== newEmailVerifyState) throw new Error("E-mail address must match in both fields.");
+        if (!String(newEmailState).toLowerCase().match(                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+            throw new Error("Invalid e-mail address");
+        }
+    }
+
 
     async function handleGetSessions(){
         let response = await getAllSessions();
