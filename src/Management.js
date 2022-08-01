@@ -68,12 +68,13 @@ function Management(){
             }}/>
             <br />
             <button onClick={(e) => {
+                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+            }}>Cancel</button>  &nbsp;
+            <button onClick={(e) => {
                 e.preventDefault();
                 handleChangeEmail();
             }}>Submit</button>
-            <button onClick={(e) => {
-                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
-            }}>Cancel</button>
+
         </form>
     </div>);
 
@@ -125,7 +126,8 @@ function Management(){
         try {
             verifyEmailForm();
             let response = await changeEmail(newEmailState);
-            cc(response);
+            cc(response); //TODO Print to DOM
+            handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
         } catch (e) {
             cc(e);
         }
