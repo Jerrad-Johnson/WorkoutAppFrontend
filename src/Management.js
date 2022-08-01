@@ -89,6 +89,9 @@ function Management(){
             verifyPasswordForms();
             let response = await changePassword(oldPasswordState, newPasswordState)
             cc(response);
+            setOldPasswordState("");
+            setNewPasswordState("");
+            setNewPasswordVerifyState("");
         } catch (e) {
             cc(e) //TODO handle error
         }
@@ -96,7 +99,7 @@ function Management(){
 
     function verifyPasswordForms(){
         if (newPasswordState !== newPasswordVerifyState) throw new Error("New passwords must match");
-        return true;
+        //return true;
     }
 
     async function handleGetSessions(){
