@@ -1,4 +1,4 @@
-import {deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
+import {changePassword, deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
 import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
@@ -85,12 +85,18 @@ function Management(){
     }
 
     async function handleChangePassword(){
-        cc(verifyPasswordForms());
+        try {
+            verifyPasswordForms();
+            let response = await changePassword(oldPasswordState, newPasswordState)
+            cc(response);
+        } catch (e) {
+            cc(e) //TODO handle error
+        }
     }
 
     function verifyPasswordForms(){
-        if (newPasswordState === newPasswordVerifyState) return true;
-        return false;
+        if (newPasswordState !== newPasswordVerifyState) throw new Error("New passwords must match");
+        return true;
     }
 
     async function handleGetSessions(){
