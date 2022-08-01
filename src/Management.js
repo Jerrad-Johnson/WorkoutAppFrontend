@@ -30,9 +30,8 @@ function Management(){
         }}>Confirm</button>
     </div>);
     const changePasswordForm = (<div>
-        <button onClick={(e) => {
-            handleActionsDispatch({type: "changePasswordDisplayForm", payload: false});
-        }}>Cancel</button>
+        <span>Change password</span>
+        <br />
         <form>
             <input type={"password"} value={oldPasswordState} onChange={(e) => {
                 setOldPasswordState(e.target.value);
@@ -45,6 +44,13 @@ function Management(){
             <input type={"password"} value={newPasswordVerifyState} onChange={(e) => {
                 setNewPasswordVerifyState(e.target.value);
             }}/>
+            <br />
+            <button onClick={(e) => {
+                handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
+            }}>Cancel</button> &nbsp;
+            <button onClick={(e) => {
+                e.preventDefault();
+            }}>Submit</button>
         </form>
     </div>);
 
@@ -67,7 +73,7 @@ function Management(){
                 }
                 return {...state, functionToPerform: undefined, confirmationBox: false, itemToDelete: undefined}
                 break;
-            case "changePasswordDisplayForm":
+            case "displayChangePasswordForm":
                 if (action.payload === false){
                     setOldPasswordState("");
                     setNewPasswordState("");
@@ -180,7 +186,7 @@ function Management(){
 
             <button onClick={(e) => {
                 e.preventDefault();
-                handleActionsDispatch({type: "changePasswordDisplayForm", payload: true});
+                handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
                 cc(handleActionsState)
             }}>Change Password</button>
             <br />

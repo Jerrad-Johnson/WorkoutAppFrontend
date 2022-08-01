@@ -223,7 +223,6 @@ function Home(){
 
     async function loadExerciseList(){
         getExercises().then(exercises => {
-            cc(exercises)
             sessionDispatch({type: "loadedExercises", payload: exercises.data})
         });
     }
