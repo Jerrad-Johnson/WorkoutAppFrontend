@@ -92,6 +92,7 @@ function Management(){
             setOldPasswordState("");
             setNewPasswordState("");
             setNewPasswordVerifyState("");
+            handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
         } catch (e) {
             cc(e) //TODO handle error
         }
@@ -173,7 +174,6 @@ function Management(){
         <>
         <Nav />
         <div>
-
             <button onClick={() => {
                 cc(handleActionsState);
             }}>Log Data</button>
@@ -221,8 +221,6 @@ function Management(){
                     {dataState}
                 </div>
             }
-
-
         </div>
         </>
     );
