@@ -50,6 +50,7 @@ function Management(){
             }}>Cancel</button> &nbsp;
             <button onClick={(e) => {
                 e.preventDefault();
+                handleChangePassword();
             }}>Submit</button>
         </form>
     </div>);
@@ -83,6 +84,14 @@ function Management(){
         }
     }
 
+    async function handleChangePassword(){
+        cc(verifyPasswordForms());
+    }
+
+    function verifyPasswordForms(){
+        if (newPasswordState === newPasswordVerifyState) return true;
+        return false;
+    }
 
     async function handleGetSessions(){
         let response = await getAllSessions();
