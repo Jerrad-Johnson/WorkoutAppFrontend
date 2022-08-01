@@ -30,7 +30,7 @@ function Management(){
         }}>Confirm</button>
     </div>);
     const changePasswordForm = (<div>
-        <span>Change password</span>
+        {/*<span>Change password</span>*/}
         <br />
         <form>
             <input type={"password"} value={oldPasswordState} onChange={(e) => {
@@ -88,7 +88,7 @@ function Management(){
         try {
             verifyPasswordForms();
             let response = await changePassword(oldPasswordState, newPasswordState)
-            cc(response);
+            cc(response); //TODO Display in DOM
             setOldPasswordState("");
             setNewPasswordState("");
             setNewPasswordVerifyState("");
@@ -99,6 +99,8 @@ function Management(){
 
     function verifyPasswordForms(){
         if (newPasswordState !== newPasswordVerifyState) throw new Error("New passwords must match");
+        if (oldPasswordState === "") throw new Error("Old password field must not be blank.");
+        if (newPasswordState === "") throw new Error("New password must not be blank.");
         //return true;
     }
 
