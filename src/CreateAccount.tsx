@@ -49,7 +49,8 @@ async function handleCreateAccount(passwordState: string, passwordVerifyState: s
         verifyEmailForm(emailAddressState, emailAddressVerifyState);
         verifyPasswordForms(passwordState, passwordVerifyState);
         let response = await createAccount(passwordState, usernameState, emailAddressState);
-        cc(response);
+        cc(response); //TODO Handle resposne
+        window.location.href="/";
     } catch (e) {
         cc(e); //TODO Handle error
     }
