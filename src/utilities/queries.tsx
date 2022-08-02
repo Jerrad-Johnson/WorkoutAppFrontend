@@ -260,7 +260,7 @@ export async function changeSessionDefaults(reps: number, sets:number, exercises
     return dataToBeReturned;
 }
 
-export async function createAccount(password, username, email){
+export async function createAccount(password: string, username: string, email: string){
     let entry: any = {
         "password": password,
         "username": username,

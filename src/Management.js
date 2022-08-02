@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
 import {HandleActionsData, GenericAction} from "./utilities/interfaces";
+import {verifyEmailForm} from "./utilities/sharedFns";
 let cc = console.log;
 
 function Management(){
@@ -124,7 +125,7 @@ function Management(){
 
     async function handleChangeEmail(){
         try {
-            verifyEmailForm();
+            verifyEmailForm(newEmailState, newEmailVerifyState);
             let response = await changeEmail(newEmailState);
             cc(response); //TODO Print to DOM
             handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
@@ -140,14 +141,6 @@ function Management(){
         if (newPasswordState === "") throw new Error("New password must not be blank.");
         //return true;
     }
-
-    function verifyEmailForm(){
-        if (newEmailState !== newEmailVerifyState) throw new Error("E-mail address must match in both fields.");
-        if (!String(newEmailState).toLowerCase().match(                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-            throw new Error("Invalid e-mail address");
-        }
-    }
-
 
     async function handleGetSessions(){
         let response = await getAllSessions();

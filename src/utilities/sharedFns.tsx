@@ -5,3 +5,10 @@ export function arrayOfOptions(lengthOfArray: number) {
         );
     });
 }
+
+export function verifyEmailForm(newEmail: string, newEmailVerify: string){
+    if (newEmail !== newEmailVerify) throw new Error("E-mail address must match in both fields.");
+    if (!String(newEmail).toLowerCase().match(                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+        throw new Error("Invalid e-mail address");
+    }
+}

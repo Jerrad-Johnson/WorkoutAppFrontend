@@ -1,5 +1,6 @@
 import {useState} from "react";
 import {createAccount} from "./utilities/queries";
+import {verifyEmailForm} from "./utilities/sharedFns";
 let cc = console.log;
 
 function CreateAccount(){
@@ -34,16 +35,22 @@ function CreateAccount(){
                 <br />
                 <button onClick={(e) => {
                     e.preventDefault();
-                    handleCreateAccount();
+                    handleCreateAccount(passwordState, usernameState, emailAddressState, emailAddressVerifyState);
                 }}>Submit</button>
             </form>
         </div>
     );
 }
 
-async function handleCreateAccount(){
-    let response = await createAccount();
-    cc(response);
+async function handleCreateAccount(passwordState: string, usernameState: string,
+                                   emailAddressState: string, emailAddressVerifyState: string){
+    try{
+        verifyEmailForm(emailAddressState, emailAddressVerifyState)
+        let response = await createAccount(passwordState, usernameState, emailAddressState);
+        cc(response);
+    } catch (e) {
+        cc(e); //TODO Handle error
+    }
 }
 
 
