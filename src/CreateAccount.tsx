@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {createAccount} from "./utilities/queries";
-import {verifyEmailForm} from "./utilities/sharedFns";
+import {verifyEmailForm, verifyPasswordForms} from "./utilities/sharedFns";
 let cc = console.log;
 
 function CreateAccount(){
@@ -35,17 +35,19 @@ function CreateAccount(){
                 <br />
                 <button onClick={(e) => {
                     e.preventDefault();
-                    handleCreateAccount(passwordState, usernameState, emailAddressState, emailAddressVerifyState);
+                    handleCreateAccount(passwordState, passwordVerifyState,
+                        usernameState, emailAddressState, emailAddressVerifyState);
                 }}>Submit</button>
             </form>
         </div>
     );
 }
 
-async function handleCreateAccount(passwordState: string, usernameState: string,
+async function handleCreateAccount(passwordState: string, passwordVerifyState: string, usernameState: string,
                                    emailAddressState: string, emailAddressVerifyState: string){
     try{
-        verifyEmailForm(emailAddressState, emailAddressVerifyState)
+        verifyEmailForm(emailAddressState, emailAddressVerifyState);
+        verifyPasswordForms(passwordState, passwordVerifyState);
         let response = await createAccount(passwordState, usernameState, emailAddressState);
         cc(response);
     } catch (e) {

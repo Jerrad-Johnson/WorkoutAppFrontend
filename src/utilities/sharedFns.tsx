@@ -12,3 +12,14 @@ export function verifyEmailForm(newEmail: string, newEmailVerify: string){
         throw new Error("Invalid e-mail address");
     }
 }
+
+export function verifyPasswordChangeForms(oldPassword: string, newPassword: string, newPasswordVerify: string){
+    if (newPassword === "" || newPasswordVerify === "") throw new Error("New password must not be blank.");
+    if (newPassword !== newPasswordVerify) throw new Error("New passwords must match");
+    if (oldPassword === "") throw new Error("Old password field must not be blank.");
+}
+
+export function verifyPasswordForms(newPassword: string, newPasswordVerify: string){
+    if (newPassword === "" || newPasswordVerify === "") throw new Error("New password must not be blank.");
+    if (newPassword !== newPasswordVerify) throw new Error("New passwords must match");
+}

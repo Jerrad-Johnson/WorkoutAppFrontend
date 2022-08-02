@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import {useReducer, useState} from "react";
 import {getAllSessions} from "./utilities/queries";
 import {HandleActionsData, GenericAction} from "./utilities/interfaces";
-import {verifyEmailForm} from "./utilities/sharedFns";
+import {verifyEmailForm, verifyPasswordChangeForms} from "./utilities/sharedFns";
 let cc = console.log;
 
 function Management(){
@@ -111,7 +111,7 @@ function Management(){
 
     async function handleChangePassword(){
         try {
-            verifyPasswordForms();
+            verifyPasswordChangeForms(oldPasswordState, newPasswordState, newPasswordVerifyState);
             let response = await changePassword(oldPasswordState, newPasswordState)
             cc(response); //TODO Display in DOM
             setOldPasswordState("");
@@ -133,13 +133,6 @@ function Management(){
             cc(e);
         }
 
-    }
-
-    function verifyPasswordForms(){
-        if (newPasswordState !== newPasswordVerifyState) throw new Error("New passwords must match");
-        if (oldPasswordState === "") throw new Error("Old password field must not be blank.");
-        if (newPasswordState === "") throw new Error("New password must not be blank.");
-        //return true;
     }
 
     async function handleGetSessions(){
