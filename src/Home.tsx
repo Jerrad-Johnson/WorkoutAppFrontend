@@ -30,6 +30,7 @@ function Home(){
     let testString: string = "810J-&J2KAn98mLwgi5on&*nuij"; //@ts-ignore
     let convertedString: string = convertString(testString);
 
+
     function convertString(testString: string){
         let strippedString: string = testString.replace(/\D/g, ''); //@ts-ignore
         let setsOfThree: string[] = strippedString.match(/.{1,3}/g);

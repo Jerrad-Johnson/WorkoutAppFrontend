@@ -222,7 +222,7 @@ export async function changeEmail(newEmail: string){
     return dataToBeReturned;
 }
 
-export async function getSessionDefaults(reps: number, sets:number, exercises: number, weight: number){
+export async function getSessionDefaults(){
     const response = await fetch("http://localhost:80/php/getsessiondefaults.php", {
         method: 'POST',
         credentials: 'include',

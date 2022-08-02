@@ -1,7 +1,7 @@
 import {StandardBackendResponse, LoginCredentials} from "./utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {CircularProgress} from "@mui/material";
-import {loginQuery, queryCheckLogin} from "./utilities/queries";
+import {getSessionDefaults, loginQuery, queryCheckLogin} from "./utilities/queries";
 let cc = console.log;
 
 //TODO Add password reset option to login page
@@ -20,10 +20,16 @@ function checkFormEntry(usernameState: string, passwordState: string){
     return true;
 }
 
-function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
+async function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
     if (response.data.loggedin === true){
-        localStorage.setItem("defaultReps", "5");
-        //window.location.href="Home";
+        response = await getSessionDefaults();
+        cc(response)
+        localStorage.setItem("defaultExercises", JSON.stringify(response.data.exercises));
+        localStorage.setItem("defaultSets", JSON.stringify(response.data.sets));
+        localStorage.setItem("defaultReps", JSON.stringify(response.data.reps));
+        localStorage.setItem("defaultWeight", JSON.stringify(response.data.weight));
+
+        window.location.href="Home";
     }
     setLoginState("false");
 }
