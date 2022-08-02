@@ -41,11 +41,23 @@ function Home(){
         }
     }
 
-    const defaultOptions: OptionsData = {
-        exercises: 2,
-        sets: 3,
-        reps: 5,
-        weights: 100,
+    let defaultExercises: number = 3; //@ts-ignore
+    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +localStorage.getItem("defaultExercises");
+
+    let defaultSets: number = 3; //@ts-ignore
+    if (localStorage.getItem("defaultSets") !== null) defaultSets = +localStorage.getItem("defaultSets");
+
+    let defaultReps: number = 5; //@ts-ignore
+    if (localStorage.getItem("defaultReps") !== null) defaultSets = +localStorage.getItem("defaultReps");
+
+    let defaultWeight: number = 100; //@ts-ignore
+    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = +localStorage.getItem("defaultWeight");
+
+    const defaultOptions: OptionsData = { //@ts-ignore
+        exercises: defaultExercises, //@ts-ignore
+        sets: defaultSets, //@ts-ignore
+        reps: defaultReps, //@ts-ignore
+        weights: defaultWeight,
     } //TODO Save to / load from database.
 
     const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions);
