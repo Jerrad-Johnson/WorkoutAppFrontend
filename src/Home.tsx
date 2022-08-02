@@ -41,8 +41,6 @@ function Home(){
         }
     }
 
-    cc(localStorage)
-
     let defaultExercises: number = 3; //@ts-ignore
     if (JSON.parse(localStorage.getItem("defaultExercises")) !== null) defaultExercises = JSON.parse(localStorage.getItem("defaultExercises"));
 
@@ -433,6 +431,10 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Gen
     const setOptions: JSX.Element[] = arrayOfOptions(12);
     const repOptions: JSX.Element[] = arrayOfOptions(20);
 
+    function handleSaveDefaults(){
+
+    }
+
     return (
         <div className={"optionsContainer"}>
             <span>Default exercise count</span>
@@ -461,6 +463,11 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Gen
                 optionsDispatch({type: "weights", payload: +e.target.value});
                 localStorage.setItem("defaultWeight", JSON.stringify(+e.target.value));
             }}/>
+            <br />
+            <button onClick={(e) => {
+                e.preventDefault();
+                handleSaveDefaults();
+            }}>Save Defaults</button>
         </div>
     );
 }
