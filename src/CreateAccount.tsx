@@ -10,23 +10,23 @@ function CreateAccount(){
     return (
         <div>
             <form>
-                <input type={"text"} value={usernameState} onChange={(e) => {
+                <input type={"text"} value={usernameState} placeholder={"Username"} onChange={(e) => {
                     setUsernameState(e.target.value);
                 }}/>
                 <br />
-                <input type={"text"} value={emailAddressState} onChange={(e) => {
+                <input type={"text"} value={emailAddressState} placeholder={"E-mail"} onChange={(e) => {
                     setEmailAddressState(e.target.value);
                 }}/>
                 <br />
-                <input type={"text"} value={emailAddressVerifyState} onChange={(e) => {
+                <input type={"text"} value={emailAddressVerifyState} placeholder={"Re-enter E-mail"} onChange={(e) => {
                     setEmailAddressVerifyState(e.target.value);
                 }}/>
                 <br />
-                <input type={"password"} value={passwordState} onChange={(e) => {
+                <input type={"password"} value={passwordState} placeholder={"Password"} onChange={(e) => {
                     setPasswordState(e.target.value);
                 }}/>
                 <br />
-                <input type={"password"} value={passwordVerifyState} onChange={(e) => {
+                <input type={"password"} value={passwordVerifyState} placeholder={"Re-enter Password"} onChange={(e) => {
                     setPasswordVerifyState(e.target.value);
                 }}/>
                 <br />
