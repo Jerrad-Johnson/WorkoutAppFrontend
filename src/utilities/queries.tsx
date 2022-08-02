@@ -221,3 +221,26 @@ export async function changeEmail(newEmail: string){
 
     return dataToBeReturned;
 }
+
+export async function changeSessionDefaults(reps: number, sets:number, exercises: number, weight: number){
+    let entry: any = {
+        "reps": reps,
+        "sets": sets,
+        "exercises": exercises,
+        "weight": weight,
+    }
+
+    const response = await fetch("http://localhost:80/php/changesessiondefaults.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(entry),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}

@@ -11,7 +11,6 @@ function handleLoginFormEntry(usernameState: string, passwordState: string, setL
     setLoginState("pending");
     doLogin(usernameState, passwordState);
     checkLogin().then((response) => {
-
         handleCheckIfLoggedIn(response, setLoginState);
     });
 }
@@ -22,7 +21,10 @@ function checkFormEntry(usernameState: string, passwordState: string){
 }
 
 function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
-    if (response.data.loggedin === true) window.location.href="Home";
+    if (response.data.loggedin === true){
+        localStorage.setItem("defaultReps", "5");
+        //window.location.href="Home";
+    }
     setLoginState("false");
 }
 
