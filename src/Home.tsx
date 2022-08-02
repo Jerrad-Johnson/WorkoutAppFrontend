@@ -41,19 +41,21 @@ function Home(){
         }
     }
 
+    cc(localStorage)
+
     let defaultExercises: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +localStorage.getItem("defaultExercises");
+    if (JSON.parse(localStorage.getItem("defaultExercises")) !== null) defaultExercises = JSON.parse(localStorage.getItem("defaultExercises"));
 
     let defaultSets: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultSets") !== null) defaultSets = +localStorage.getItem("defaultSets");
+    if (JSON.parse(localStorage.getItem("defaultSets")) !== null) defaultSets = JSON.parse(localStorage.getItem("defaultSets"));
 
     let defaultReps: number = 5; //@ts-ignore
-    if (localStorage.getItem("defaultReps") !== null) defaultSets = +localStorage.getItem("defaultReps");
+    if (JSON.parse(localStorage.getItem("defaultReps")) !== null) defaultReps = JSON.parse(localStorage.getItem("defaultReps"));
 
     let defaultWeight: number = 100; //@ts-ignore
-    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = +localStorage.getItem("defaultWeight");
+    if (JSON.parse(localStorage.getItem("defaultWeight")) !== null) defaultWeight = JSON.parse(localStorage.getItem("defaultWeight"));
 
-    const defaultOptions: OptionsData = { //@ts-ignore
+    const defaultOptions: OptionsData = {
         exercises: defaultExercises, //@ts-ignore
         sets: defaultSets, //@ts-ignore
         reps: defaultReps, //@ts-ignore
@@ -436,24 +438,28 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Gen
             <span>Default exercise count</span>
             <select value={optionsState.exercises} onChange={(e) => {
                 optionsDispatch({type: "exercises", payload: +e.target.value});
+                localStorage.setItem("defaultExercises", JSON.stringify(+e.target.value));
             }}>
                 {exerciseOptions}
             </select>
             <span>Default set count</span>
             <select value={optionsState.sets} onChange={(e) => {
                 optionsDispatch({type: "sets", payload: +e.target.value});
+                localStorage.setItem("defaultSets", JSON.stringify(+e.target.value));
             }}>
                 {setOptions}
             </select>
             <span>Default rep count</span>
             <select value={optionsState.reps} onChange={(e) => {
                 optionsDispatch({type: "reps", payload: +e.target.value});
+                localStorage.setItem("defaultReps", JSON.stringify(+e.target.value));
             }}>
                 {repOptions}
             </select>
             <span>Default weight</span>
             <input type={"number"} value={optionsState.weights} onChange={(e) => {
                 optionsDispatch({type: "weights", payload: +e.target.value});
+                localStorage.setItem("defaultWeight", JSON.stringify(+e.target.value));
             }}/>
         </div>
     );
