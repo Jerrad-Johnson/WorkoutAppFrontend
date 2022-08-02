@@ -6,6 +6,7 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Management from "./Management";
 import Nav from "./Nav";
 import Login from "./Login";
+import CreateAccount from "./CreateAccount";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
                   <Route path={"/"} element={<Login />} />
                   <Route path={"/Home"} element={<Home />} />
                   <Route path={"/Management"} element={<Management/>} />
+                  <Route path={"/CreateAccount"} element={<CreateAccount/>} />
               </Routes>
           </BrowserRouter>
       </header>

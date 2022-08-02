@@ -1,5 +1,6 @@
 import {StandardBackendResponse, LoginCredentials} from "./utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "./utilities/queries";
 let cc = console.log;
@@ -95,7 +96,7 @@ function Login(){
                         handleLoginFormEntry(usernameState, passwordState, setLoginState)
                     }}>Submit</button>
                 </form>
-                <span> Don't have an account? Create one here.</span>
+                <span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
             </div>
             </>
         )
