@@ -1,4 +1,6 @@
 import {useState} from "react";
+import {createAccount} from "./utilities/queries";
+let cc = console.log;
 
 function CreateAccount(){
     const [usernameState, setUsernameState] = useState("");
@@ -32,11 +34,16 @@ function CreateAccount(){
                 <br />
                 <button onClick={(e) => {
                     e.preventDefault();
-
+                    handleCreateAccount();
                 }}>Submit</button>
             </form>
         </div>
     );
+}
+
+async function handleCreateAccount(){
+    let response = await createAccount();
+    cc(response);
 }
 
 

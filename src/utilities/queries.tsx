@@ -259,3 +259,25 @@ export async function changeSessionDefaults(reps: number, sets:number, exercises
 
     return dataToBeReturned;
 }
+
+export async function createAccount(password, username, email){
+    let entry: any = {
+        "password": password,
+        "username": username,
+        "email": email,
+    }
+
+    const response = await fetch("http://localhost:80/php/createaccount.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(entry),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}
