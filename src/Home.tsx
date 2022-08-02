@@ -8,7 +8,14 @@ import {
     SessionEntry
 } from "./utilities/interfaces";
 import {arrayOfOptions} from "./utilities/sharedFns";
-import {getRecentSessions, loginV2, getExercises, getSpecificSession, submitSession} from "./utilities/queries";
+import {
+    getRecentSessions,
+    loginV2,
+    getExercises,
+    getSpecificSession,
+    submitSession,
+    changeSessionDefaults
+} from "./utilities/queries";
 import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
 import Nav from "./Nav";
 import {isNumeric} from "./utilities/genericFns";
@@ -431,8 +438,11 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Gen
     const setOptions: JSX.Element[] = arrayOfOptions(12);
     const repOptions: JSX.Element[] = arrayOfOptions(20);
 
-    function handleSaveDefaults(){
+    async function handleSaveDefaults(){
+        let response = await changeSessionDefaults(optionsState.reps, optionsState.sets,
+            optionsState.exercises, optionsState.weights);
 
+        cc(response); //TODO Handle response
     }
 
     return (
