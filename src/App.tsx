@@ -1,12 +1,12 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
-import Home from "./Home";
+import './styles/App.css';
+import Home from "./views/Home";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Management from "./Management";
-import Nav from "./Nav";
-import Login from "./Login";
-import CreateAccount from "./CreateAccount";
+import Management from "./views/Management";
+import Nav from "./components/Nav";
+import Login from "./views/Login";
+import CreateAccount from "./views/CreateAccount";
 
 function App() {
   return (

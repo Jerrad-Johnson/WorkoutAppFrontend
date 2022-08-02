@@ -6,8 +6,8 @@ import {
     GenericAction,
     DatabaseData,
     SessionEntry
-} from "./utilities/interfaces";
-import {arrayOfOptions} from "./utilities/sharedFns";
+} from "../utilities/interfaces";
+import {arrayOfOptions} from "../utilities/sharedFns";
 import {
     getRecentSessions,
     loginV2,
@@ -15,10 +15,10 @@ import {
     getSpecificSession,
     submitSession,
     changeSessionDefaults
-} from "./utilities/queries";
-import {todaysDateForHTMLCalendar} from "./utilities/generalFns";
-import Nav from "./Nav";
-import {isNumeric} from "./utilities/genericFns";
+} from "../utilities/queries";
+import {todaysDateForHTMLCalendar} from "../utilities/generalFns";
+import Nav from "../components/Nav";
+import {isNumeric} from "../utilities/genericFns";
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.

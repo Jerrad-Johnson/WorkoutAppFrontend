@@ -1,8 +1,8 @@
-import {StandardBackendResponse, LoginCredentials} from "./utilities/interfaces";
+import {StandardBackendResponse, LoginCredentials} from "../utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
-import {getSessionDefaults, loginQuery, queryCheckLogin} from "./utilities/queries";
+import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
 let cc = console.log;
 
 //TODO Add password reset option to login page

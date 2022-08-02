@@ -1,9 +1,9 @@
-import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises, logout} from "./utilities/queries";
-import Nav from "./Nav";
+import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises, logout} from "../utilities/queries";
+import Nav from "../components/Nav";
 import {useReducer, useState} from "react";
-import {getAllSessions} from "./utilities/queries";
-import {HandleActionsData, GenericAction} from "./utilities/interfaces";
-import {verifyEmailForm, verifyPasswordChangeForms} from "./utilities/sharedFns";
+import {getAllSessions} from "../utilities/queries";
+import {HandleActionsData, GenericAction} from "../utilities/interfaces";
+import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
 let cc = console.log;
 
 function Management(){

@@ -1,6 +1,6 @@
 import {useState} from "react";
-import {createAccount} from "./utilities/queries";
-import {verifyEmailForm, verifyPasswordForms} from "./utilities/sharedFns";
+import {createAccount} from "../utilities/queries";
+import {verifyEmailForm, verifyPasswordForms} from "../utilities/sharedFns";
 let cc = console.log;
 
 function CreateAccount(){
