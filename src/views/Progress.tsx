@@ -1,5 +1,6 @@
 import Chart from "react-apexcharts";
 import ActivityCalendar, {CalendarData, Day} from "react-activity-calendar";
+import ReactTooltip from "react-tooltip";
 
 function Progress(){
 
@@ -26,7 +27,15 @@ function Progress(){
             </div>
 
             <div className={"chartContainer"}>
-                <ActivityCalendar data={mockHeatmapData}/>
+                <ActivityCalendar
+
+                    data={mockHeatmapData}
+                    labels={{
+                        tooltip: '<strong>{{count}} contributions</strong> on {{date}}'
+                    }}
+                >
+                    <ReactTooltip html/>
+                </ActivityCalendar>
                 <Chart
                     series = {[
                         {
