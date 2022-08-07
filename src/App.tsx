@@ -7,6 +7,7 @@ import Management from "./views/Management";
 import Nav from "./components/Nav";
 import Login from "./views/Login";
 import CreateAccount from "./views/CreateAccount";
+import Progress from "./views/Progress";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
                   <Route path={"/Home"} element={<Home />} />
                   <Route path={"/Management"} element={<Management/>} />
                   <Route path={"/CreateAccount"} element={<CreateAccount/>} />
+                  <Route path={"/Progress"} element={<Progress/>} />
               </Routes>
           </BrowserRouter>
       </header>
