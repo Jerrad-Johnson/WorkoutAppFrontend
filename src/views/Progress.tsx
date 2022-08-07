@@ -34,7 +34,7 @@ function Progress(){
                         tooltip: '<strong>{{count}} contributions</strong> on {{date}}'
                     }}
                 >
-                    <ReactTooltip html/>
+                    <ReactTooltip html />
                 </ActivityCalendar>
                 <Chart
                     series = {[
