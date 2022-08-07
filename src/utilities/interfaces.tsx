@@ -82,3 +82,15 @@ export interface SessionToDelete{
     title: string;
     date: string;
 }
+
+export interface SessionDateHashmap{
+    [key: string]: number;
+}
+
+export interface HeatmapByDate{
+    date: string;
+    count: number;
+    level: 0 | 1 | 2 | 3 |4;
+}
+
+export interface FormattedSesssionHeatmapData extends Array<HeatmapByDate>{};
