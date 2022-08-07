@@ -4,20 +4,21 @@ import ReactTooltip from "react-tooltip";
 
 function Progress(){
 
+    let inactiveDaysColor: string = "#555" //Set dynamically
     let mock1RM = [120, 140, 140, 140, 140, 145];
     let mockDates = [""];
     let mockHeatmapData: CalendarData = [{
         date: "2022-01-01",
         count: 1,
-        level: 3
+        level: 1
     }, {
         date: "2022-02-20",
-        count: 0,
+        count: 4,
         level: 4
     }, {
         date: "2022-03-20",
         count: 2,
-        level: 0
+        level: 2
     }];
 
     return (
@@ -28,14 +29,28 @@ function Progress(){
 
             <div className={"chartContainer"}>
                 <ActivityCalendar
-
                     data={mockHeatmapData}
                     labels={{
-                        tooltip: '<strong>{{count}} contributions</strong> on {{date}}'
+                        tooltip: '<strong>{{count}} workouts</strong> on {{date}}'
                     }}
+                    theme={{
+                        level0: inactiveDaysColor,
+                        level1: '#33FF33',
+                        level2: '#33FF33',
+                        level3: '#33FF33',
+                        level4: '#33FF33'
+                    }}
+                    hideColorLegend={true}
+                    blockRadius={2}
+                    blockSize={12}
                 >
                     <ReactTooltip html />
                 </ActivityCalendar>
+
+
+
+
+
                 <Chart
                     series = {[
                         {
