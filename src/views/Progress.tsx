@@ -5,6 +5,7 @@ import ReactTooltip from "react-tooltip";
 function Progress(){
 
     let inactiveDaysColor: string = "#555" //Set dynamically
+    let activeDaysColor: string = "#fff"
     let mock1RM = [120, 140, 140, 140, 140, 145];
     let mockDates = [""];
     let mockHeatmapData: CalendarData = [{
@@ -31,14 +32,15 @@ function Progress(){
                 <ActivityCalendar
                     data={mockHeatmapData}
                     labels={{
+                        totalCount: `{{count}} workouts in `, /*TODO Add date range*/
                         tooltip: '<strong>{{count}} workouts</strong> on {{date}}'
                     }}
                     theme={{
                         level0: inactiveDaysColor,
-                        level1: '#33FF33',
-                        level2: '#33FF33',
-                        level3: '#33FF33',
-                        level4: '#33FF33'
+                        level1: activeDaysColor,
+                        level2: activeDaysColor,
+                        level3: activeDaysColor,
+                        level4: activeDaysColor,
                     }}
                     hideColorLegend={true}
                     blockRadius={2}

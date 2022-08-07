@@ -281,3 +281,18 @@ export async function createAccount(password: string, username: string, email: s
 
     return dataToBeReturned;
 }
+
+export async function getWorkoutsLast365Days(){
+    const response = await fetch("http://localhost:80/php/getworkoutcount.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}
