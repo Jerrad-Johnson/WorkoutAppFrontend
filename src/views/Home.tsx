@@ -421,7 +421,7 @@ function Home(){
                 {exerciseOptionElements}
             </select>
                 {exerciseDataElements}
-            <span>Notes</span>
+            <span>Notes</span> {/*TODO Make it possible to add notes to database*/}
             <input type={"text"} className={"notes"} onChange={(e) => {
                 sessionDispatch({type: "notes", payload: e.target.value});
             }}/>
