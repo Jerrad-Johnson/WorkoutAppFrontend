@@ -90,7 +90,7 @@ export interface SessionDateHashmap{
 export interface HeatmapByDate{
     date: string;
     count: number;
-    level: 0 | 1 | 2 | 3 |4;
+    level: 0 | 1 | 2 | 3 | 4;
 }
 
 export interface FormattedSesssionHeatmapData extends Array<HeatmapByDate>{};

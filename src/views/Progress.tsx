@@ -5,7 +5,7 @@ import {getWorkoutsLast365Days} from "../utilities/queries";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {CircularProgress} from "@mui/material";
 import {
-    FormattedSesssionHeatmapData,
+    FormattedSesssionHeatmapData, HeatmapByDate,
     SessionDateHashmap
 } from "../utilities/interfaces";
 let cc = console.log;
@@ -42,8 +42,8 @@ function Progress(){
         heatmap = (<ActivityCalendar
             data={heatmapState}
             labels={{
-                totalCount: `{{count}} workouts in `, /*TODO Add date range*/
-                tooltip: '<strong>{{count}} workouts</strong> on {{date}}'
+                totalCount: `{{count}} workouts in the last year`, /*TODO Add date range*/
+                tooltip: '<strong>{{count}} workouts</strong>  {{date}}'
             }}
             theme={{
                 level0: inactiveDaysColor,
@@ -118,7 +118,15 @@ async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAc
         formattedSesssionData.push(tempEntry);
     }
 
-    setHeatmapState(formattedSesssionData);
+    let sortedAndFormattedSessionHeatmapData: FormattedSesssionHeatmapData =
+        formattedSesssionData.sort((a: HeatmapByDate, b: HeatmapByDate) => {
+            if (a.date > b.date) return 1;
+            return -1;
+        });
+
+
+
+    //setHeatmapState(sortedAndFormattedSessionHeatmapData);
 }
 
 export default Progress;
