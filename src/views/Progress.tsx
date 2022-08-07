@@ -126,7 +126,7 @@ async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAc
 
 
 
-    //setHeatmapState(sortedAndFormattedSessionHeatmapData);
+    setHeatmapState(sortedAndFormattedSessionHeatmapData);
 }
 
 export default Progress;
