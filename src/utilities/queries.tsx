@@ -282,12 +282,12 @@ export async function createAccount(password: string, username: string, email: s
     return dataToBeReturned;
 }
 
-export async function getWorkoutsLast365Days(type: string){
+export async function getWorkoutsForHeatmap(yearOrLast365: string){
     const response = await fetch("http://localhost:80/php/getworkoutcount.php", {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
-        body: JSON.stringify(type),
+        body: JSON.stringify(yearOrLast365),
         headers: {
             'Content-Type': 'application/json'
         }

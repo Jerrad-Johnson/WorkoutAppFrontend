@@ -1,14 +1,14 @@
 import Chart from "react-apexcharts";
 import ActivityCalendar, {CalendarData, Day} from "react-activity-calendar";
 import ReactTooltip from "react-tooltip";
-import {getWorkoutsLast365Days, getYearsOfAllEntries} from "../utilities/queries";
+import {getWorkoutsForHeatmap, getYearsOfAllEntries} from "../utilities/queries";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {CircularProgress} from "@mui/material";
 import {
     FormattedSesssionHeatmapData, HeatmapByDate,
     SessionDateHashmap
 } from "../utilities/interfaces";
-import {eachDayOfInterval} from "date-fns";
+import {eachDayOfInterval, format, parseISO} from "date-fns";
 let cc = console.log;
 
 function Progress(){
@@ -16,7 +16,7 @@ function Progress(){
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
     useEffect(() => {
-        handleGetWorkoutsLast365Days(setHeatmapState, "last365");
+        handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365");
     }, []);
 
     let inactiveDaysColor: string = "#555" //Set dynamically
@@ -43,6 +43,7 @@ function Progress(){
                     <select value={selectedYearOfEntriesState} onChange={(e) => {
                         e.preventDefault();
                         setSelectedYearOfEntriesState(e.target.value);
+                        handleGetWorkoutsForHeatmap(setHeatmapState, selectedYearOfEntriesState);
                     }}>
                         {yearsOfEntries}
                         <option>Last 365</option>
@@ -78,6 +79,7 @@ function Progress(){
                 cc(heatmapState);
                 cc(yearsOfEntriesState);
                 cc(yearsOfEntries);
+                cc(selectedYearOfEntriesState)
             }}>test data</button>
 
             <div className={"options"}>
@@ -111,9 +113,11 @@ function Progress(){
     )
 }
 
-async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>,
-                                            type: string){
-    let response = await getWorkoutsLast365Days(type);
+async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>,
+                                            yearOrLast365: string){
+
+    setHeatmapState(undefined);
+    let response = await getWorkoutsForHeatmap(yearOrLast365);
     let sessionDatesAndCount: SessionDateHashmap = {};
 
     response.data.forEach((e: {session_date: string; session_title: string}) => {
@@ -136,26 +140,41 @@ async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAc
             return -1;
         });
 
-    let emptyEntries: HeatmapByDate[] = getEmptySetOfHashmapData();
+    let emptyEntries: HeatmapByDate[] = getEmptySetOfHashmapData(yearOrLast365);
     let allEntriesCombined: HeatmapByDate[] = combineEmptyAndRealHashmapData(emptyEntries, sortedAndFormattedSessionHeatmapData);
 
     setHeatmapState(allEntriesCombined);
 }
 
-function getEmptySetOfHashmapData(){
-    let oneYearBack: Date = new Date();
-    oneYearBack.setDate(oneYearBack.getDate()-364);
+function getEmptySetOfHashmapData(yearOrLast365: string){
+    if (yearOrLast365 === "Last 365") {
+        let oneYearBack: Date = new Date();
+        oneYearBack.setDate(oneYearBack.getDate() - 364);
 
-    let allDates: Date[] = eachDayOfInterval({
-        start: oneYearBack,
-        end: new Date(),
-    });
+        let allDates: Date[] = eachDayOfInterval({
+            start: oneYearBack,
+            end: new Date(),
+        });
 
-    let allDatesFormatted: HeatmapByDate[] = allDates.map((e: Date) => {
-        return {date: e.toISOString().slice(0, 10), count: 0, level: 0}
-    });
+        let allDatesFormatted: HeatmapByDate[] = allDates.map((e: Date) => {
+            return {date: e.toISOString().slice(0, 10), count: 0, level: 0}
+        });
+        return allDatesFormatted;
+    } else {
+        //@ts-ignore
+        let beginDate: Date = new Date(yearOrLast365, "00", "01"); //@ts-ignore
+        let endDate: Date = new Date(yearOrLast365, "11", "31");
 
-    return allDatesFormatted;
+        let allDates: Date[] = eachDayOfInterval({
+            start: beginDate,
+            end: endDate,
+        });
+
+        let allDatesFormatted: HeatmapByDate[] = allDates.map((e: Date) => {
+            return {date: e.toISOString().slice(0, 10), count: 0, level: 0}
+        });
+        return allDatesFormatted;
+    }
 }
 
 function combineEmptyAndRealHashmapData(emptyEntries: HeatmapByDate[], sortedAndFormattedSessionHeatmapData: HeatmapByDate[]){
