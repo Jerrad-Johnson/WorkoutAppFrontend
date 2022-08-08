@@ -607,7 +607,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
               sessionDispatch({ type: "sets", payload: {
                   topIndex: parentIndex,
                   value: +e.target.value,
-                  }})
+              }});
           }}>
 
               {setOptions}

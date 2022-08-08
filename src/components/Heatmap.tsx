@@ -1,10 +1,18 @@
-import {FormattedSesssionHeatmapData, HeatmapByDate, SessionDateHashmap} from "../utilities/interfaces";
+import {
+    FormattedSesssionHeatmapData,
+    HeatmapByDate,
+    SessionDateHashmap,
+    StandardBackendResponse
+} from "../utilities/interfaces";
 import {Dispatch, SetStateAction} from "react";
 import {CircularProgress} from "@mui/material";
 import ActivityCalendar from "react-activity-calendar";
 import ReactTooltip from "react-tooltip";
 import {getWorkoutsForHeatmap, getYearsOfAllEntries} from "../utilities/queries";
 import {eachDayOfInterval} from "date-fns";
+let cc = console.log;
+
+// Graph docs: https://grubersjoe.github.io/react-activity-calendar/?path=/docs/activity-calendar--default
 
 function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOfEntriesState, selectedYearOfEntriesState, setSelectedYearOfEntriesState}: {
     heatmapState: FormattedSesssionHeatmapData | undefined,
@@ -31,14 +39,13 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
 
     if (heatmapState === undefined){
         heatmapChart = (<CircularProgress size={150}/>);
-    } else {
+    } else { //TODO Add overlay upon changing year
         heatmapChart = (
             <div className={"heatmap"}>
                 {yearsOfEntries &&
                     <select value={selectedYearOfEntriesState} onChange={(e) => {
-                        e.preventDefault();
                         setSelectedYearOfEntriesState(e.target.value);
-                        handleGetWorkoutsForHeatmap(setHeatmapState, selectedYearOfEntriesState);
+                        handleGetWorkoutsForHeatmap(setHeatmapState, e.target.value);
                     }}>
                         {yearsOfEntries}
                         <option>Last 365</option>
@@ -74,14 +81,45 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
     );
 }
 
-
 export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>,
-                                           yearOrLast365: string){
+                                                  selectedYearOfEntriesState: string){
+    //setHeatmapState(undefined);
+    let response = await getWorkoutsForHeatmap(selectedYearOfEntriesState);
 
-    setHeatmapState(undefined);
-    let response = await getWorkoutsForHeatmap(yearOrLast365);
     let sessionDatesAndCount: SessionDateHashmap = {};
+    response.data.forEach((e: {session_date: string; session_title: string}) => {
+        sessionDatesAndCount[e.session_date] ? sessionDatesAndCount[e.session_date] += 1 : sessionDatesAndCount[e.session_date] = 1;
+    });
 
+    let formattedSesssionData: FormattedSesssionHeatmapData = [];
+
+    for (let entry in sessionDatesAndCount){
+        let tempEntry: any = {};
+        tempEntry.date = entry;
+        tempEntry.count = sessionDatesAndCount[entry];
+        sessionDatesAndCount[entry] > 4 ? tempEntry.level = 4 : tempEntry.level = sessionDatesAndCount[entry];
+        formattedSesssionData.push(tempEntry);
+    }
+
+    let sortedAndFormattedSessionHeatmapData: FormattedSesssionHeatmapData =
+        formattedSesssionData.sort((a: HeatmapByDate, b: HeatmapByDate) => {
+            if (a.date > b.date) return 1;
+            return -1;
+        });
+
+    let emptyEntries: HeatmapByDate[] = getEmptySetOfHashmapData(selectedYearOfEntriesState);
+    let allEntriesCombined: HeatmapByDate[] = combineEmptyAndRealHashmapData(emptyEntries, sortedAndFormattedSessionHeatmapData);
+
+    setHeatmapState(allEntriesCombined);
+
+
+    //response().then(createDataForHeatmap(response, yearOrLast365, setHeatmapState));
+    //response.then(createDataForHeatmap(response, yearOrLast365, setHeatmapState));
+
+}
+
+function createDataForHeatmap(response: any, yearOrLast365: string, setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>){
+    let sessionDatesAndCount: SessionDateHashmap = {};
     response.data.forEach((e: {session_date: string; session_title: string}) => {
         sessionDatesAndCount[e.session_date] ? sessionDatesAndCount[e.session_date] += 1 : sessionDatesAndCount[e.session_date] = 1;
     });
@@ -106,6 +144,7 @@ export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetS
     let allEntriesCombined: HeatmapByDate[] = combineEmptyAndRealHashmapData(emptyEntries, sortedAndFormattedSessionHeatmapData);
 
     setHeatmapState(allEntriesCombined);
+
 }
 
 function getEmptySetOfHashmapData(yearOrLast365: string){
