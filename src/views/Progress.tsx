@@ -1,9 +1,6 @@
 import Chart from "react-apexcharts";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
-import {
-    FormattedSesssionHeatmapData, HeatmapByDate,
-    SessionDateHashmap
-} from "../utilities/interfaces";
+import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
 let cc = console.log;
 
