@@ -34,7 +34,7 @@ function Progress(){
     let heatmap: JSX.Element;
 
     useEffect(() => {
-        handleGetWorkoutsLast365Days(setHeatmapState);
+        handleGetWorkoutsLast365Days(setHeatmapState, "last365");
     }, []);
 
     if (heatmapState === undefined){
@@ -101,8 +101,9 @@ function Progress(){
     )
 }
 
-async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>){
-    let response = await getWorkoutsLast365Days();
+async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>,
+                                            type: string){
+    let response = await getWorkoutsLast365Days(type);
     let sessionDatesAndCount: SessionDateHashmap = {};
 
     response.data.forEach((e: {session_date: string; session_title: string}) => {
