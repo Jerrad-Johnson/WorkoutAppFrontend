@@ -1,7 +1,7 @@
 import Chart from "react-apexcharts";
 import ActivityCalendar, {CalendarData, Day} from "react-activity-calendar";
 import ReactTooltip from "react-tooltip";
-import {getWorkoutsLast365Days} from "../utilities/queries";
+import {getWorkoutsLast365Days, getYearsOfAllEntries} from "../utilities/queries";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {CircularProgress} from "@mui/material";
 import {
@@ -13,7 +13,8 @@ let cc = console.log;
 
 function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
-
+    const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);  
+        
     let inactiveDaysColor: string = "#555" //Set dynamically
     let activeDaysColor: string = "#fff"
     let mock1RM = [120, 140, 140, 140, 140, 145];
@@ -33,9 +34,12 @@ function Progress(){
     }];
     let heatmap: JSX.Element;
 
+    handleGetYearsOfAllEntries(setYearsOfEntriesState);
+
     useEffect(() => {
         handleGetWorkoutsLast365Days(setHeatmapState, "last365");
     }, []);
+
 
     if (heatmapState === undefined){
         heatmap = (<CircularProgress size={150}/>);
@@ -66,16 +70,13 @@ function Progress(){
             <div className={"options"}>
                 <button onClick={(e) => {
                     e.preventDefault();
-                    cc(heatmapState)
+                    cc(heatmapState);
+                    cc(yearsOfEntriesState);
                 }}>test data</button>
             </div>
 
             <div className={"chartContainer"}>
                 {heatmap}
-
-
-
-
 
                 <Chart
                     series = {[
@@ -157,6 +158,12 @@ function combineEmptyAndRealHashmapData(emptyEntries: HeatmapByDate[], sortedAnd
     }
 
    return combinedHeatmapData;
+}
+
+async function handleGetYearsOfAllEntries(setYearsOfEntriesState: Dispatch<SetStateAction<string[] | undefined>>){
+    let response = await getYearsOfAllEntries();
+
+    setYearsOfEntriesState(response.data);
 }
 
 export default Progress;
