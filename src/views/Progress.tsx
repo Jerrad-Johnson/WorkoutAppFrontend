@@ -14,6 +14,7 @@ let cc = console.log;
 function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
+    const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
     useEffect(() => {
         handleGetWorkoutsLast365Days(setHeatmapState, "last365");
     }, []);
@@ -39,8 +40,12 @@ function Progress(){
         heatmap = (
             <div className={"heatmap"}>
                 {yearsOfEntries &&
-                    <select>
+                    <select value={selectedYearOfEntriesState} onChange={(e) => {
+                        e.preventDefault();
+                        setSelectedYearOfEntriesState(e.target.value);
+                    }}>
                         {yearsOfEntries}
+                        <option>Last 365</option>
                     </select>
                 }
                 <ActivityCalendar
