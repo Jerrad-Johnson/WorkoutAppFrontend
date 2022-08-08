@@ -13,66 +13,70 @@ let cc = console.log;
 
 function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
-    const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);  
-        
-    let inactiveDaysColor: string = "#555" //Set dynamically
-    let activeDaysColor: string = "#fff"
-    let mock1RM = [120, 140, 140, 140, 140, 145];
-    let mockDates = [""];
-    let mockHeatmapData: CalendarData = [{
-        date: "2022-01-01",
-        count: 1,
-        level: 1
-    }, {
-        date: "2022-02-20",
-        count: 4,
-        level: 4
-    }, {
-        date: "2022-03-20",
-        count: 2,
-        level: 2
-    }];
-    let heatmap: JSX.Element;
-
-    handleGetYearsOfAllEntries(setYearsOfEntriesState);
-
+    const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     useEffect(() => {
         handleGetWorkoutsLast365Days(setHeatmapState, "last365");
     }, []);
 
+    let inactiveDaysColor: string = "#555" //Set dynamically
+    let activeDaysColor: string = "#fff"
+    let mock1RM = [120, 140, 140, 140, 140, 145];
+    let heatmap: JSX.Element;
+    let yearsOfEntries: JSX.Element[] | undefined = undefined;
+
+    if (yearsOfEntriesState === undefined) handleGetYearsOfAllEntries(setYearsOfEntriesState);
+    if (yearsOfEntriesState !== undefined) {
+        yearsOfEntries = yearsOfEntriesState.map((e: string, k: number) => {
+            return (
+                <option key={k}>{e}</option>
+            );
+        });
+    }
 
     if (heatmapState === undefined){
         heatmap = (<CircularProgress size={150}/>);
     } else {
-        heatmap = (<ActivityCalendar
-            data={heatmapState}
-            labels={{
-                totalCount: `{{count}} workouts in the last year`, /*TODO Add date range*/
-                tooltip: '<strong>{{count}} workouts</strong>  {{date}}'
-            }}
-            theme={{
-                level0: inactiveDaysColor,
-                level1: activeDaysColor,
-                level2: activeDaysColor,
-                level3: activeDaysColor,
-                level4: activeDaysColor,
-            }}
-            hideColorLegend={true}
-            blockRadius={2}
-            blockSize={12}
-        >
-            <ReactTooltip html />
-        </ActivityCalendar>)
+        heatmap = (
+            <div className={"heatmap"}>
+                {yearsOfEntries &&
+                    <select>
+                        {yearsOfEntries}
+                    </select>
+                }
+                <ActivityCalendar
+                    data={heatmapState}
+                    labels={{
+                        totalCount: `{{count}} workouts in the last year`, /*TODO Add date range*/
+                        tooltip: '<strong>{{count}} workouts</strong>  {{date}}'
+                    }}
+                    theme={{
+                        level0: inactiveDaysColor,
+                        level1: activeDaysColor,
+                        level2: activeDaysColor,
+                        level3: activeDaysColor,
+                        level4: activeDaysColor,
+                    }}
+                    hideColorLegend={true}
+                    blockRadius={2}
+                    blockSize={12}
+                >
+                    <ReactTooltip html />
+            </ActivityCalendar>
+        </div>
+        )
     }
 
     return (
         <div className={"progressContainer"}>
+            <button onClick={(e) => {
+                e.preventDefault();
+                cc(heatmapState);
+                cc(yearsOfEntriesState);
+                cc(yearsOfEntries);
+            }}>test data</button>
+
             <div className={"options"}>
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    cc(heatmapState);
-                    cc(yearsOfEntriesState);
-                }}>test data</button>
+
             </div>
 
             <div className={"chartContainer"}>
