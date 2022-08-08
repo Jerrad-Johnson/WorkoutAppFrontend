@@ -8,6 +8,7 @@ import {
     FormattedSesssionHeatmapData, HeatmapByDate,
     SessionDateHashmap
 } from "../utilities/interfaces";
+import {eachDayOfInterval} from "date-fns";
 let cc = console.log;
 
 function Progress(){
@@ -124,9 +125,37 @@ async function handleGetWorkoutsLast365Days(setHeatmapState: Dispatch<SetStateAc
             return -1;
         });
 
+    let emptyEntries: HeatmapByDate[] = getEmptySetOfHashmapData();
+    let allEntriesCombined: HeatmapByDate[] = combineEmptyAndRealHashmapData(emptyEntries, sortedAndFormattedSessionHeatmapData);
 
+    setHeatmapState(allEntriesCombined);
+}
 
-    setHeatmapState(sortedAndFormattedSessionHeatmapData);
+function getEmptySetOfHashmapData(){
+    let oneYearBack: Date = new Date();
+    oneYearBack.setDate(oneYearBack.getDate()-364);
+
+    let allDates: Date[] = eachDayOfInterval({
+        start: oneYearBack,
+        end: new Date(),
+    });
+
+    let allDatesFormatted: HeatmapByDate[] = allDates.map((e: Date) => {
+        return {date: e.toISOString().slice(0, 10), count: 0, level: 0}
+    });
+
+    return allDatesFormatted;
+}
+
+function combineEmptyAndRealHashmapData(emptyEntries: HeatmapByDate[], sortedAndFormattedSessionHeatmapData: HeatmapByDate[]){
+    let combinedHeatmapData: HeatmapByDate[] = Array.from(emptyEntries);
+
+    for (let i = 0; i < sortedAndFormattedSessionHeatmapData.length; i++){
+        let index: number = emptyEntries.findIndex((emptyEntry: HeatmapByDate) => emptyEntry.date === sortedAndFormattedSessionHeatmapData[i].date);
+        combinedHeatmapData[index] = sortedAndFormattedSessionHeatmapData[i];
+    }
+
+   return combinedHeatmapData;
 }
 
 export default Progress;
