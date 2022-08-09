@@ -104,7 +104,8 @@ export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetS
     let sortedAndFormattedSessionHeatmapData: FormattedSesssionHeatmapData =
         formattedSesssionData.sort((a: HeatmapByDate, b: HeatmapByDate) => {
             if (a.date > b.date) return 1;
-            return -1;
+            if (a.date < b.date) return -1;
+            return 0;
         });
 
     let emptyEntries: HeatmapByDate[] = getEmptySetOfHashmapData(selectedYearOfEntriesState);

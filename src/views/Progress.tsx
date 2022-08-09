@@ -80,7 +80,6 @@ function Progress(){
 
 async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
                               oneRMExerciseChosenState: string | undefined){
-    //TODO Sort data by date
     if (oneRMExerciseChosenState !== undefined){
         let response = await getSessionDataForOneRMCalculation(oneRMExerciseChosenState);
         formatOneRMData(response, setOneRMExerciseData);
@@ -97,8 +96,6 @@ async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateA
 function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateAction<any>>){
     let formattedSessionData: any = [];
 
-
-    cc(response)
     for (let i = 0; i < response.data.length; i++) {
         let repsAsArray = response.data[i].reps.split(",");
         let weightsAsArray = response.data[i].weight_lifted.split(",");
@@ -127,7 +124,13 @@ function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateA
         formattedSessionDataWith1RM[i].exercise = response.data[0].exercise;
     }
 
-    setOneRMExerciseData(formattedSessionDataWith1RM);
+    let formattedAndSortedSessionDataWith1RM: any = formattedSessionDataWith1RM.sort((a: any, b: any) => {
+       if (a.date > b.date) return 1;
+       if (a.date < b.date) return -1;
+       return 0;
+    });
+
+    setOneRMExerciseData(formattedAndSortedSessionDataWith1RM);
 }
 
 function getPercentageOf1RM(rep: number){
