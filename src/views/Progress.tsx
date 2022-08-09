@@ -1,7 +1,13 @@
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
-import {getExercisesFromSessionTable, getSessionDataForOneRMCalculation} from "../utilities/queries";
+import {
+    getAllSessionNames,
+    getAllSessions,
+    getExercisesFromSessionTable,
+    getSessionDataForOneRMCalculation
+} from "../utilities/queries";
+import Nav from "../components/Nav.js";
 import OneRMLineGraph from "../components/OneRMLineGraph";
 let cc = console.log;
 
@@ -37,13 +43,14 @@ function Progress(){
     });
 
     return (
+        <>
+        <Nav/>
         <div className={"progressContainer"}>
             <button onClick={(e) => {
                 e.preventDefault();
-                cc(heatmapState);
-                cc(yearsOfEntriesState);
-                cc(selectedYearOfEntriesState)
-                cc(oneRMExerciseData)
+                cc(workoutListState);
+                cc(workoutSessionSelectorState);
+                cc(workoutSessionState)
             }}>test data</button>
 
             <div className={"options"}>
@@ -64,7 +71,6 @@ function Progress(){
                     <br/>
                     Find 1RM across time
                     <br/>
-                    <br/>
                     Exercise
                     <select value={oneRMExerciseChosenState} onChange={(e) => {
                         setOneRMExerciseChosenState(e.target.value);
@@ -75,7 +81,11 @@ function Progress(){
                     <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
                     <br/>
 
+
                     <br/>
+                    Show a table of all date for sessions named ...
+                    <br/>
+                    Session
                     <select value={workoutSessionSelectorState} onChange={(e) => {
                         setWorkoutSessionSelectorState(e.target.value);
                     }}>
@@ -88,6 +98,7 @@ function Progress(){
 
             </div>
         </div>
+        </>
     )
 }
 
@@ -174,7 +185,9 @@ function getPercentageOf1RM(rep: number){
     return (100 / repsToPercentageMap[rep]);
 }
 
-function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>){
+async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>){
+    let response = await getAllSessionNames();
+    cc(response)
     
 }
 

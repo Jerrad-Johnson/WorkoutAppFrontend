@@ -147,6 +147,19 @@ export async function getAllSessions(){
     return await response.json();
 }
 
+export async function getAllSessionNames(){
+    const response = await fetch("http://localhost:80/php/getallsessionnames.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return await response.json();
+}
+
 export async function logout(){
     const response = await fetch("http://localhost:80/php/logout.php", {
         method: 'POST',
