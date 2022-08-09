@@ -84,6 +84,21 @@ export async function getExercises(){
     return responseJSON;
 }
 
+export async function getExercisesFromSessionTable(){
+    let response = await fetch("http://localhost:80/php/getexercisesfromsessiontable.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    let responseJSON = await response.json();
+
+    return responseJSON;
+}
+
 export async function deleteExercise(exercise: string){
     let response = await fetch("http://localhost:80/php/exercisedelete.php", {
         method: 'POST',
@@ -312,3 +327,4 @@ export async function getYearsOfAllEntries(){
 
     return dataToBeReturned;
 }
+

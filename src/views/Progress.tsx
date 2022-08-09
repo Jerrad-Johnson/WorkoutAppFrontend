@@ -2,24 +2,33 @@ import Chart from "react-apexcharts";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
+import {getExercises, getExercisesFromSessionTable} from "../utilities/queries";
 let cc = console.log;
 
 function Progress(){
+    let mock1RM = [120, 140, 140, 140, 140, 145];
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
-    const [oneRMExerciseState, setOneRMExerciseState] = useState<string>("");
+
+    const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
+    const [oneRMExerciseChosenState, setOneRMExerciseChosenState] = useState<string>("");
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365");
+        handleGetListOfExercises(setExerciseListState);
     }, []);
 
     useEffect(() => {
         cc(5)
     }, [oneRMExerciseData]);
 
-    let mock1RM = [120, 140, 140, 140, 140, 145];
+    let exerciseOptions: JSX.Element[] = exerciseListState.map((entry) => {
+       return (<option>{entry}</option>);
+    });
+
+
 
     return (
         <div className={"progressContainer"}>
@@ -50,12 +59,12 @@ function Progress(){
                     <br/>
                     <br/>
                     Exercise
-                    <select value={oneRMExerciseState} onChange={(e) => {
-                        setOneRMExerciseState(e.target.value);
+                    <select value={oneRMExerciseChosenState} onChange={(e) => {
+                        setOneRMExerciseChosenState(e.target.value);
                         handleOneRMSelection(setOneRMExerciseData);
                     }}>
-                        <option></option>
-                        <option>Chest Press</option>
+                        {/*<option></option>*/}
+                        {exerciseOptions}
                     </select>
                 </div>
 
@@ -87,6 +96,11 @@ function Progress(){
 
 function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>){
     
+}
+
+async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>){
+    let response = await getExercisesFromSessionTable();
+    setExerciseListState(response.data);
 }
 
 export default Progress;
