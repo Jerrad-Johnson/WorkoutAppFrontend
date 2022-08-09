@@ -328,3 +328,18 @@ export async function getYearsOfAllEntries(){
     return dataToBeReturned;
 }
 
+export async function getSessionDataForOneRMCalculation(exercise: string){
+    const response = await fetch("http://localhost:80/php/getsessiondataforonermcalculation.php", {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(exercise),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const dataToBeReturned = await response.json();
+
+    return dataToBeReturned;
+}
