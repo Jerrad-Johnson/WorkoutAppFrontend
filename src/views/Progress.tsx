@@ -187,8 +187,10 @@ function getPercentageOf1RM(rep: number){
 
 async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>){
     let response = await getAllSessionNames();
-    cc(response)
-    
+    let listOfSesssionsByName: string[] = response.data.map((e: any) => {
+        return (e.session_title);
+    });
+    setWorkoutListState(listOfSesssionsByName);
 }
 
 export default Progress;
