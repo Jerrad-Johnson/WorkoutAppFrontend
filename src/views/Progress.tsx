@@ -8,9 +8,16 @@ function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
+    const [oneRMExerciseState, setOneRMExerciseState] = useState<string>("");
+    const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
+
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365");
     }, []);
+
+    useEffect(() => {
+        cc(5)
+    }, [oneRMExerciseData]);
 
     let mock1RM = [120, 140, 140, 140, 140, 145];
 
@@ -36,6 +43,24 @@ function Progress(){
                     setSelectedYearOfEntriesState = {setSelectedYearOfEntriesState}
                 />
 
+                <div>
+                    <br/>
+                    <br/>
+                    Find 1RM across time
+                    <br/>
+                    <br/>
+                    Exercise
+                    <select value={oneRMExerciseState} onChange={(e) => {
+                        setOneRMExerciseState(e.target.value);
+                        handleOneRMSelection(setOneRMExerciseData);
+                    }}>
+                        <option></option>
+                        <option>Chest Press</option>
+                    </select>
+                </div>
+
+                {/*TODO Add a table to display hard data for session by name*/}
+{/*
                 <Chart
                     series = {[
                         {
@@ -54,10 +79,14 @@ function Progress(){
                             //categories: job.yearsNumbered,
                         },
                     }}
-                />
+                />*/}
             </div>
         </div>
     )
+}
+
+function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>){
+    
 }
 
 export default Progress;
