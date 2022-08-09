@@ -3,6 +3,7 @@ import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
 import {getExercises, getExercisesFromSessionTable, getSessionDataForOneRMCalculation} from "../utilities/queries";
+import OneRMLineGraph from "../components/OneRMLineGraph";
 let cc = console.log;
 
 function Progress(){
@@ -70,26 +71,8 @@ function Progress(){
                 </div>
 
                 {/*TODO Add a table to display hard data for session by name*/}
-{/*
-                <Chart
-                    series = {[
-                        {
-                            data: mock1RM
-                        }
-                    ]}
-                    type="bar"
-                    height={400}
-                    options = {{
-                        plotOptions: {
-                            bar: {
-                                horizontal: true,
-                            }
-                        },
-                        xaxis: {
-                            //categories: job.yearsNumbered,
-                        },
-                    }}
-                />*/}
+                <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
+
             </div>
         </div>
     )
