@@ -3,11 +3,6 @@ import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
 
 export function loginQuery(data: LoginCredentials) {
-    /*let entry: object = {
-        "password": "abc",
-        "username": "elseif",
-    };*/
-
     fetch("http://localhost:80/php/login.php", {
         method: 'POST',
         mode: 'cors',
