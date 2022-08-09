@@ -14,9 +14,14 @@ function Progress(){
     const [oneRMExerciseChosenState, setOneRMExerciseChosenState] = useState<string | undefined>(undefined);
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
 
+    const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
+    const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
+    const [workoutSessionState, setWorkoutSessionState] = useState<any>();
+
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365");
         handleGetListOfExercises(setExerciseListState);
+        handleGetListOfSessionsByName(setWorkoutListState);
     }, []);
 
     useEffect(() => {
@@ -25,6 +30,10 @@ function Progress(){
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
        return (<option key={k}>{entry}</option>);
+    });
+
+    let sessionOptions: JSX.Element[] = workoutListState.map((entry, k) => {
+        return (<option key={k}>{entry}</option>);
     });
 
     return (
@@ -63,10 +72,19 @@ function Progress(){
                         <option></option>
                         {exerciseOptions}
                     </select>
+                    <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
+                    <br/>
+
+                    <br/>
+                    <select value={workoutSessionSelectorState} onChange={(e) => {
+                        setWorkoutSessionSelectorState(e.target.value);
+                    }}>
+                        <option></option>
+                        {sessionOptions}
+                    </select>
                 </div>
 
                 {/*TODO Add a table to display hard data for session by name*/}
-                <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
 
             </div>
         </div>
@@ -154,6 +172,10 @@ function getPercentageOf1RM(rep: number){
 
     if (rep > 20) rep = 20;
     return (100 / repsToPercentageMap[rep]);
+}
+
+function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>){
+    
 }
 
 export default Progress;
