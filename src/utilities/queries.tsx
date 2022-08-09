@@ -34,9 +34,7 @@ export async function loginV2(){
             'Content-Type': 'application/json' }
     });
 
-    const responseJSON = await response.json();
-
-    return responseJSON;
+    return await response.json();
 }
 
 export async function submitSession(entries: SessionEntry) {
@@ -79,9 +77,7 @@ export async function getExercises(){
         }
     });
 
-    let responseJSON = await response.json();
-
-    return responseJSON;
+    return await response.json();
 }
 
 export async function getExercisesFromSessionTable(){
@@ -94,9 +90,7 @@ export async function getExercisesFromSessionTable(){
         }
     });
 
-    let responseJSON = await response.json();
-
-    return responseJSON;
+    return await response.json();
 }
 
 export async function deleteExercise(exercise: string){
@@ -110,9 +104,7 @@ export async function deleteExercise(exercise: string){
         }
     });
 
-    let responseJSON = await response.json();
-
-    return responseJSON;
+    return await response.json();
 }
 
 export async function getRecentSessions(){
@@ -125,9 +117,7 @@ export async function getRecentSessions(){
         }
     });
 
-    const responseJSON = await response.json();
-
-    return responseJSON;
+    return await response.json();
 }
 
 export async function getSpecificSession(sessionDate: string, sessionTitle: string){
@@ -146,9 +136,7 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
         }
     })
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function getAllSessions(){
@@ -161,9 +149,7 @@ export async function getAllSessions(){
         }
     })
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function logout(){
@@ -176,9 +162,7 @@ export async function logout(){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function queryCheckLogin(){
@@ -191,9 +175,7 @@ export async function queryCheckLogin(){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function changePassword(oldPw: string, newPw: string){
@@ -212,9 +194,7 @@ export async function changePassword(oldPw: string, newPw: string){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function changeEmail(newEmail: string){
@@ -232,9 +212,7 @@ export async function changeEmail(newEmail: string){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function getSessionDefaults(){
@@ -247,9 +225,7 @@ export async function getSessionDefaults(){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function changeSessionDefaults(reps: number, sets:number, exercises: number, weight: number){
@@ -270,9 +246,7 @@ export async function changeSessionDefaults(reps: number, sets:number, exercises
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function createAccount(password: string, username: string, email: string){
@@ -292,9 +266,7 @@ export async function createAccount(password: string, username: string, email: s
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function getWorkoutsForHeatmap(yearOrLast365: string){
@@ -308,9 +280,7 @@ export async function getWorkoutsForHeatmap(yearOrLast365: string){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function getYearsOfAllEntries(){
@@ -323,9 +293,7 @@ export async function getYearsOfAllEntries(){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }
 
 export async function getSessionDataForOneRMCalculation(exercise: string){
@@ -339,7 +307,5 @@ export async function getSessionDataForOneRMCalculation(exercise: string){
         }
     });
 
-    const dataToBeReturned = await response.json();
-
-    return dataToBeReturned;
+    return await response.json();
 }

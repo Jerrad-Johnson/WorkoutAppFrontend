@@ -2,7 +2,7 @@ import Chart from "react-apexcharts";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
-import {getExercises, getExercisesFromSessionTable} from "../utilities/queries";
+import {getExercises, getExercisesFromSessionTable, getSessionDataForOneRMCalculation} from "../utilities/queries";
 let cc = console.log;
 
 function Progress(){
@@ -94,12 +94,13 @@ function Progress(){
     )
 }
 
-function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
+async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
                               oneRMExerciseChosenState: string | undefined){
     if (oneRMExerciseChosenState !== undefined){
-
+        let response = await getSessionDataForOneRMCalculation(oneRMExerciseChosenState);
+        cc(response);
     } else {
-
+        setOneRMExerciseData(undefined);
     }
 }
 
