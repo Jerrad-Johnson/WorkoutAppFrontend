@@ -12,7 +12,7 @@ function Progress(){
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
-    const [oneRMExerciseChosenState, setOneRMExerciseChosenState] = useState<string>("");
+    const [oneRMExerciseChosenState, setOneRMExerciseChosenState] = useState<string | undefined>(undefined);
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
 
     useEffect(() => {
@@ -21,11 +21,11 @@ function Progress(){
     }, []);
 
     useEffect(() => {
-        cc(5)
-    }, [oneRMExerciseData]);
+        handleOneRMSelection(setOneRMExerciseData, oneRMExerciseChosenState);
+    }, [oneRMExerciseChosenState]);
 
-    let exerciseOptions: JSX.Element[] = exerciseListState.map((entry) => {
-       return (<option>{entry}</option>);
+    let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
+       return (<option key={k}>{entry}</option>);
     });
 
 
@@ -61,9 +61,9 @@ function Progress(){
                     Exercise
                     <select value={oneRMExerciseChosenState} onChange={(e) => {
                         setOneRMExerciseChosenState(e.target.value);
-                        handleOneRMSelection(setOneRMExerciseData);
+                        //handleOneRMSelection(setOneRMExerciseData, e.target.value);
                     }}>
-                        {/*<option></option>*/}
+                        <option></option>
                         {exerciseOptions}
                     </select>
                 </div>
@@ -94,8 +94,13 @@ function Progress(){
     )
 }
 
-function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>){
-    
+function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
+                              oneRMExerciseChosenState: string | undefined){
+    if (oneRMExerciseChosenState !== undefined){
+
+    } else {
+
+    }
 }
 
 async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>){
