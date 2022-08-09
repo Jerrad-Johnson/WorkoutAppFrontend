@@ -1,13 +1,11 @@
-import Chart from "react-apexcharts";
 import {Dispatch, SetStateAction, useState, useEffect} from "react";
 import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
-import {getExercises, getExercisesFromSessionTable, getSessionDataForOneRMCalculation} from "../utilities/queries";
+import {getExercisesFromSessionTable, getSessionDataForOneRMCalculation} from "../utilities/queries";
 import OneRMLineGraph from "../components/OneRMLineGraph";
 let cc = console.log;
 
 function Progress(){
-    let mock1RM = [120, 140, 140, 140, 140, 145];
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
@@ -28,8 +26,6 @@ function Progress(){
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
        return (<option key={k}>{entry}</option>);
     });
-
-
 
     return (
         <div className={"progressContainer"}>
@@ -63,7 +59,6 @@ function Progress(){
                     Exercise
                     <select value={oneRMExerciseChosenState} onChange={(e) => {
                         setOneRMExerciseChosenState(e.target.value);
-                        //handleOneRMSelection(setOneRMExerciseData, e.target.value);
                     }}>
                         <option></option>
                         {exerciseOptions}
@@ -124,13 +119,13 @@ function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateA
         formattedSessionDataWith1RM[i].exercise = response.data[0].exercise;
     }
 
-    let formattedAndSortedSessionDataWith1RM: any = formattedSessionDataWith1RM.sort((a: any, b: any) => {
+/*    let formattedAndSortedSessionDataWith1RM: any = formattedSessionDataWith1RM.sort((a: any, b: any) => {
        if (a.date > b.date) return 1;
        if (a.date < b.date) return -1;
        return 0;
-    });
+    }); Replaced with ORDER BY in MySQL. Test more.*/
 
-    setOneRMExerciseData(formattedAndSortedSessionDataWith1RM);
+    setOneRMExerciseData(formattedSessionDataWith1RM);
 }
 
 function getPercentageOf1RM(rep: number){
