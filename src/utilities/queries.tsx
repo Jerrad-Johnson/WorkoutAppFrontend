@@ -160,6 +160,20 @@ export async function getAllSessionNames(){
     return await response.json();
 }
 
+export async function getAllSessionsByName(title: string){
+    const response = await fetch("http://localhost:80/php/getallsessionsbyname.php", {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(title),
+        mode: 'cors',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+
+    return await response.json();
+}
+
 export async function logout(){
     const response = await fetch("http://localhost:80/php/logout.php", {
         method: 'POST',

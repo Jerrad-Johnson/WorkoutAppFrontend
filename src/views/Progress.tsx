@@ -3,7 +3,7 @@ import {FormattedSesssionHeatmapData} from "../utilities/interfaces";
 import Heatmap, {handleGetWorkoutsForHeatmap} from "../components/Heatmap";
 import {
     getAllSessionNames,
-    getAllSessions,
+    getAllSessions, getAllSessionsByName,
     getExercisesFromSessionTable,
     getSessionDataForOneRMCalculation
 } from "../utilities/queries";
@@ -32,7 +32,8 @@ function Progress(){
 
     useEffect(() => {
         handleOneRMSelection(setOneRMExerciseData, oneRMExerciseChosenState);
-    }, [oneRMExerciseChosenState]);
+        handleOneSessionAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState);
+    }, [oneRMExerciseChosenState, workoutSessionSelectorState]);
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
        return (<option key={k}>{entry}</option>);
@@ -191,6 +192,12 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
         return (e.session_title);
     });
     setWorkoutListState(listOfSesssionsByName);
+}
+
+async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
+    cc(5)
+    let response = await getAllSessionsByName(workoutSessionSelectorState);
+    cc(response)
 }
 
 export default Progress;

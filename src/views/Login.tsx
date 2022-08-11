@@ -54,10 +54,14 @@ function Login(){
     let [loginState, setLoginState] = useState("pending");
     let [usernameState, setUsernameState] = useState("");
     let [passwordState, setPasswordState] = useState("");
-    checkLogin().then((response) => handleCheckIfLoggedIn(response, setLoginState));
+
     useEffect(() => {
         loginState === "pending" ? cc(5) : cc(7); //TODO Set to change opacity of loginContainer
     }, [loginState]);
+
+    useEffect(() => {
+        checkLogin().then((response) => handleCheckIfLoggedIn(response, setLoginState));
+    }, []);
 
     if (loginState === "true"){
         return (
