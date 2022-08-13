@@ -9,6 +9,7 @@ import {
 } from "../utilities/queries";
 import Nav from "../components/Nav.js";
 import OneRMLineGraph from "../components/OneRMLineGraph";
+import {isEmptyObject} from "../utilities/genericFns";
 let cc = console.log;
 
 function Progress(){
@@ -48,7 +49,7 @@ function Progress(){
 
     let chosenSessionTableRows: JSX.Element[] = [];
 
-    if (workoutSessionState !== undefined){
+/*    if (workoutSessionState !== undefined){
         chosenSessionTableRows = workoutSessionState.map((entry: any, k: number) => {
            return (
                <tr key={k}>
@@ -58,7 +59,7 @@ function Progress(){
                </tr>
            )
         });
-    }
+    }*/
 
     return (
         <>
@@ -235,14 +236,29 @@ async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch
 }
 
 function reformatSessionData(data: any){
-    let reformattedData: any = data.map((e: any) => {
+    let commasReplacedWithDashes: any = data.map((e: any) => {
        let weightReformatted: string = e.weight_lifted.replaceAll(',', '-');
        let repsReformatted: string = e.weight_lifted.replaceAll(',', '-');
        return {...e, weight_lifted: weightReformatted, reps: repsReformatted}
     });
 
-    return reformattedData
+    let mergedData: any = [];
 
+    for (let i = 0; i < commasReplacedWithDashes.length; i++){
+        let indexToPlaceData = mergedData.findIndex((e: any) => e.session_date === commasReplacedWithDashes[i].session_date);
+        if (indexToPlaceData === -1) indexToPlaceData = mergedData.length;
+        if (typeof mergedData[indexToPlaceData] !== 'object') mergedData[indexToPlaceData] = {};
+        mergedData[indexToPlaceData].session_date = commasReplacedWithDashes[i].session_date;
+
+        if (!Array.isArray(mergedData[indexToPlaceData].exercises)) mergedData[indexToPlaceData].exercises = [];
+        mergedData[indexToPlaceData].exercises = [...mergedData[indexToPlaceData].exercises, commasReplacedWithDashes[i].exercise];
+        if (!Array.isArray(mergedData[indexToPlaceData].weights)) mergedData[indexToPlaceData].weights = [];
+            mergedData[indexToPlaceData].weights = [...mergedData[indexToPlaceData].weights, commasReplacedWithDashes[i].weight_lifted];
+        if (!Array.isArray(mergedData[indexToPlaceData].reps)) mergedData[indexToPlaceData].reps = [];
+            mergedData[indexToPlaceData].reps = [...mergedData[indexToPlaceData].reps, commasReplacedWithDashes[i].reps];
+    }
+
+    return mergedData;
 }
 
 export default Progress;
