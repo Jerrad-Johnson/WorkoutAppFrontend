@@ -49,17 +49,36 @@ function Progress(){
 
     let chosenSessionTableRows: JSX.Element[] = [];
 
-/*    if (workoutSessionState !== undefined){
+    let rowKey = 9000001;
+
+    if (workoutSessionState !== undefined){
         chosenSessionTableRows = workoutSessionState.map((entry: any, k: number) => {
+
+            let specificSessionData: JSX.Element[] = [];
+
+            for (let i = 0; i < entry.reps.length; i++){
+                let row: JSX.Element = (
+                    <tr key={rowKey}>
+                       <td>{entry.exercises[i]}</td>
+                       <td>{entry.weights[i]}</td>
+                       <td>{entry.reps[i]}</td>
+                   </tr>
+                )
+
+                specificSessionData.push(row);
+                rowKey += 1;
+            }
+
            return (
-               <tr key={k}>
-                   <td>{entry.exercise}</td>
-                   <td>{entry.weight_lifted}</td>
-                   <td>{entry.reps}</td>
-               </tr>
+               <tbody key={k}>
+                    <tr>
+                       <td>{entry.session_date}</td>
+                    </tr>
+                    {specificSessionData}
+               </tbody>
            )
         });
-    }*/
+    }
 
     return (
         <>
@@ -122,9 +141,7 @@ function Progress(){
                                     <th>Reps</th>
                                 </tr>
                             </thead>
-                            <tbody>
                                 {chosenSessionTableRows}
-                            </tbody>
                         </table>
                     }
                 </div>
@@ -238,7 +255,7 @@ async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch
 function reformatSessionData(data: any){
     let sessionDataCommasReplacedWithDashes: any = data.map((e: any) => {
        let weightReformatted: string = e.weight_lifted.replaceAll(',', '-');
-       let repsReformatted: string = e.weight_lifted.replaceAll(',', '-');
+       let repsReformatted: string = e.reps.replaceAll(',', '-');
        return {...e, weight_lifted: weightReformatted, reps: repsReformatted}
     });
 
@@ -259,6 +276,9 @@ function reformatSessionData(data: any){
         if (!Array.isArray(mergedData[indexToPlaceData].reps)) mergedData[indexToPlaceData].reps = [];
         mergedData[indexToPlaceData].reps = [...mergedData[indexToPlaceData].reps, sessionDataCommasReplacedWithDashes[i].reps];
     }
+
+    cc(data)
+    cc(mergedData)
 
     return mergedData;
 }
