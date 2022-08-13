@@ -17,7 +17,7 @@ function Progress(){
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
-    const [oneRMExerciseChosenState, setOneRMExerciseChosenState] = useState<string | undefined>(undefined);
+    const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string | undefined>(undefined);
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
@@ -31,9 +31,12 @@ function Progress(){
     }, []);
 
     useEffect(() => {
-        handleOneRMSelection(setOneRMExerciseData, oneRMExerciseChosenState);
+        handleOneRMSelection(setOneRMExerciseData, oneRMExerciseSelectorState);
+    }, [oneRMExerciseSelectorState]);
+    
+    useEffect(() => {
         handleOneSessionAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState);
-    }, [oneRMExerciseChosenState, workoutSessionSelectorState]);
+    }, [workoutSessionSelectorState]);
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
        return (<option key={k}>{entry}</option>);
@@ -42,6 +45,20 @@ function Progress(){
     let sessionOptions: JSX.Element[] = workoutListState.map((entry, k) => {
         return (<option key={k}>{entry}</option>);
     });
+
+    let chosenSessionTableRows: JSX.Element[] = [];
+
+    if (workoutSessionState !== undefined){
+        chosenSessionTableRows = workoutSessionState.map((entry: any, k: number) => {
+           return (
+               <tr key={k}>
+                   <td>{entry.exercise}</td>
+                   <td>{entry.weight_lifted}</td>
+                   <td>{entry.reps}</td>
+               </tr>
+           )
+        });
+    }
 
     return (
         <>
@@ -52,6 +69,7 @@ function Progress(){
                 cc(workoutListState);
                 cc(workoutSessionSelectorState);
                 cc(workoutSessionState)
+                cc(chosenSessionTableRows)
             }}>test data</button>
 
             <div className={"options"}>
@@ -73,8 +91,8 @@ function Progress(){
                     Find 1RM across time
                     <br/>
                     Exercise
-                    <select value={oneRMExerciseChosenState} onChange={(e) => {
-                        setOneRMExerciseChosenState(e.target.value);
+                    <select value={oneRMExerciseSelectorState} onChange={(e) => {
+                        setOneRMExerciseSelectorState(e.target.value);
                     }}>
                         <option></option>
                         {exerciseOptions}
@@ -93,6 +111,21 @@ function Progress(){
                         <option></option>
                         {sessionOptions}
                     </select>
+                    <br/>
+                    {workoutSessionState !== undefined &&
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Exercise</th>
+                                    <th>Weight Lifted</th>
+                                    <th>Reps</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {chosenSessionTableRows}
+                            </tbody>
+                        </table>
+                    }
                 </div>
 
                 {/*TODO Add a table to display hard data for session by name*/}
@@ -195,9 +228,21 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
 }
 
 async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
-    cc(5)
     let response = await getAllSessionsByName(workoutSessionSelectorState);
-    cc(response)
+
+    let reformattedData = reformatSessionData(response.data);
+    setWorkoutSessionState(reformattedData);
+}
+
+function reformatSessionData(data: any){
+    let reformattedData: any = data.map((e: any) => {
+       let weightReformatted: string = e.weight_lifted.replaceAll(',', '-');
+       let repsReformatted: string = e.weight_lifted.replaceAll(',', '-');
+       return {...e, weight_lifted: weightReformatted, reps: repsReformatted}
+    });
+
+    return reformattedData
+
 }
 
 export default Progress;
