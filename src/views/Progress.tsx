@@ -236,7 +236,7 @@ async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch
 }
 
 function reformatSessionData(data: any){
-    let commasReplacedWithDashes: any = data.map((e: any) => {
+    let sessionDataCommasReplacedWithDashes: any = data.map((e: any) => {
        let weightReformatted: string = e.weight_lifted.replaceAll(',', '-');
        let repsReformatted: string = e.weight_lifted.replaceAll(',', '-');
        return {...e, weight_lifted: weightReformatted, reps: repsReformatted}
@@ -244,18 +244,20 @@ function reformatSessionData(data: any){
 
     let mergedData: any = [];
 
-    for (let i = 0; i < commasReplacedWithDashes.length; i++){
-        let indexToPlaceData = mergedData.findIndex((e: any) => e.session_date === commasReplacedWithDashes[i].session_date);
+    for (let i = 0; i < sessionDataCommasReplacedWithDashes.length; i++){
+        let indexToPlaceData = mergedData.findIndex((e: any) => e.session_date === sessionDataCommasReplacedWithDashes[i].session_date);
         if (indexToPlaceData === -1) indexToPlaceData = mergedData.length;
         if (typeof mergedData[indexToPlaceData] !== 'object') mergedData[indexToPlaceData] = {};
-        mergedData[indexToPlaceData].session_date = commasReplacedWithDashes[i].session_date;
+        mergedData[indexToPlaceData].session_date = sessionDataCommasReplacedWithDashes[i].session_date;
 
         if (!Array.isArray(mergedData[indexToPlaceData].exercises)) mergedData[indexToPlaceData].exercises = [];
-        mergedData[indexToPlaceData].exercises = [...mergedData[indexToPlaceData].exercises, commasReplacedWithDashes[i].exercise];
+        mergedData[indexToPlaceData].exercises = [...mergedData[indexToPlaceData].exercises, sessionDataCommasReplacedWithDashes[i].exercise];
+
         if (!Array.isArray(mergedData[indexToPlaceData].weights)) mergedData[indexToPlaceData].weights = [];
-            mergedData[indexToPlaceData].weights = [...mergedData[indexToPlaceData].weights, commasReplacedWithDashes[i].weight_lifted];
+        mergedData[indexToPlaceData].weights = [...mergedData[indexToPlaceData].weights, sessionDataCommasReplacedWithDashes[i].weight_lifted];
+
         if (!Array.isArray(mergedData[indexToPlaceData].reps)) mergedData[indexToPlaceData].reps = [];
-            mergedData[indexToPlaceData].reps = [...mergedData[indexToPlaceData].reps, commasReplacedWithDashes[i].reps];
+        mergedData[indexToPlaceData].reps = [...mergedData[indexToPlaceData].reps, sessionDataCommasReplacedWithDashes[i].reps];
     }
 
     return mergedData;
