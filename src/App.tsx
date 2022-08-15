@@ -15,11 +15,11 @@ function App() {
       <header className="App-header">
           <BrowserRouter>
               <Routes>
-                  <Route path={"/"} element={<Login />} />
-                  <Route path={"/Home"} element={<Home />} />
-                  <Route path={"/Management"} element={<Management/>} />
-                  <Route path={"/CreateAccount"} element={<CreateAccount/>} />
-                  <Route path={"/Progress"} element={<Progress/>} />
+                  <Route path={""} element={<Login />} />
+                  <Route path={"Home"} element={<Home />} />
+                  <Route path={"Management"} element={<Management/>} />
+                  <Route path={"CreateAccount"} element={<CreateAccount/>} />
+                  <Route path={"Progress"} element={<Progress/>} />
               </Routes>
           </BrowserRouter>
       </header>

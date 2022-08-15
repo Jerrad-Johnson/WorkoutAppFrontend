@@ -50,16 +50,16 @@ function Home(){
     }
 
     let defaultExercises: number = 3; //@ts-ignore
-    if (JSON.parse(localStorage.getItem("defaultExercises")) !== null) defaultExercises = JSON.parse(localStorage.getItem("defaultExercises"));
+    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = JSON.parse(localStorage.getItem("defaultExercises"));
 
     let defaultSets: number = 3; //@ts-ignore
-    if (JSON.parse(localStorage.getItem("defaultSets")) !== null) defaultSets = JSON.parse(localStorage.getItem("defaultSets"));
+    if (localStorage.getItem("defaultSets") !== null) defaultSets = JSON.parse(localStorage.getItem("defaultSets"));
 
     let defaultReps: number = 5; //@ts-ignore
-    if (JSON.parse(localStorage.getItem("defaultReps")) !== null) defaultReps = JSON.parse(localStorage.getItem("defaultReps"));
+    if (localStorage.getItem("defaultReps") !== null) defaultReps = JSON.parse(localStorage.getItem("defaultReps"));
 
     let defaultWeight: number = 100; //@ts-ignore
-    if (JSON.parse(localStorage.getItem("defaultWeight")) !== null) defaultWeight = JSON.parse(localStorage.getItem("defaultWeight"));
+    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = JSON.parse(localStorage.getItem("defaultWeight"));
 
     const defaultOptions: OptionsData = {
         exercises: defaultExercises, //@ts-ignore

@@ -1,6 +1,7 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
+//let baseURL: string = "/php";
 let baseURL: string = "http://localhost:80/php";
 
 export function loginQuery(data: LoginCredentials) {
@@ -189,7 +190,7 @@ export async function logout(){
 }
 
 export async function queryCheckLogin(){
-    const response = await fetch(`${baseURL}/checkLogin.php`, {
+    const response = await fetch(`${baseURL}/checklogin.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
