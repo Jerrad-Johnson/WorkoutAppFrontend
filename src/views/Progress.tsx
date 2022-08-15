@@ -277,9 +277,6 @@ function reformatSessionData(data: any){
         mergedData[indexToPlaceData].reps = [...mergedData[indexToPlaceData].reps, sessionDataCommasReplacedWithDashes[i].reps];
     }
 
-    cc(data)
-    cc(mergedData)
-
     return mergedData;
 }
 

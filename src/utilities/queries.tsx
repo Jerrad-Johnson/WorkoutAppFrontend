@@ -1,9 +1,10 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
+let baseURL: string = "http://localhost:80/php";
 
 export function loginQuery(data: LoginCredentials) {
-    fetch("http://localhost:80/php/login.php", {
+    fetch(`${baseURL}/login.php`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(data),
@@ -20,7 +21,7 @@ export async function loginV2(){
         "username": "elseif",
     };
 
-    const response = await fetch("http://localhost:80/php/login.php", {
+    const response = await fetch(`${baseURL}/login.php`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(entry),
@@ -33,7 +34,7 @@ export async function loginV2(){
 }
 
 export async function submitSession(entries: SessionEntry) {
-    let response = await fetch("http://localhost:80/php/sessionentry.php", {
+    let response = await fetch(`${baseURL}/sessionentry.php`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(entries),
@@ -49,7 +50,7 @@ export async function submitSession(entries: SessionEntry) {
 export async function deleteSession(title: string, date: string) {
     let entry: SessionToDelete = {"title": title, "date": date};
 
-    let response = await fetch("http://localhost:80/php/sessiondelete.php", {
+    let response = await fetch(`${baseURL}/sessiondelete.php`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(entry),
@@ -63,7 +64,7 @@ export async function deleteSession(title: string, date: string) {
 }
 
 export async function getExercises(){
-    let response = await fetch("http://localhost:80/php/getexercises.php", {
+    let response = await fetch(`${baseURL}/getexercises.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -76,7 +77,7 @@ export async function getExercises(){
 }
 
 export async function getExercisesFromSessionTable(){
-    let response = await fetch("http://localhost:80/php/getexercisesfromsessiontable.php", {
+    let response = await fetch(`${baseURL}/getexercisesfromsessiontable.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -89,7 +90,7 @@ export async function getExercisesFromSessionTable(){
 }
 
 export async function deleteExercise(exercise: string){
-    let response = await fetch("http://localhost:80/php/exercisedelete.php", {
+    let response = await fetch(`${baseURL}/exercisedelete.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -103,7 +104,7 @@ export async function deleteExercise(exercise: string){
 }
 
 export async function getRecentSessions(){
-    const response = await fetch("http://localhost:80/php/getrecentsessions.php", {
+    const response = await fetch(`${baseURL}/getrecentsessions.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -121,7 +122,7 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
         date: sessionDate
     }
 
-    const response = await fetch("http://localhost:80/php/getspecificsession.php", {
+    const response = await fetch(`${baseURL}/getspecificsession.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -135,7 +136,7 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
 }
 
 export async function getAllSessions(){
-    const response = await fetch("http://localhost:80/php/getallsessions.php", {
+    const response = await fetch(`${baseURL}/getallsessions.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -148,7 +149,7 @@ export async function getAllSessions(){
 }
 
 export async function getAllSessionNames(){
-    const response = await fetch("http://localhost:80/php/getallsessionnames.php", {
+    const response = await fetch(`${baseURL}/getallsessionnames.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -161,7 +162,7 @@ export async function getAllSessionNames(){
 }
 
 export async function getAllSessionsByName(title: string){
-    const response = await fetch("http://localhost:80/php/getallsessionsbyname.php", {
+    const response = await fetch(`${baseURL}/getallsessionsbyname.php`, {
         method: 'POST',
         credentials: 'include',
         body: JSON.stringify(title),
@@ -175,7 +176,7 @@ export async function getAllSessionsByName(title: string){
 }
 
 export async function logout(){
-    const response = await fetch("http://localhost:80/php/logout.php", {
+    const response = await fetch(`${baseURL}/logout.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -188,7 +189,7 @@ export async function logout(){
 }
 
 export async function queryCheckLogin(){
-    const response = await fetch("http://localhost:80/php/checkLogin.php", {
+    const response = await fetch(`${baseURL}/checkLogin.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -206,7 +207,7 @@ export async function changePassword(oldPw: string, newPw: string){
         newPassword: newPw,
     }
 
-    const response = await fetch("http://localhost:80/php/changepassword.php", {
+    const response = await fetch(`${baseURL}/changepassword.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -224,7 +225,7 @@ export async function changeEmail(newEmail: string){
         newEmailAddress: newEmail,
     }
 
-    const response = await fetch("http://localhost:80/php/changeemail.php", {
+    const response = await fetch(`${baseURL}/changeemail.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -238,7 +239,7 @@ export async function changeEmail(newEmail: string){
 }
 
 export async function getSessionDefaults(){
-    const response = await fetch("http://localhost:80/php/getsessiondefaults.php", {
+    const response = await fetch(`${baseURL}/getsessiondefaults.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -258,7 +259,7 @@ export async function changeSessionDefaults(reps: number, sets:number, exercises
         "weight": weight,
     }
 
-    const response = await fetch("http://localhost:80/php/changesessiondefaults.php", {
+    const response = await fetch(`${baseURL}/changesessiondefaults.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -278,7 +279,7 @@ export async function createAccount(password: string, username: string, email: s
         "email": email,
     }
 
-    const response = await fetch("http://localhost:80/php/createaccount.php", {
+    const response = await fetch(`${baseURL}/createaccount.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -292,7 +293,7 @@ export async function createAccount(password: string, username: string, email: s
 }
 
 export async function getWorkoutsForHeatmap(yearOrLast365: string){
-    const response = await fetch("http://localhost:80/php/getworkoutcount.php", {
+    const response = await fetch(`${baseURL}/getworkoutcount.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -306,7 +307,7 @@ export async function getWorkoutsForHeatmap(yearOrLast365: string){
 }
 
 export async function getYearsOfAllEntries(){
-    const response = await fetch("http://localhost:80/php/getallyearsofentries.php", {
+    const response = await fetch(`${baseURL}/getallyearsofentries.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
@@ -319,7 +320,7 @@ export async function getYearsOfAllEntries(){
 }
 
 export async function getSessionDataForOneRMCalculation(exercise: string){
-    const response = await fetch("http://localhost:80/php/getsessiondataforonermcalculation.php", {
+    const response = await fetch(`${baseURL}/getsessiondataforonermcalculation.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
