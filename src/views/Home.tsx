@@ -22,7 +22,7 @@ import {isNumeric} from "../utilities/genericFns";
 import {Fab} from "@mui/material";
 
 
-
+//TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.
 
@@ -100,7 +100,7 @@ function Home(){
         notes: undefined,
         previousSessions: undefined,
         selectedSessionToLoad: undefined,
-        staticExerciseNames: undefined,
+        staticExerciseNames: [], //TODO Remove; unused.
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -131,7 +131,8 @@ function Home(){
             case "loadedPrevSessions":
                 return {...state, previousSessions: action.payload}
             case "loadedExercises":
-                return {...state, exerciseNames: action.payload, staticExerciseNames: action.payload}
+                let decoupledArray: string[] = action.payload.slice(0);
+                return {...state, exerciseNames: action.payload, staticExerciseNames: decoupledArray}
             case "exerciseNameChange":
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
@@ -392,11 +393,15 @@ function Home(){
 
     return (
         <>
-        <Nav />
         <div className={"container"}>
+            <div className={"Header"}>
+                <span className={"pageTitle"}>Add Workout</span>
+                {/*TODO MUI Button*/}
+            </div>
+            <Nav />
             <button onClick={() => {
-                cc(sessionState)
-                cc(loaderState)
+                cc(sessionState.staticExerciseNames)
+                //cc(loaderState)
             }}>For testing: Log sesssion state</button>
             <br />
             <br />
@@ -558,8 +563,8 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
     let previousExercises: JSX.Element[] = [];
 
-    if (Array.isArray(sessionState.exerciseNames)) {
-        previousExercises = sessionState.exerciseNames.map((e, k) => {
+    if (Array.isArray(sessionState.staticExerciseNames)) {
+        previousExercises = sessionState.staticExerciseNames.map((e, k) => {
             return (
               <option key={k}>{e}</option>
             );

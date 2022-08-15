@@ -4,7 +4,8 @@
 
 body{
     @apply
-    bg-gray-200
+    bg-gray-200 /*TODO Remove*/
+    p-3
 }
 
 .textInputsShort{
@@ -26,9 +27,11 @@ body{
 .exerciseContainer{
     @apply
     p-2
-    m-2
+    mb-3
+    shadow-md
     rounded
     bg-gray-400
+
 }
 
 .overlay{
@@ -44,5 +47,20 @@ body{
 
 .listQuery{
     @apply
-    block;
+   block;
+}
+
+input{
+    @apply
+    rounded
+    pl-1
+    w-20
+}
+
+.pageTitle{
+    @apply
+    text-2xl
+    drop-shadow-sm
+    font-semibold
+    /*TODO Change font family*/
 }
