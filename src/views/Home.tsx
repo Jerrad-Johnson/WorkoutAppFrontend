@@ -19,6 +19,9 @@ import {
 import {todaysDateForHTMLCalendar} from "../utilities/generalFns";
 import Nav from "../components/Nav";
 import {isNumeric} from "../utilities/genericFns";
+import {Fab} from "@mui/material";
+
+
 
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.
@@ -284,7 +287,7 @@ function Home(){
     const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
     const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
         return(
-            <div key={k}>
+            <div key={k} className={"exerciseContainer"}>
                 <ExerciseElements
                     parentIndex = {k}
                     sessionState = {sessionState}

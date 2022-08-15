@@ -4,8 +4,7 @@
 
 body{
     @apply
-    bg-black
-    text-slate-400
+    bg-gray-200
 }
 
 .textInputsShort{
@@ -22,6 +21,14 @@ body{
 .textInputsShort:last-child{
     @apply
     mb-2
+}
+
+.exerciseContainer{
+    @apply
+    p-2
+    m-2
+    rounded
+    bg-gray-400
 }
 
 .overlay{
