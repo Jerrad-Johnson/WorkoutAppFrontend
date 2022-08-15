@@ -24,12 +24,12 @@ function checkFormEntry(usernameState: string, passwordState: string){
 async function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
     if (response.data.loggedin === true){
         response = await getSessionDefaults();
-        cc(response)
-        localStorage.setItem("defaultExercises", JSON.stringify(response.data.exercises));
-        localStorage.setItem("defaultSets", JSON.stringify(response.data.sets));
-        localStorage.setItem("defaultReps", JSON.stringify(response.data.reps));
-        localStorage.setItem("defaultWeight", JSON.stringify(response.data.weight));
-
+        if (response.data !== false) {
+            localStorage.setItem("defaultExercises", JSON.stringify(response.data.exercises));
+            localStorage.setItem("defaultSets", JSON.stringify(response.data.sets));
+            localStorage.setItem("defaultReps", JSON.stringify(response.data.reps));
+            localStorage.setItem("defaultWeight", JSON.stringify(response.data.weight));
+        }
         window.location.href="Home";
     }
     setLoginState("false");
