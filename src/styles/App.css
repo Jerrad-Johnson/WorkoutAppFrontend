@@ -77,3 +77,22 @@ input{
 
 .rightSideOfExerciseInputs{
 }
+
+.addAndSubtractButtons{
+
+}
+
+.subtractButton{
+    @apply
+    mr-8
+}
+
+.addButton{
+    @apply
+    m-4
+}
+
+.exerciseNumberInput, .exerciseNumberSelector{
+    @apply
+    mx-2
+}

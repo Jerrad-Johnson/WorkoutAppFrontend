@@ -538,13 +538,14 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
     const repAndWeightInputs: JSX.Element[] = Array.from({length: sessionState.sets[parentIndex]}).map((_element, childIndex) => {
         return (
-            <div className={"exerciseInputsContainer"}>
+            <div className={"exerciseInputsContainer"} key={childIndex}>
                 <div className={"leftSideOfExerciseInputs"}>
                 <span>Reps</span>
                 <br />
                 <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
-                <select value={sessionState.reps[parentIndex][childIndex]} onChange={(event) => {
-                    sessionDispatch({ type: "reps", payload: {
+                <select value={sessionState.reps[parentIndex][childIndex]} className={"exerciseNumberSelector"}
+                        onChange={(event) => {
+                        sessionDispatch({ type: "reps", payload: {
                             topIndex: parentIndex,
                             bottomIndex: childIndex,
                             value: +event.target.value,
@@ -560,7 +561,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     <br />
                     <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
                     <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
-                           className={"shortNumberInput"} onChange={(event) => {
+                           className={"exerciseNumberInput"} onChange={(event) => {
                         sessionDispatch({type: "weights", payload: {
                             topIndex: parentIndex,
                             bottomIndex: childIndex,
