@@ -26,12 +26,16 @@ body{
 
 .exerciseContainer{
     @apply
-    p-2
+    px-4
+    py-6
     mb-3
     shadow-md
     rounded
     bg-gray-400
+}
 
+.exerciseContainer{
+    max-width: 500px;
 }
 
 .overlay{
@@ -65,7 +69,7 @@ input{
     /*TODO Change font family*/
 }
 
-.exerciseInputsContainer{
+.exerciseInputsContainer, .exerciseOptionsContainer{
     @apply
     flex
     justify-evenly
@@ -96,3 +100,36 @@ input{
     @apply
     mx-2
 }
+
+.selectOrAddExercise{
+    @apply
+    w-40
+}
+
+.selectOrAddExerciseSelector{
+
+}
+
+.selectOrAddExerciseInput{
+
+}
+
+.selectOrAddExerciseFieldChangeButton{
+    @apply
+    ml-4
+}
+
+.exerciseHeading{
+    display: block;
+    text-align: center;
+}
+
+.exerciseHeading{
+    @apply
+    pb-2
+    text-lg
+    drop-shadow-sm
+    font-semibold
+}
+
+
