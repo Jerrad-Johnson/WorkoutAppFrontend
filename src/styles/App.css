@@ -64,3 +64,16 @@ input{
     font-semibold
     /*TODO Change font family*/
 }
+
+.exerciseInputsContainer{
+    @apply
+    flex
+    justify-evenly
+}
+
+.leftSideOfExerciseInputs{
+
+}
+
+.rightSideOfExerciseInputs{
+}

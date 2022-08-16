@@ -538,7 +538,8 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
     const repAndWeightInputs: JSX.Element[] = Array.from({length: sessionState.sets[parentIndex]}).map((_element, childIndex) => {
         return (
-            <div key={childIndex}>
+            <div className={"exerciseInputsContainer"}>
+                <div className={"leftSideOfExerciseInputs"}>
                 <span>Reps</span>
                 <br />
                 <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
@@ -552,16 +553,22 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     {repOptions}
                 </select>
                 <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
+                </div>
 
-                <span>Weight</span>
-                <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
-                       className={"shortNumberInput"} onChange={(event) => {
-                    sessionDispatch({type: "weights", payload: {
-                        topIndex: parentIndex,
-                        bottomIndex: childIndex,
-                        value: +event.target.value,
-                    }});
-                }}/>
+                <div className={"rightSideOfExerciseInputs"}>
+                    <span>Weight</span>
+                    <br />
+                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
+                    <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                           className={"shortNumberInput"} onChange={(event) => {
+                        sessionDispatch({type: "weights", payload: {
+                            topIndex: parentIndex,
+                            bottomIndex: childIndex,
+                            value: +event.target.value,
+                        }});
+                    }}/>
+                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
+                </div>
             </div>
         );
     });
@@ -625,6 +632,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
               {setOptions}
           </select>
+          <br />
 
           {repAndWeightInputs}
       </>
