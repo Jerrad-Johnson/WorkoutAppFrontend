@@ -20,6 +20,8 @@ import {todaysDateForHTMLCalendar} from "../utilities/generalFns";
 import Nav from "../components/Nav";
 import {isNumeric} from "../utilities/genericFns";
 import {Fab} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import NavigationIcon from '@mui/icons-material/Navigation';
 
 
 //TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
@@ -537,16 +539,19 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     const repAndWeightInputs: JSX.Element[] = Array.from({length: sessionState.sets[parentIndex]}).map((_element, childIndex) => {
         return (
             <div key={childIndex}>
-                <span>Rep Count</span>
+                <span>Reps</span>
+                <br />
+                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
                 <select value={sessionState.reps[parentIndex][childIndex]} onChange={(event) => {
                     sessionDispatch({ type: "reps", payload: {
-                        topIndex: parentIndex,
-                        bottomIndex: childIndex,
-                        value: +event.target.value,
-                    }});
+                            topIndex: parentIndex,
+                            bottomIndex: childIndex,
+                            value: +event.target.value,
+                        }});
                 }}>
                     {repOptions}
                 </select>
+                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
 
                 <span>Weight</span>
                 <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
