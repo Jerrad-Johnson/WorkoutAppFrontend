@@ -4,7 +4,7 @@
 
 body{
     @apply
-    bg-gray-200 /*TODO Remove*/
+    bg-gray-600 /*TODO Remove*/
     p-3
 }
 
@@ -29,9 +29,11 @@ body{
     px-4
     py-6
     mb-3
+        bg-white
     shadow-md
     rounded
-    bg-gray-400
+    outline
+    outline-1
 }
 
 .exerciseContainer{

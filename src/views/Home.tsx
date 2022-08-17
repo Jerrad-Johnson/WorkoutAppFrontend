@@ -672,7 +672,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
                         sessionDispatch({ type: "addOrSelectExercise", payload: {value: 1, index: parentIndex }});
                         sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
-                    }}>Add Option</Button>
+                    }}>Add Title</Button>
                     </div>
                 </div>
                 <br/>
@@ -693,7 +693,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                         <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
                             sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
                             sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
-                        }}>Select Previous</Button>
+                        }}>Select Existing</Button>
                     </div>
                 </div>
                 <br/>
