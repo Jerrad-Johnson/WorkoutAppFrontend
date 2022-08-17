@@ -143,3 +143,11 @@ input{
 .setOptionContainer{
     text-align: center;
 }
+
+.headerContainer{
+    @apply
+    flex
+    justify-between
+    px-4
+    py-4
+}

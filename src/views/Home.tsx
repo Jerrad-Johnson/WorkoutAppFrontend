@@ -26,6 +26,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { purple, red } from '@mui/material/colors';
+import CustomizedMenus from "../components/DropdownMenu";
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -81,6 +82,7 @@ function Home(){
     } //TODO Save to / load from database.
 
     const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions);
+    const [optionsDropdownState, setOptionsDropdownState] = useState(false);
 
     function optionsReducer(state: OptionsData, action: GenericAction){
         switch (action.type){
@@ -439,10 +441,15 @@ function Home(){
     return (
         <>
         <div className={"container"}>
-            <div className={"Header"}>
-                <span className={"pageTitle"}>Add Workout</span>
-                {/*TODO MUI Button*/}
+            <div className={"headerContainer"}>
+                <div className={"headerLeft"}>
+                    <span className={"pageTitle"}>Add Workout</span>
+                </div>
+                <div className={"headerRight"}>
+                    <CustomizedMenus/>
+                </div>
             </div>
+
             <Nav />
             <button onClick={() => {
                 cc(sessionState.staticExerciseNames)
@@ -450,9 +457,10 @@ function Home(){
             }}>For testing: Log sesssion state</button>
             <br />
             <br />
-            <Options
+            <OptionsDropdown
                 optionsDispatch = {optionsDispatch}
                 optionsState = {optionsState}
+                optionsDropdownState = {optionsDropdownState}
             />
             {previousSessionSelector}
             <br />
@@ -487,7 +495,8 @@ function Home(){
     )
 }
 
-function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData}) {
+function OptionsDropdown({optionsDispatch, optionsState, optionsDropdownState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData,
+    optionsDropdownState: boolean}) {
     const exerciseOptions: JSX.Element[] = arrayOfOptions(12);
     const setOptions: JSX.Element[] = arrayOfOptions(12);
     const repOptions: JSX.Element[] = arrayOfOptions(20);
@@ -499,40 +508,48 @@ function Options({optionsDispatch, optionsState}: {optionsDispatch: Dispatch<Gen
         cc(response); //TODO Handle response
     }
 
-    return (
+    let optionsHTML: JSX.Element = (
         <div className={"optionsContainer"}>
-            <span>Default exercise count</span>
-            <select value={optionsState.exercises} onChange={(e) => {
+                <span>Default exercise count</span>
+                <select value={optionsState.exercises} onChange={(e) => {
                 optionsDispatch({type: "exercises", payload: +e.target.value});
                 localStorage.setItem("defaultExercises", JSON.stringify(+e.target.value));
             }}>
-                {exerciseOptions}
-            </select>
-            <span>Default set count</span>
-            <select value={optionsState.sets} onChange={(e) => {
+            {exerciseOptions}
+                </select>
+                <span>Default set count</span>
+                <select value={optionsState.sets} onChange={(e) => {
                 optionsDispatch({type: "sets", payload: +e.target.value});
                 localStorage.setItem("defaultSets", JSON.stringify(+e.target.value));
             }}>
-                {setOptions}
-            </select>
-            <span>Default rep count</span>
-            <select value={optionsState.reps} onChange={(e) => {
+            {setOptions}
+                </select>
+                <span>Default rep count</span>
+                <select value={optionsState.reps} onChange={(e) => {
                 optionsDispatch({type: "reps", payload: +e.target.value});
                 localStorage.setItem("defaultReps", JSON.stringify(+e.target.value));
             }}>
-                {repOptions}
-            </select>
-            <span>Default weight</span>
-            <input type={"number"} value={optionsState.weights} onChange={(e) => {
+            {repOptions}
+                </select>
+                <span>Default weight</span>
+                <input type={"number"} value={optionsState.weights} onChange={(e) => {
                 optionsDispatch({type: "weights", payload: +e.target.value});
                 localStorage.setItem("defaultWeight", JSON.stringify(+e.target.value));
             }}/>
-            <br />
-            <button onClick={(e) => {
+                <br />
+                <button onClick={(e) => {
                 e.preventDefault();
                 handleSaveDefaults();
             }}>Save Defaults</button>
         </div>
+    );
+
+    return (
+        <>
+            {optionsDropdownState === true && optionsHTML}
+
+        </>
+
     );
 }
 
