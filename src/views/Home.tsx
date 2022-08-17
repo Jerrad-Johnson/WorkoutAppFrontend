@@ -141,7 +141,6 @@ function Home(){
 
                 if (state.reps[action.payload.topIndex][action.payload.bottomIndex] < 20
                     && action.payload.value === 1){
-                    cc(5)
                     newReps2[action.payload.topIndex][action.payload.bottomIndex] = state.reps[action.payload.topIndex][action.payload.bottomIndex] +1
                 }
 
@@ -150,6 +149,19 @@ function Home(){
                 let newWeights: number[][] = [...state.weights];
                 newWeights[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
                 return {...state, weights: newWeights};
+            case "weightsClickedToChange":
+                let newWeights2: number[][] = [...state.weights];
+
+                if (state.weights[action.payload.topIndex][action.payload.bottomIndex] > 1
+                    && action.payload.value === -1){
+                    newWeights2[action.payload.topIndex][action.payload.bottomIndex] = state.weights[action.payload.topIndex][action.payload.bottomIndex] -1
+                }
+
+                if (action.payload.value === 1){
+                    newWeights2[action.payload.topIndex][action.payload.bottomIndex] = state.weights[action.payload.topIndex][action.payload.bottomIndex] +1
+                }
+
+                return {...state, newWeights2};
             case "notes":
                 return {...state, notes: action.payload};
             case "loadedPrevSessions":
@@ -596,7 +608,15 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
 
                 <div className={"rightSideOfExerciseInputs"}>
                     <span className={"exerciseInputsTitles"}>Weight</span>
-                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
+                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                         onClick={(event) => {
+                             event.preventDefault();
+                             sessionDispatch({ type: "weightsClickedToChange", payload: {
+                                     topIndex: parentIndex,
+                                     bottomIndex: childIndex,
+                                     value: -1
+                                 }});
+                         }}>-</Fab>
                     <TextField type={"number"} variant={"standard"} sx={{width: "70px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
                            className={"exerciseNumberInput"} onChange={(event) => {
                         sessionDispatch({type: "weights", payload: {
@@ -605,7 +625,15 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                             value: +event.target.value,
                         }});
                     }}/>
-                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
+                    <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}
+                         onClick={(event) => {
+                             event.preventDefault();
+                             sessionDispatch({ type: "weightsClickedToChange", payload: {
+                                     topIndex: parentIndex,
+                                     bottomIndex: childIndex,
+                                     value: 1
+                                 }});
+                         }}>+</Fab>
                 </div>
             </div>
         );
