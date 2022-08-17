@@ -583,7 +583,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                             value: -1
                         }});
                 }}>-</Fab>
-                <FormControl variant={"standard"}>
+                <FormControl variant={"standard"} sx={{width: "60px;"}}>
                     <Select value={sessionState.reps[parentIndex][childIndex]} className={"exerciseNumberSelector"}
                             onChange={(event) => {
                                 sessionDispatch({ type: "reps", payload: {
@@ -617,13 +617,14 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                                      value: -1
                                  }});
                          }}>-</Fab>
-                    <TextField type={"number"} variant={"standard"} sx={{width: "70px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
-                           className={"exerciseNumberInput"} onChange={(event) => {
-                        sessionDispatch({type: "weights", payload: {
-                            topIndex: parentIndex,
-                            bottomIndex: childIndex,
-                            value: +event.target.value,
-                        }});
+                    <TextField type={"number"} variant={"standard"} sx={{width: "72px", "margin-left": "6px",
+                        "margin-right": "6px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                        className={"exerciseNumberInput"} onChange={(event) => {
+                            sessionDispatch({type: "weights", payload: {
+                                topIndex: parentIndex,
+                                bottomIndex: childIndex,
+                                value: +event.target.value,
+                            }});
                     }}/>
                     <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}
                          onClick={(event) => {
