@@ -125,8 +125,18 @@ function Home(){
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
             case "sets":
-                let newSets: SessionData = handleSetCountChange({...state}, action.payload.value, action.payload.topIndex);
-                return newSets;
+                if (action.payload.value === -1 && state.sets[action.payload.topIndex] > 1) {
+                    let newSetsCount = state.sets[action.payload.topIndex] + action.payload.value;
+                    let newSets: SessionData = handleSetCountChange({...state}, newSetsCount, action.payload.topIndex);
+                    return newSets;
+                } else if (action.payload.value === 1 && state.sets[action.payload.topIndex] < 12){
+                    let newSetsCount = state.sets[action.payload.topIndex] + action.payload.value;
+                    let newSets: SessionData = handleSetCountChange({...state}, newSetsCount, action.payload.topIndex);
+                    return newSets;
+                } else {
+                    return {...state}
+
+                }
             case "reps":
                 let newReps: number[][] = [...state.reps];
                 newReps[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
@@ -714,18 +724,21 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
           <div className={"setOptionContainer"}>
               <br />
               <span className={"exerciseHeading"}>Sets</span>
-              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
+              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                   onClick={(e) => {
+                       sessionDispatch({ type: "sets", payload: {
+                               topIndex: parentIndex,
+                               value: -1,
+                           }});
+                   }}>-</Fab>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>+</Fab>
-              {/*<select value={sessionState.sets[parentIndex]} onChange={(e) => {
-                  sessionDispatch({ type: "sets", payload: {
-                          topIndex: parentIndex,
-                          value: +e.target.value,
-                      }});
-              }}>
-                  {setOptions}
-              </select>*/}
-
+              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                   onClick={(e) => {
+                       sessionDispatch({ type: "sets", payload: {
+                               topIndex: parentIndex,
+                               value: 1,
+                           }});
+                   }}>+</Fab>
           </div>
       </>
     );
