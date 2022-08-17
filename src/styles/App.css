@@ -80,6 +80,7 @@ input{
 }
 
 .rightSideOfExerciseInputs{
+
 }
 
 .addAndSubtractButtons{
@@ -132,4 +133,11 @@ input{
     font-semibold
 }
 
+.exerciseInputsTitles{
+    text-align: center;
+    display: block;
+}
 
+.setOptionContainer{
+    text-align: center;
+}

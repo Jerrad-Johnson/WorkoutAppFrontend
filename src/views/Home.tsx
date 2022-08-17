@@ -20,9 +20,15 @@ import {todaysDateForHTMLCalendar} from "../utilities/generalFns";
 import Nav from "../components/Nav";
 import {isNumeric} from "../utilities/genericFns";
 import {Fab} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import NavigationIcon from '@mui/icons-material/Navigation';
 import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { purple, red } from '@mui/material/colors';
+
+const primary = red[500]; // #f44336
+const accent = purple['A200']; // #e040fb
 
 
 //TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
@@ -528,9 +534,8 @@ export default Home;
 function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
                               {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
                                   loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){
-
     const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
-        return (<option key={k}>{k+1}</option>);
+        return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
     })
 
     const setOptions: JSX.Element[] = Array.from({length: 12}).map((_e, k) => {
@@ -541,27 +546,27 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
         return (
             <div className={"exerciseInputsContainer"} key={childIndex}>
                 <div className={"leftSideOfExerciseInputs"}>
-                <span>Reps</span>
-                <br />
+                <span className={"exerciseInputsTitles"}>Reps</span>
                 <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
-                <select value={sessionState.reps[parentIndex][childIndex]} className={"exerciseNumberSelector"}
-                        onChange={(event) => {
-                        sessionDispatch({ type: "reps", payload: {
-                            topIndex: parentIndex,
-                            bottomIndex: childIndex,
-                            value: +event.target.value,
-                        }});
-                }}>
-                    {repOptions}
-                </select>
+                <FormControl variant={"standard"}>
+                    <Select value={sessionState.reps[parentIndex][childIndex]} className={"exerciseNumberSelector"}
+                            onChange={(event) => {
+                                sessionDispatch({ type: "reps", payload: {
+                                        topIndex: parentIndex,
+                                        bottomIndex: childIndex,
+                                        value: +event.target.value,
+                                    }});
+                            }}>
+                        {repOptions}
+                    </Select>
+                </FormControl>
                 <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
                 </div>
 
                 <div className={"rightSideOfExerciseInputs"}>
-                    <span>Weight</span>
-                    <br />
+                    <span className={"exerciseInputsTitles"}>Weight</span>
                     <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
-                    <input type={"number"} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                    <TextField type={"number"} variant={"standard"} sx={{width: "70px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
                            className={"exerciseNumberInput"} onChange={(event) => {
                         sessionDispatch({type: "weights", payload: {
                             topIndex: parentIndex,
@@ -580,7 +585,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     if (Array.isArray(sessionState.staticExerciseNames)) {
         previousExercises = sessionState.staticExerciseNames.map((e, k) => {
             return (
-              <option key={k}>{e}</option>
+              <MenuItem key={k} value={e}>{e}</MenuItem>
             );
         });
     }
@@ -588,15 +593,19 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
         if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
             return (
+                <>
+                <span className={"exerciseHeading"}>Exercise Title</span>
                 <div className={"exerciseOptionsContainer"} key={k}>
                     <div className={"leftSideOfExerciseInputs"}>
-                    <select value={sessionState.exerciseNames[parentIndex]} className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                        onChange={(e) => {
-                        sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
-                    }}>
-                        <option></option>
-                        {previousExercises}
-                    </select>
+                        <FormControl variant={"standard"}>
+                            <Select label={"Exercise"} value={sessionState.exerciseNames[parentIndex]} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                                onChange={(e) => {
+                                sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
+                            }}>
+                                <MenuItem value={""}></MenuItem>
+                                {previousExercises}
+                            </Select>
+                       </FormControl>
                     </div>
 
                     <div className={"rightSideOfExerciseInputs"}>
@@ -606,6 +615,8 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     }}>Add Option</Button>
                     </div>
                 </div>
+                <br/>
+                </>
             );
         } else {
             return (
@@ -613,7 +624,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                 <span className={"exerciseHeading"}>Exercise Title</span>
                 <div className={"exerciseOptionsContainer"} key={k}>
                     <div className={"leftSideOfExerciseInputs"}>
-                        <input type={"text"} defaultValue={""}  className={"selectOrAddExercise selectOrAddExerciseInput"}
+                        <TextField variant={"standard"} defaultValue={""} className={"selectOrAddExercise selectOrAddExerciseInput"}
                             onChange={(e) => {
                             sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
                         }} />
@@ -622,9 +633,10 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                         <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
                             sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
                             sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
-                        }}>Select Previous </Button>
+                        }}>Select Previous</Button>
                     </div>
                 </div>
+                <br/>
                 </>
 
             );
@@ -638,17 +650,23 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     return (
       <>
           {exerciseSelectorOrInput}
-          <span>Set Count</span>
-          <select value={sessionState.sets[parentIndex]} onChange={(e) => {
-              sessionDispatch({ type: "sets", payload: {
-                  topIndex: parentIndex,
-                  value: +e.target.value,
-              }});
-          }}>
-
-              {setOptions}
-          </select>
           {repAndWeightInputs}
+          <div className={"setOptionContainer"}>
+              <br />
+              <span className={"exerciseHeading"}>Sets</span>
+              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>+</Fab>
+              {/*<select value={sessionState.sets[parentIndex]} onChange={(e) => {
+                  sessionDispatch({ type: "sets", payload: {
+                          topIndex: parentIndex,
+                          value: +e.target.value,
+                      }});
+              }}>
+                  {setOptions}
+              </select>*/}
+
+          </div>
       </>
     );
 }
