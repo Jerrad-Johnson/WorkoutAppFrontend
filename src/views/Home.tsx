@@ -121,7 +121,6 @@ function Home(){
             case "date":
                 return {...state, date: action.payload};
             case "exercises":
-                cc(action.payload)
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
             case "sets":
@@ -575,10 +574,6 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
         return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
     })
 
-    const setOptions: JSX.Element[] = Array.from({length: 12}).map((_e, k) => {
-        return (<option key={k}>{k+1}</option>);
-    });
-
     const repAndWeightInputs: JSX.Element[] = Array.from({length: sessionState.sets[parentIndex]}).map((_element, childIndex) => {
         return (
             <div className={"exerciseInputsContainer"} key={childIndex}>
@@ -627,8 +622,8 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                                      value: -1
                                  }});
                          }}>-</Fab>
-                    <TextField type={"number"} variant={"standard"} sx={{width: "72px", "margin-left": "6px",
-                        "margin-right": "6px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
+                    <TextField type={"number"} variant={"standard"} sx={{width: "72px", "marginLeft": "6px",
+                        "marginRight": "6px"}} value={sessionState.weights[parentIndex][childIndex]} key={childIndex}
                         className={"exerciseNumberInput"} onChange={(event) => {
                             sessionDispatch({type: "weights", payload: {
                                 topIndex: parentIndex,
@@ -663,7 +658,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
         if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
             return (
-                <>
+                <div key={k}>
                 <span className={"exerciseHeading"}>Exercise Title</span>
                 <div className={"exerciseOptionsContainer"} key={k}>
                     <div className={"leftSideOfExerciseInputs"}>
@@ -686,11 +681,11 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     </div>
                 </div>
                 <br/>
-                </>
+                </div>
             );
         } else {
             return (
-                <>
+                <div key={k}>
                 <span className={"exerciseHeading"}>Exercise Title</span>
                 <div className={"exerciseOptionsContainer"} key={k}>
                     <div className={"leftSideOfExerciseInputs"}>
@@ -707,7 +702,7 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
                     </div>
                 </div>
                 <br/>
-                </>
+                </div>
 
             );
         }
