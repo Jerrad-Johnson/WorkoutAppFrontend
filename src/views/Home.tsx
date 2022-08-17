@@ -131,6 +131,21 @@ function Home(){
                 let newReps: number[][] = [...state.reps];
                 newReps[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
                 return {...state, newReps};
+            case "repsClickedToChange":
+                let newReps2: number[][] = [...state.reps];
+
+                if (state.reps[action.payload.topIndex][action.payload.bottomIndex] >= 2
+                && action.payload.value === -1){
+                    newReps2[action.payload.topIndex][action.payload.bottomIndex] = state.reps[action.payload.topIndex][action.payload.bottomIndex] -1
+                }
+
+                if (state.reps[action.payload.topIndex][action.payload.bottomIndex] < 20
+                    && action.payload.value === 1){
+                    cc(5)
+                    newReps2[action.payload.topIndex][action.payload.bottomIndex] = state.reps[action.payload.topIndex][action.payload.bottomIndex] +1
+                }
+
+                return {...state, newReps2};
             case "weights":
                 let newWeights: number[][] = [...state.weights];
                 newWeights[action.payload.topIndex][action.payload.bottomIndex] = action.payload.value;
@@ -547,20 +562,36 @@ function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDis
             <div className={"exerciseInputsContainer"} key={childIndex}>
                 <div className={"leftSideOfExerciseInputs"}>
                 <span className={"exerciseInputsTitles"}>Reps</span>
-                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}>-</Fab>
+                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        sessionDispatch({ type: "repsClickedToChange", payload: {
+                            topIndex: parentIndex,
+                            bottomIndex: childIndex,
+                            value: -1
+                        }});
+                }}>-</Fab>
                 <FormControl variant={"standard"}>
                     <Select value={sessionState.reps[parentIndex][childIndex]} className={"exerciseNumberSelector"}
                             onChange={(event) => {
                                 sessionDispatch({ type: "reps", payload: {
                                         topIndex: parentIndex,
                                         bottomIndex: childIndex,
-                                        value: +event.target.value,
+                                        value: +event.target.value
                                     }});
                             }}>
                         {repOptions}
                     </Select>
                 </FormControl>
-                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}>+</Fab>
+                <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons addButton"}
+                     onClick={(event) => {
+                         event.preventDefault();
+                         sessionDispatch({ type: "repsClickedToChange", payload: {
+                             topIndex: parentIndex,
+                             bottomIndex: childIndex,
+                             value: 1
+                         }});
+                 }}>+</Fab>
                 </div>
 
                 <div className={"rightSideOfExerciseInputs"}>
