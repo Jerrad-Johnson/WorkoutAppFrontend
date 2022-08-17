@@ -24,19 +24,19 @@ body{
     mb-2
 }
 
-.exerciseContainer{
+.basicContainer{
     @apply
     px-4
     py-6
     mb-3
-        bg-white
+    bg-white
     shadow-md
     rounded
     outline
     outline-1
 }
 
-.exerciseContainer{
+.basicContainer{
     max-width: 500px;
 }
 
@@ -71,7 +71,7 @@ input{
     /*TODO Change font family*/
 }
 
-.exerciseInputsContainer, .exerciseOptionsContainer{
+.exerciseInputsContainer, .exerciseOptionsContainer, .basicSplitFlexContainer{
     @apply
     flex
     justify-evenly
@@ -150,4 +150,17 @@ input{
     justify-between
     px-4
     py-4
+}
+
+h2{
+    @apply
+    pb-2
+    text-lg
+    drop-shadow-sm
+    font-semibold
+    block
+}
+
+h2{
+    text-align: center;
 }

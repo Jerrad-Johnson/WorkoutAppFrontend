@@ -33,6 +33,7 @@ const accent = purple['A200']; // #e040fb
 
 
 //TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
+//TODO Check if logged in. Redirect if not.
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.
 
@@ -335,7 +336,7 @@ function Home(){
     const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
     const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
         return(
-            <div key={k} className={"exerciseContainer"}>
+            <div key={k} className={"basicContainer exerciseContainer"}>
                 <ExerciseElements
                     parentIndex = {k}
                     sessionState = {sessionState}
@@ -360,16 +361,22 @@ function Home(){
 
         previousSessionSelector = Array.of(1).map((_e, k) => {
             return (
-                <div key={k}>
-                  <select key={k} onChange={(e) => {
+                <div key={k} className={"basicSplitFlexContainer"}>
+                    <div className={"leftOfBasicSplitFlexContainer"}>
+
+                    <select key={k} onChange={(e) => {
                         sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                  }}>
-                      <option></option>
+                    }}>
+                      <option></option> {/*TODO Add error handling*/}
                       {previousSessionOptions}
-                  </select>
-                 <button onClick={() => {
-                     applySpecificSessionHandler();
-                 }}>Load Previous Session</button>
+                    </select>
+                    </div>
+
+                    <div className={"rightOfBasicSplitFlexContainer"}>
+                    <button onClick={() => {
+                        applySpecificSessionHandler();
+                    }}>Load Previous Session</button>
+                    </div>
                 </div>
             );
         });
@@ -441,7 +448,7 @@ function Home(){
     return (
         <>
         <div className={"container"}>
-            <div className={"headerContainer"}>
+            <div className={"basicContainer headerContainer"}>
                 <div className={"headerLeft"}>
                     <span className={"pageTitle"}>Add Workout</span>
                 </div>
@@ -450,38 +457,40 @@ function Home(){
                 </div>
             </div>
 
-            <Nav />
-            <button onClick={() => {
-                cc(sessionState.staticExerciseNames)
-                //cc(loaderState)
-            }}>For testing: Log sesssion state</button>
-            <br />
-            <br />
-            <OptionsDropdown
-                optionsDispatch = {optionsDispatch}
-                optionsState = {optionsState}
-                optionsDropdownState = {optionsDropdownState}
-            />
-            {previousSessionSelector}
-            <br />
-            <br />
-            <span>Session Title</span> {/*TODO Check entry to make sure it does not contain  " @ "*/}
-            <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
-                sessionDispatch({type: "title", payload: e.target.value});
-            }}/>
-            <br />
-            <span>Session Date</span>
-            <input type={"date"} value={sessionState.date} onChange={(e) => {
-                sessionDispatch({type: "date", payload: e.target.value});
-            }}/>
-            <br />
-            <span>Number of Exercises</span>
-            <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
-                sessionDispatch({type: "exercises", payload: +e.target.value});
-            }}>
-                {exerciseOptionElements}
-            </select>
-                {exerciseDataElements}
+
+            <div className={"basicContainer"}>
+                <h2>Session Details</h2>
+{/*                <button onClick={() => {
+                    cc(sessionState.staticExerciseNames)
+                    //cc(loaderState)
+                }}>For testing: Log sesssion state</button>*/}
+                <OptionsDropdown
+                    optionsDispatch = {optionsDispatch}
+                    optionsState = {optionsState}
+                    optionsDropdownState = {optionsDropdownState}
+                />
+                {previousSessionSelector}
+                <br />
+                <br />
+                <span>Session Title</span> {/*TODO Check entry to make sure it does not contain  " @ "*/}
+                <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                    sessionDispatch({type: "title", payload: e.target.value});
+                }}/>
+                <br />
+                <span>Session Date</span>
+                <input type={"date"} value={sessionState.date} onChange={(e) => {
+                    sessionDispatch({type: "date", payload: e.target.value});
+                }}/>
+                <br />
+                <span>Number of Exercises</span>
+                <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
+                    sessionDispatch({type: "exercises", payload: +e.target.value});
+                }}>
+                    {exerciseOptionElements}
+                </select>
+            </div>
+
+            {exerciseDataElements}
             <span>Notes</span> {/*TODO Make it possible to add notes to database*/}
             <input type={"text"} className={"notes"} onChange={(e) => {
                 sessionDispatch({type: "notes", payload: e.target.value});
