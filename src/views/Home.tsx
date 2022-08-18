@@ -130,6 +130,7 @@ function Home(){
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
             case "sets":
+                cc(state.sets);
                 if (action.payload.value === -1 && state.sets[action.payload.topIndex] > 1) {
                     let newSetsCount = state.sets[action.payload.topIndex] + action.payload.value;
                     let newSets: SessionData = handleSetCountChange({...state}, newSetsCount, action.payload.topIndex);
@@ -140,7 +141,6 @@ function Home(){
                     return newSets;
                 } else {
                     return {...state}
-
                 }
             case "reps":
                 let newReps: number[][] = [...state.reps];
@@ -456,11 +456,11 @@ function Home(){
             <Nav title={"Add Workout"}/>
 
             <div className={"basicContainer"}>
-                <h2>Load Previous Session</h2>
-{/*                <button onClick={() => {
+                <h2>Previous Session</h2>
+                <button onClick={() => {
                     cc(sessionState.staticExerciseNames)
                     //cc(loaderState)
-                }}>For testing: Log sesssion state</button>*/}
+                }}>For testing: Log sesssion state</button>
 
 {/*                <OptionsDropdown
                     optionsDispatch = {optionsDispatch}
