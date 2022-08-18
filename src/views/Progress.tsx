@@ -122,7 +122,7 @@ function Progress(){
                     <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
                     <br/>
 
-                    <h2>Session Data by Name</h2>
+                    <h2>Session Data by Title</h2>
                     <FormControl className={"center"} variant={"standard"}>
                         <Select value={workoutSessionSelectorState} onChange={(e) => {
                             setWorkoutSessionSelectorState(e.target.value);
@@ -201,12 +201,6 @@ function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateA
         formattedSessionDataWith1RM[i].date = formattedSessionData[i].date;
         formattedSessionDataWith1RM[i].exercise = response.data[0].exercise;
     }
-
-/*    let formattedAndSortedSessionDataWith1RM: any = formattedSessionDataWith1RM.sort((a: any, b: any) => {
-       if (a.date > b.date) return 1;
-       if (a.date < b.date) return -1;
-       return 0;
-    }); Replaced with ORDER BY in MySQL. Test more.*/
 
     setOneRMExerciseData(formattedSessionDataWith1RM);
 }
