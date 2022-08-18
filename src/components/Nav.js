@@ -1,11 +1,14 @@
-import {Link} from "react-router-dom";
+import CustomizedMenus from "./DropdownMenu";
 
-function Nav(){
+function Nav({title}: {title: string}){
     return (
-        <div>
-            <Link to={"/Home"}>Home</Link> &nbsp;
-            <Link to={"/Management"}>Account Management</Link> &nbsp;
-            <Link to={"/Progress"}>View Progress</Link>
+        <div className={"basicContainer headerContainer"}>
+            <div className={"headerLeft"}>
+                <span className={"pageTitle"}>{title}</span>
+            </div>
+            <div className={"headerRight"}>
+                <CustomizedMenus/>
+            </div>
         </div>
     );
 }

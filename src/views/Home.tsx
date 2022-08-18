@@ -453,15 +453,7 @@ function Home(){
 
     return (
         <>
-        <div className={"container"}>
-            <div className={"basicContainer headerContainer"}>
-                <div className={"headerLeft"}>
-                    <span className={"pageTitle"}>Add Workout</span>
-                </div>
-                <div className={"headerRight"}>
-                    <CustomizedMenus/>
-                </div>
-            </div>
+            <Nav title={"Add Workout"}/>
 
 
             <div className={"basicContainer"}>
@@ -538,7 +530,6 @@ function Home(){
                     handleSessionSubmission();
                 }}>Submit Session</button>
             </div>
-        </div>
         </>
     )
 }

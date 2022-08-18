@@ -82,7 +82,7 @@ function Progress(){
 
     return (
         <>
-        <Nav/>
+        <Nav title={"Progress"}/>
         <div className={"progressContainer"}>
             <button onClick={(e) => {
                 e.preventDefault();

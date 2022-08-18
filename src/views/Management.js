@@ -4,6 +4,8 @@ import {useReducer, useState} from "react";
 import {getAllSessions} from "../utilities/queries";
 import {HandleActionsData, GenericAction} from "../utilities/interfaces";
 import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
+import Button from "@mui/material/Button";
+import CustomizedMenus from "../components/DropdownMenu";
 let cc = console.log;
 
 function Management(){
@@ -200,60 +202,51 @@ function Management(){
         }});
     }
 
+    let title = "Account Management";
+
     return (
         <>
-        <Nav />
-        <div>
-            <button onClick={() => {
-                cc(handleActionsState);
-            }}>Log Data</button>
-            <br />
-            <br />
+            <Nav title={title} />
+            <div className={"basicContainer"}>
+                <Button variant={"contained"} size={"small"} onClick={() => {
+                    handleLogout();
+                }}>Log Out</Button>
 
-            <button onClick={() => {
-                handleLogout();
-            }}>Log Out</button>
-            <br />
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                    e.preventDefault()
+                    handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
+                }}>Change E-mail Address</Button>
 
-            <button onClick={() => {
-                handleGetSessions();
-            }}>Get List of  Sessions</button>
-            <br />
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                    e.preventDefault();
+                    handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
+                }}>Change Password</Button>
+                <br />
+                <br />
 
-            <button onClick={() => {
-                handleGetAllExercises();
-            }}>Get List of Exercises</button>
-            <br />
-            <br />
+                <Button variant={"contained"} size={"small"} onClick={() => {
+                    handleGetSessions();
+                }}>Get List of  Sessions</Button>
 
-            <button onClick={(e) => {
-                e.preventDefault()
-                handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
-            }}>Change E-mail Address</button>
-            <br />
+                <Button variant={"contained"} size={"small"} onClick={() => {
+                    handleGetAllExercises();
+                }}>Get List of Exercises</Button>
 
-            <button onClick={(e) => {
-                e.preventDefault();
-                handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
-                cc(handleActionsState)
-            }}>Change Password</button>
-            <br />
-            <br />
 
-            {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
-            {handleActionsState.changeEmail === true && <>{changeEmailForm}</>}
-            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
+                {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
+                {handleActionsState.changeEmail === true && <>{changeEmailForm}</>}
+                {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
 
-            {dataState &&
-                <div className={"listContainer"}>
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        setDataState(undefined);
-                    }}>Close</button>
-                    {dataState}
-                </div>
-            }
-        </div>
+                {dataState &&
+                    <div className={"listContainer"}>
+                        <button onClick={(e) => {
+                            e.preventDefault();
+                            setDataState(undefined);
+                        }}>Close</button>
+                        {dataState}
+                    </div>
+                }
+            </div>
         </>
     );
 }
