@@ -44,21 +44,22 @@ function Management(){
         <div className={"basicContainer"}>
             <h2>Change Password</h2>
             <form>
+
                 <TextField type={"password"} value={oldPasswordState} variant={"standard"} sx={{width: "100%"}} placeholder={"Old Password"} onChange={(e) => {
                     setOldPasswordState(e.target.value);
                 }}/>
-                <br />
-                <br />
+                <br /><br />
+
                 <TextField type={"password"} value={newPasswordState} variant={"standard"} sx={{width: "100%"}} placeholder={"New Password"} onChange={(e) => {
                     setNewPasswordState(e.target.value);
                 }}/>
-                <br />
-                <br />
+                <br /><br />
+
                 <TextField type={"password"} value={newPasswordVerifyState} variant={"standard"} sx={{width: "100%"}} placeholder={"Confirm New Password"} onChange={(e) => {
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
-                <br />
-                <br />
+                <br /><br />
+
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
                 }}>Cancel</Button> &nbsp;
@@ -66,6 +67,7 @@ function Management(){
                     e.preventDefault();
                     handleChangePassword();
                 }}>Submit</Button>
+
             </form>
        </div>
     );
@@ -78,20 +80,22 @@ function Management(){
                 <TextField type={"text"} value={newEmailState} variant={"standard"} sx={{width: "100%"}} placeholder={"New E-mail"} onChange={(e) => {
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
-                <br/>
-                <br/>
+                <br/><br/>
+
                 <TextField type={"text"} value={newEmailVerifyState} variant={"standard"} sx={{width: "100%"}} placeholder={"Confirm New E-mail"} onChange={(e) => {
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
-                <br />
-                <br />
+                <br /><br />
+
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
                     handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
                 }}>Cancel</Button>  &nbsp;
+
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
                     e.preventDefault();
                     handleChangeEmail();
                 }}>Submit</Button>
+
             </form>
         </div>
     );
@@ -164,7 +168,6 @@ function Management(){
         } catch (e) {
             cc(e);
         }
-
     }
 
     async function handleGetSessions(){

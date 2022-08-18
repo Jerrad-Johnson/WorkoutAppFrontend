@@ -93,17 +93,17 @@ export default function CustomizedMenus() {
                 </MenuItem>
                 <MenuItem onClick={() => {
                     handleClose();
-                    window.location.href="Management";
-                }} disableRipple>
-                    <AccountBoxIcon />
-                    Account
-                </MenuItem>
-                <MenuItem onClick={() => {
-                    handleClose();
                     window.location.href="Progress";
                 }} disableRipple>
                     <CheckIcon />
                     Progress
+                </MenuItem>
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Management";
+                }} disableRipple>
+                    <AccountBoxIcon />
+                    Account
                 </MenuItem>
                 {/*<Divider sx={{ my: 0.5 }} />
                 <MenuItem disableRipple>
