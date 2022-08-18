@@ -9,6 +9,9 @@ import {
 } from "../utilities/queries";
 import Nav from "../components/Nav.js";
 import OneRMLineGraph from "../components/OneRMLineGraph";
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import FormControl from "@mui/material/FormControl";
 let cc = console.log;
 
 function Progress(){
@@ -43,7 +46,7 @@ function Progress(){
     });
 
     let sessionOptions: JSX.Element[] = workoutListState.map((entry, k) => {
-        return (<option key={k}>{entry}</option>);
+        return (<MenuItem key={k} value={entry}>{entry}</MenuItem>);
     });
 
     let chosenSessionTableRows: JSX.Element[] = [];
@@ -57,7 +60,7 @@ function Progress(){
 
             for (let i = 0; i < entry.reps.length; i++){
                 let row: JSX.Element = (
-                    <tr key={rowKey}>
+                    <tr key={rowKey} className={"tableSessionRow"}>
                        <td>{entry.exercises[i]}</td>
                        <td>{entry.weights[i]}</td>
                        <td>{entry.reps[i]}</td>
@@ -70,7 +73,7 @@ function Progress(){
 
            return (
                <tbody key={k}>
-                    <tr>
+                    <tr className={"tableSessionRow"}>
                        <td className={"tableSessionDate"}>{entry.session_date}</td>
                     </tr>
                     {specificSessionData}
@@ -120,23 +123,23 @@ function Progress(){
                     <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
                     <br/>
 
+                    Show data for all exercises named
+                    <br/>
+                    <FormControl variant={"standard"}>
+                        <Select value={workoutSessionSelectorState} onChange={(e) => {
+                            setWorkoutSessionSelectorState(e.target.value);
+                        }}>
+                            <MenuItem value={""}></MenuItem>
+                            {sessionOptions}
+                        </Select>
+                    </FormControl>
+                    <br/>
+                    <br/>
+                    {workoutSessionState.length !== 0 &&
 
-                    <br/>
-                    Show a table of all date for sessions named ...
-                    <br/>
-                    Session
-                    <select value={workoutSessionSelectorState} onChange={(e) => {
-                        setWorkoutSessionSelectorState(e.target.value);
-                    }}>
-                        <option></option>
-                        {sessionOptions}
-                    </select>
-                    <br/>
-                    {workoutSessionState !== undefined &&
-
-                        <table>
+                        <table className={"tableOfSession"}>
                             <thead>
-                                <tr>
+                                <tr className={"tableOfSession"}>
                                     <th className={"tableSessionHeader"}>Exercise</th>
                                     <th className={"tableSessionHeader"}>Weight Lifted</th>
                                     <th className={"tableSessionHeader"}>Reps</th>
