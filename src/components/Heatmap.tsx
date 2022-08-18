@@ -158,7 +158,6 @@ function createDataForHeatmap(response: any, yearOrLast365: string, setHeatmapSt
 
 function getEmptySetOfHashmapData(yearOrLast365: string){
     if (yearOrLast365 === "Last 365 Days") {
-        cc(5)
         let oneYearBack: Date = new Date();
         oneYearBack.setDate(oneYearBack.getDate() - 364);
 
