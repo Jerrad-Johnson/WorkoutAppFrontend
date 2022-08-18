@@ -363,7 +363,7 @@ function Home(){
 
         previousSessionSelector = Array.of(1).map((_e, k) => {
             return (
-                <div key={k} className={"basicSplitFlexContainer"}>
+                <div key={k} className={"sessionDetailsContainer"}>
 
                     <div className={"leftOfBasicSplitFlexContainer"}>
                     <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
@@ -475,21 +475,25 @@ function Home(){
                     optionsState = {optionsState}
                     optionsDropdownState = {optionsDropdownState}
                 />
-                {previousSessionSelector}
-                {/*                <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
-                    sessionDispatch({type: "title", payload: e.target.value});
-                }}/>*/}
+                {/*{previousSessionSelector}*/}
                 <br/>
-                <div className={"basicSplitFlexContainer"}>
-                    <div className={"leftSideOfExerciseInputs"}>
-                        <span>Session Title</span>
-                        <br/>
-                        <TextField type={"text"} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                <div className={"sessionDetailsContainer"}>
+                    <div>
+                        <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
+                            <Select value={sessionState.selectedSessionToLoad} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                                    onChange={(e) => {
+                                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                                    }}>
+                                <MenuItem value={""}></MenuItem>
+                                {previousSessionOptions} {/*TODO Add error handling*/}
+                            </Select>
+                        </FormControl>
+
+                        <TextField type={"text"} placeholder={"Session Title"} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
                             sessionDispatch({type: "title", payload: e.target.value});
                         }}/>
-                        <br/>
-                        <br/>
-
+                        <br />
+                        <br />
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <MobileDatePicker
                                 label="Session Date"
@@ -501,14 +505,12 @@ function Home(){
                                 renderInput={(params) => <TextField {...params} />}
                             />
                         </LocalizationProvider>
-
-                        {/*<input type={"date"} value={sessionState.date} onChange={(e) => {
-                            sessionDispatch({type: "date", payload: e.target.value});
-                        }}/>*/}
-
-                        <br />
                     </div>
-                    <div className={"rightSideOfExerciseInputs"}>
+                    <div>
+                        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
+                            applySpecificSessionHandler();
+                        }}>Load Prev. Session</Button>
+                        <br />
                         <span>Number of Exercises</span>
                         <br/>
 
@@ -520,25 +522,22 @@ function Home(){
                                 {exerciseOptionElements}
                             </Select>
                         </FormControl>
-
-{/*                        <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
-                            sessionDispatch({type: "exercises", payload: +e.target.value});
-                        }}>
-                            {exerciseOptionElements}
-                        </select>*/}
                     </div>
                 </div>
             </div>
 
             {exerciseDataElements}
-            <span>Notes</span> {/*TODO Make it possible to add notes to database*/}
-            <input type={"text"} className={"notes"} onChange={(e) => {
-                sessionDispatch({type: "notes", payload: e.target.value});
-            }}/>
-            <br />
-            <button onClick={() => {
-                handleSessionSubmission();
-            }}>Submit</button>
+
+            <div className={"basicContainer"}>
+                <span>Notes</span> {/*TODO Make it possible to add notes to database*/}
+                <input type={"text"} className={"notes"} onChange={(e) => {
+                    sessionDispatch({type: "notes", payload: e.target.value});
+                }}/>
+                <br />
+                <button onClick={() => {
+                    handleSessionSubmission();
+                }}>Submit Session</button>
+            </div>
         </div>
         </>
     )

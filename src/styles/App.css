@@ -77,6 +77,13 @@ input{
     justify-evenly
 }
 
+.sessionDetailsContainer{
+    @apply
+    px-6
+    flex
+    justify-between
+}
+
 .leftSideOfExerciseInputs{
 
 }

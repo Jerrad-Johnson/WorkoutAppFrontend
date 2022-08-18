@@ -3,12 +3,12 @@ import { styled, alpha } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import EditIcon from '@mui/icons-material/Edit';
 import Divider from '@mui/material/Divider';
-import ArchiveIcon from '@mui/icons-material/Archive';
-import FileCopyIcon from '@mui/icons-material/FileCopy';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import HomeIcon from '@mui/icons-material/Home';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import CheckIcon from '@mui/icons-material/Check';
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -84,23 +84,32 @@ export default function CustomizedMenus() {
                 open={open}
                 onClose={handleClose}
             >
-                <MenuItem onClick={handleClose} disableRipple>
-                    <EditIcon />
-                    Edit
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Home";
+                }} disableRipple>
+                    <HomeIcon/>
+                    Home
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
-                    <FileCopyIcon />
-                    Duplicate
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Management";
+                }} disableRipple>
+                    <AccountBoxIcon />
+                    Account
                 </MenuItem>
-                <Divider sx={{ my: 0.5 }} />
-                <MenuItem onClick={handleClose} disableRipple>
-                    <ArchiveIcon />
-                    Archive
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Progress";
+                }} disableRipple>
+                    <CheckIcon />
+                    Progress
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
+                {/*<Divider sx={{ my: 0.5 }} />
+                <MenuItem disableRipple>
                     <MoreHorizIcon />
-                    More
-                </MenuItem>
+                    Defaults
+                </MenuItem>*/}
             </StyledMenu>
         </div>
     );
