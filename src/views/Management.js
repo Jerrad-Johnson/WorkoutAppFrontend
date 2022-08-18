@@ -25,21 +25,22 @@ function Management(){
 
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
     const confirmationPopup = (
-        <div className={"basicContainer"}>
-            <button onClick={(e) => {
+        <>
+            <Button variant={"contained"} size={"small"} onClick={(e) => {
                 e.preventDefault();
                 handleActionsDispatch({type: "cancel"});
-            }}>Cancel</button> &nbsp;
+            }}>Cancel</Button> &nbsp;
 
-            <button onClick={(e) => {
+            <Button variant={"contained"} size={"small"} onClick={(e) => {
                 e.preventDefault();
                 handleActionsDispatch({type: "performFunction"});
-            }}>Confirm</button>
-       </div>);
+            }}>Confirm</Button>
+       </>
+    );
 
     const changePasswordForm = (
         <div className={"basicContainer"}>
-            <br />
+            <h2>Change Password</h2>
             <form>
                 <input type={"password"} value={oldPasswordState} onChange={(e) => {
                     setOldPasswordState(e.target.value);
@@ -53,45 +54,55 @@ function Management(){
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
                 <br />
-                <button onClick={(e) => {
+                <br />
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
-                }}>Cancel</button> &nbsp;
-                <button onClick={(e) => {
+                }}>Cancel</Button> &nbsp;
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
                     e.preventDefault();
                     handleChangePassword();
-                }}>Submit</button>
+                }}>Submit</Button>
             </form>
-       </div>);
+       </div>
+    );
 
     const changeEmailForm = (
         <div className={"basicContainer"}>
-        <form>
-            <input type={"text"} value={newEmailState} onChange={(e) => {
-                setNewEmailState(e.target.value);
-            }}/>
-            <br />
-            <input type={"text"} value={newEmailVerifyState} onChange={(e) => {
-                setNewEmailVerifyState(e.target.value);
-            }}/>
-            <br />
-            <button onClick={(e) => {
-                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
-            }}>Cancel</button>  &nbsp;
-            <button onClick={(e) => {
-                e.preventDefault();
-                handleChangeEmail();
-            }}>Submit</button>
-        </form>
-    </div>);
+            <h2>Change E-mail</h2>
+            <form>
+                <input type={"text"} value={newEmailState} onChange={(e) => {
+                    setNewEmailState(e.target.value);
+                }}/>
+                <br />
+                <input type={"text"} value={newEmailVerifyState} onChange={(e) => {
+                    setNewEmailVerifyState(e.target.value);
+                }}/>
+                <br />
+                <br />
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                    handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+                }}>Cancel</Button>  &nbsp;
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                    e.preventDefault();
+                    handleChangeEmail();
+                }}>Submit</Button>
+            </form>
+        </div>
+    );
 
     const displaySessionOrExerciseList = (
         <div className={"basicContainer"}>
-            <button onClick={(e) => {
+            <h2>Exercise Data</h2>
+            {dataState}
+            <Button variant={"contained"} size={"small"} sx={{marginRight: "9px"}} onClick={(e) => {
                 e.preventDefault();
                 setDataState(undefined);
-            }}>Close</button>
-            {dataState}
-        </div>);
+            }}>Close</Button>
+{/*            <br/>
+            <br/>*/}
+            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
+        </div>
+    );
 
 
     function handleActionsReducer(state: HandleActionsData, action: GenericAction){
@@ -248,7 +259,7 @@ function Management(){
 
             {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
             {handleActionsState.changeEmail === true && <>{changeEmailForm}</>}
-            {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
+
             {dataState && displaySessionOrExerciseList}
 
         </>
