@@ -1,4 +1,4 @@
-import React, {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
+ import React, {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
 import {
     OptionsData,
     OptionsAction,
@@ -101,7 +101,7 @@ function Home(){
     }
 
     const defaultSession: SessionData = { //TODO Considered using localStorage, but instead: use a confirmation when trying nav away.
-        title: "Session Title",
+        title: "",
         date: todaysDateForHTMLCalendar(),
         exerciseCount: optionsState.exercises,
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
@@ -111,7 +111,7 @@ function Home(){
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
         notes: undefined,
         previousSessions: undefined,
-        selectedSessionToLoad: undefined,
+        selectedSessionToLoad: "",
         staticExerciseNames: [], //TODO Remove; unused.
     }
 
@@ -354,28 +354,38 @@ function Home(){
     if (sessionState.previousSessions !== undefined){
         previousSessionOptions = sessionState.previousSessions.map((e: {session_date: string, session_title: string}, k: number) => {
             return (
-                <option key={k}>{e.session_title} @ {e.session_date}</option>
+                <MenuItem key={k} value={`${e.session_title} @ ${e.session_date}`}>{e.session_title} @ {e.session_date}</MenuItem>
             );
         });
-
 
         previousSessionSelector = Array.of(1).map((_e, k) => {
             return (
                 <div key={k} className={"basicSplitFlexContainer"}>
                     <div className={"leftOfBasicSplitFlexContainer"}>
 
-                    <select key={k} onChange={(e) => {
+                    <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
+                        <Select value={sessionState.selectedSessionToLoad} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                                onChange={(e) => {
+                                    sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                                }}>
+                            <MenuItem value={""}></MenuItem>
+                            {previousSessionOptions}
+                        </Select>
+                    </FormControl>
+
+{/*                    <select key={k} onChange={(e) => {
                         sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
                     }}>
-                      <option></option> {/*TODO Add error handling*/}
+                      <option></option> TODO Add error handling
                       {previousSessionOptions}
-                    </select>
+                    </select>*/}
                     </div>
 
                     <div className={"rightOfBasicSplitFlexContainer"}>
-                    <button onClick={() => {
+
+                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
                         applySpecificSessionHandler();
-                    }}>Load Previous Session</button>
+                    }}>Load Prev. Session</Button>
                     </div>
                 </div>
             );
@@ -383,7 +393,7 @@ function Home(){
     }
 
     function applySpecificSessionHandler(){
-        if (sessionState.selectedSessionToLoad !== undefined && sessionState.selectedSessionToLoad.length !== 0) {
+        if (sessionState.selectedSessionToLoad !== "" && sessionState.selectedSessionToLoad.length !== 0) {
             let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
             let sessionResponseFromDB = getSpecificSession(sessionDate, sessionTitle).then(response =>
                 sessionDispatch({type: "insertPreviousSession", payload: response.data}));
