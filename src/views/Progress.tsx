@@ -71,7 +71,7 @@ function Progress(){
            return (
                <tbody key={k}>
                     <tr>
-                       <td>{entry.session_date}</td>
+                       <td className={"tableSessionDate"}>{entry.session_date}</td>
                     </tr>
                     {specificSessionData}
                </tbody>
@@ -137,9 +137,9 @@ function Progress(){
                         <table>
                             <thead>
                                 <tr>
-                                    <th>Exercise</th>
-                                    <th>Weight Lifted</th>
-                                    <th>Reps</th>
+                                    <th className={"tableSessionHeader"}>Exercise</th>
+                                    <th className={"tableSessionHeader"}>Weight Lifted</th>
+                                    <th className={"tableSessionHeader"}>Reps</th>
                                 </tr>
                             </thead>
                                 {chosenSessionTableRows}
