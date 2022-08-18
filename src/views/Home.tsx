@@ -26,27 +26,23 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { purple, red } from '@mui/material/colors';
-import CustomizedMenus from "../components/DropdownMenu";
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
-
+let cc = console.log;
 
 //TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
 //TODO Check if logged in. Redirect if not.
 //TODO Handle user deleting an exercise; will screw up exercise selector
 //TODO Handle getting logged out; script will still try to run queries.
 
-let cc = console.log;
-
 function Home(){
 
     let testString: string = "810J-&J2KAn98mLwgi5on&*nuij"; //@ts-ignore
     let convertedString: string = convertString(testString);
-
 
     function convertString(testString: string){
         let strippedString: string = testString.replace(/\D/g, ''); //@ts-ignore
@@ -67,16 +63,16 @@ function Home(){
     }
 
     let defaultExercises: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = JSON.parse(localStorage.getItem("defaultExercises"));
+    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +JSON.parse(localStorage.getItem("defaultExercises"));
 
     let defaultSets: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultSets") !== null) defaultSets = JSON.parse(localStorage.getItem("defaultSets"));
+    if (localStorage.getItem("defaultSets") !== null) defaultSets = +JSON.parse(localStorage.getItem("defaultSets"));
 
     let defaultReps: number = 5; //@ts-ignore
-    if (localStorage.getItem("defaultReps") !== null) defaultReps = JSON.parse(localStorage.getItem("defaultReps"));
+    if (localStorage.getItem("defaultReps") !== null) defaultReps = +JSON.parse(localStorage.getItem("defaultReps"));
 
     let defaultWeight: number = 100; //@ts-ignore
-    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = JSON.parse(localStorage.getItem("defaultWeight"));
+    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = +JSON.parse(localStorage.getItem("defaultWeight"));
 
     const defaultOptions: OptionsData = {
         exercises: defaultExercises, //@ts-ignore
@@ -458,8 +454,8 @@ function Home(){
             <div className={"basicContainer"}>
                 <h2>Previous Session</h2>
                 <button onClick={() => {
-                    cc(sessionState.staticExerciseNames)
-                    //cc(loaderState)
+                    cc(sessionState)
+                    cc(loaderState)
                 }}>For testing: Log sesssion state</button>
 
 {/*                <OptionsDropdown

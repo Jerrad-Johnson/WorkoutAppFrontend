@@ -1,8 +1,8 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 let cc = console.log;
-let baseURL: string = "/php";
-//let baseURL: string = "http://localhost:80/php";
+//let baseURL: string = "/php";
+let baseURL: string = "http://localhost:80/php";
 
 export function loginQuery(data: LoginCredentials) {
     fetch(`${baseURL}/login.php`, {
