@@ -42,7 +42,7 @@ function Progress(){
     }, [workoutSessionSelectorState]);
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
-       return (<option key={k}>{entry}</option>);
+       return (<MenuItem key={k} value={entry}>{entry}</MenuItem>);
     });
 
     let sessionOptions: JSX.Element[] = workoutListState.map((entry, k) => {
@@ -81,19 +81,18 @@ function Progress(){
            )
         });
     }
-    cc(workoutSessionState)
 
     return (
         <>
         <Nav title={"Progress"}/>
         <div className={"basicContainer"}>
-            <button onClick={(e) => {
+{/*            <button onClick={(e) => {
                 e.preventDefault();
                 cc(workoutListState);
                 cc(workoutSessionSelectorState);
                 cc(workoutSessionState)
                 cc(chosenSessionTableRows)
-            }}>test data</button>
+            }}>test data</button>*/}
 
             <div className={"options"}>
             </div>
@@ -111,21 +110,21 @@ function Progress(){
                 <div>
                     <br/>
                     <br/>
-                    Find 1RM across time
-                    <br/>
-                    Exercise
-                    <select value={oneRMExerciseSelectorState} onChange={(e) => {
-                        setOneRMExerciseSelectorState(e.target.value);
-                    }}>
-                        <option></option>
-                        {exerciseOptions}
-                    </select>
+                    <h2>Find 1RM across time</h2>
+                    <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
+                        <Select value={oneRMExerciseSelectorState} onChange={(e) => {
+                            setOneRMExerciseSelectorState(e.target.value);
+                        }}>
+                            <MenuItem value={""}></MenuItem>
+                            {exerciseOptions}
+                        </Select>
+                    </FormControl>
                     <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
                     <br/>
 
                     Show data for all exercises named
                     <br/>
-                    <FormControl variant={"standard"}>
+                    <FormControl className={"center"} variant={"standard"}>
                         <Select value={workoutSessionSelectorState} onChange={(e) => {
                             setWorkoutSessionSelectorState(e.target.value);
                         }}>
@@ -135,7 +134,7 @@ function Progress(){
                     </FormControl>
                     <br/>
                     <br/>
-                    {workoutSessionState.length !== 0 &&
+                    {workoutSessionState?.length !== 0 &&
 
                         <table className={"tableOfSession"}>
                             <thead>
@@ -254,7 +253,6 @@ async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch
 
     let reformattedData = reformatSessionData(response.data);
     setWorkoutSessionState(reformattedData);
-    cc(reformattedData)
 }
 
 function reformatSessionData(data: any){

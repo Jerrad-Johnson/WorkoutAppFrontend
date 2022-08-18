@@ -10,6 +10,9 @@ import ActivityCalendar from "react-activity-calendar";
 import ReactTooltip from "react-tooltip";
 import {getWorkoutsForHeatmap, getYearsOfAllEntries} from "../utilities/queries";
 import {eachDayOfInterval} from "date-fns";
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import FormControl from "@mui/material/FormControl";
 let cc = console.log;
 
 // Graph docs: https://grubersjoe.github.io/react-activity-calendar/?path=/docs/activity-calendar--default
@@ -32,7 +35,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
     if (yearsOfEntriesState !== undefined) {
         yearsOfEntries = yearsOfEntriesState.map((e: string, k: number) => {
             return (
-                <option key={k}>{e}</option>
+                <MenuItem key={k} value={e}>{e}</MenuItem>
             );
         });
     }
@@ -41,16 +44,21 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
         heatmapChart = (<CircularProgress size={150}/>);
     } else { //TODO Add overlay upon changing year
         heatmapChart = (
-            <div className={"heatmap"}>
+            <div>
+                <h2>Workout History</h2>
                 {yearsOfEntries &&
-                    <select value={selectedYearOfEntriesState} onChange={(e) => {
-                        setSelectedYearOfEntriesState(e.target.value);
-                        handleGetWorkoutsForHeatmap(setHeatmapState, e.target.value);
-                    }}>
-                        {yearsOfEntries}
-                        <option>Last 365</option>
-                    </select>
+                    <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
+                        <Select value={selectedYearOfEntriesState} onChange={(e) => {
+                            setSelectedYearOfEntriesState(e.target.value);
+                            handleGetWorkoutsForHeatmap(setHeatmapState, e.target.value);
+                        }}>
+                            {yearsOfEntries}
+                            <MenuItem value={"Last 365"}>Last 365</MenuItem>
+                        </Select>
+                    </FormControl>
                 }
+                <br />
+                <br />
                 <ActivityCalendar
                     data={heatmapState}
                     labels={{
