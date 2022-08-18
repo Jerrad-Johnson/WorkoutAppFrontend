@@ -9,7 +9,6 @@ import {
 } from "../utilities/queries";
 import Nav from "../components/Nav.js";
 import OneRMLineGraph from "../components/OneRMLineGraph";
-import {isEmptyObject} from "../utilities/genericFns";
 let cc = console.log;
 
 function Progress(){
@@ -79,6 +78,7 @@ function Progress(){
            )
         });
     }
+    cc(workoutSessionState)
 
     return (
         <>
@@ -133,6 +133,7 @@ function Progress(){
                     </select>
                     <br/>
                     {workoutSessionState !== undefined &&
+
                         <table>
                             <thead>
                                 <tr>
@@ -250,6 +251,7 @@ async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch
 
     let reformattedData = reformatSessionData(response.data);
     setWorkoutSessionState(reformattedData);
+    cc(reformattedData)
 }
 
 function reformatSessionData(data: any){
