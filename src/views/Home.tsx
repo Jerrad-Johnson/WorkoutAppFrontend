@@ -455,67 +455,70 @@ function Home(){
         <>
             <Nav title={"Add Workout"}/>
 
-
             <div className={"basicContainer"}>
-                <h2>Session Details</h2>
+                <h2>Load Previous Session</h2>
 {/*                <button onClick={() => {
                     cc(sessionState.staticExerciseNames)
                     //cc(loaderState)
                 }}>For testing: Log sesssion state</button>*/}
-                <OptionsDropdown
+
+{/*                <OptionsDropdown
                     optionsDispatch = {optionsDispatch}
                     optionsState = {optionsState}
                     optionsDropdownState = {optionsDropdownState}
-                />
+                />*/}
+
                 {/*{previousSessionSelector}*/}
+
+                {/*<span className={"selectorTitle"}>Load Previous Session</span>*/}
+                <FormControl variant={"standard"} sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
+                    <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                            onChange={(e) => {
+                                sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                            }}>
+                        <MenuItem value={""}></MenuItem>
+                        {previousSessionOptions} {/*TODO Add error handling*/}
+                    </Select>
+                </FormControl>
+                <br/><br/>
+
+                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
+                    applySpecificSessionHandler();
+                }}>Load Prev. Session</Button>
+
+                <br/><br/>
+                <h2>Current Session Details</h2>
+
+                <span className={"selectorTitle"}>Session Title</span>
+                <TextField type={"text"} sx={{width: "100%"}} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                    sessionDispatch({type: "title", payload: e.target.value});
+                }}/>
+                <br /><br />
+
+                <span className={"selectorTitle"}>Number of Exercises</span>
+                <FormControl variant={"standard"} sx={{width: "100%"}}>
+                    <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"} sx={{width: "100%"}}
+                            onChange={(e) => {
+                                sessionDispatch({type: "exercises", payload: +e.target.value});
+                            }}>
+                        {exerciseOptionElements}
+                    </Select>
+                </FormControl>
+
                 <br/>
-                <div className={"sessionDetailsContainer"}>
-                    <div>
-                        <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
-                            <Select value={sessionState.selectedSessionToLoad} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                                    onChange={(e) => {
-                                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                                    }}>
-                                <MenuItem value={""}></MenuItem>
-                                {previousSessionOptions} {/*TODO Add error handling*/}
-                            </Select>
-                        </FormControl>
+                <br/>
 
-                        <TextField type={"text"} placeholder={"Session Title"} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
-                            sessionDispatch({type: "title", payload: e.target.value});
-                        }}/>
-                        <br />
-                        <br />
-                        <LocalizationProvider dateAdapter={AdapterDateFns}>
-                            <MobileDatePicker
-                                label="Session Date"
-                                inputFormat="yyyy/MM/dd"
-                                value={sessionState.date}
-                                onChange={(e) => {
-                                    sessionDispatch({type: "date", payload: e.toISOString().slice(0, 10)})
-                                }}
-                                renderInput={(params) => <TextField {...params} />}
-                            />
-                        </LocalizationProvider>
-                    </div>
-                    <div>
-                        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
-                            applySpecificSessionHandler();
-                        }}>Load Prev. Session</Button>
-                        <br />
-                        <span>Number of Exercises</span>
-                        <br/>
-
-                        <FormControl variant={"standard"} sx={{width: "60px;"}}>
-                            <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"}
-                                    onChange={(e) => {
-                                        sessionDispatch({type: "exercises", payload: +e.target.value});
-                                    }}>
-                                {exerciseOptionElements}
-                            </Select>
-                        </FormControl>
-                    </div>
-                </div>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <MobileDatePicker
+                        label="Session Date"
+                        inputFormat="yyyy/MM/dd"
+                        value={sessionState.date}
+                        onChange={(e) => {
+                            sessionDispatch({type: "date", payload: e.toISOString().slice(0, 10)})
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                    />
+                </LocalizationProvider>
             </div>
 
             {exerciseDataElements}

@@ -198,3 +198,8 @@ h2{
 h2{
     margin-bottom: 8px;
 }
+
+.selectorTitle{
+    font-weight: 500;
+    display: block;
+}

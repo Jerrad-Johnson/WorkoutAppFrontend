@@ -7,6 +7,7 @@ import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns
 import Button from "@mui/material/Button";
 import CustomizedMenus from "../components/DropdownMenu";
 let cc = console.log;
+//TODO Add session default options
 
 function Management(){
     const [dataState, setDataState] = useState(undefined);
