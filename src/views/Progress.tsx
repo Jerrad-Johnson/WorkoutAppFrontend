@@ -83,7 +83,7 @@ function Progress(){
     return (
         <>
         <Nav title={"Progress"}/>
-        <div className={"progressContainer"}>
+        <div className={"basicContainer"}>
             <button onClick={(e) => {
                 e.preventDefault();
                 cc(workoutListState);
