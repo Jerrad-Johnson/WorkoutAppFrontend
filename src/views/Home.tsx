@@ -7,7 +7,7 @@ import {
     DatabaseData,
     SessionEntry
 } from "../utilities/interfaces";
-import {arrayOfOptions} from "../utilities/sharedFns";
+import {arrayOfMenuItems, arrayOfOptions} from "../utilities/sharedFns";
 import {
     getRecentSessions,
     loginV2,
@@ -333,7 +333,7 @@ function Home(){
         return session;
     }
 
-    const exerciseOptionElements: JSX.Element[] = arrayOfOptions(12);
+    const exerciseOptionElements: JSX.Element[] = arrayOfMenuItems(12);
     const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
         return(
             <div key={k} className={"basicContainer exerciseContainer"}>
@@ -470,24 +470,47 @@ function Home(){
                     optionsDropdownState = {optionsDropdownState}
                 />
                 {previousSessionSelector}
-                <br />
-                <br />
-                <span>Session Title</span> {/*TODO Check entry to make sure it does not contain  " @ "*/}
-                <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                {/*                <input type={"text"} className={"Title"} value={sessionState.title} onChange={(e) => {
                     sessionDispatch({type: "title", payload: e.target.value});
-                }}/>
-                <br />
-                <span>Session Date</span>
-                <input type={"date"} value={sessionState.date} onChange={(e) => {
-                    sessionDispatch({type: "date", payload: e.target.value});
-                }}/>
-                <br />
-                <span>Number of Exercises</span>
-                <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
-                    sessionDispatch({type: "exercises", payload: +e.target.value});
-                }}>
-                    {exerciseOptionElements}
-                </select>
+                }}/>*/}
+                <br/>
+                <div className={"basicSplitFlexContainer"}>
+                    <div className={"leftSideOfExerciseInputs"}>
+                        <span>Session Title</span>
+                        <br/>
+                        <TextField type={"text"} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
+                            sessionDispatch({type: "title", payload: e.target.value});
+                        }}/>
+                        <br/>
+
+                        <span>Session Date</span>
+                        <br />
+                        <input type={"date"} value={sessionState.date} onChange={(e) => {
+                            sessionDispatch({type: "date", payload: e.target.value});
+                        }}/>
+
+                        <br />
+                    </div>
+                    <div className={"rightSideOfExerciseInputs"}>
+                        <span>Number of Exercises</span>
+                        <br/>
+
+                        <FormControl variant={"standard"} sx={{width: "60px;"}}>
+                            <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"}
+                                    onChange={(e) => {
+                                        sessionDispatch({type: "exercises", payload: +e.target.value});
+                                    }}>
+                                {exerciseOptionElements}
+                            </Select>
+                        </FormControl>
+
+{/*                        <select value={+sessionState.exerciseCount || +optionsState.exercises} onChange={(e) => {
+                            sessionDispatch({type: "exercises", payload: +e.target.value});
+                        }}>
+                            {exerciseOptionElements}
+                        </select>*/}
+                    </div>
+                </div>
             </div>
 
             {exerciseDataElements}

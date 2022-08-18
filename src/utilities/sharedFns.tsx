@@ -1,8 +1,17 @@
+import MenuItem from "@mui/material/MenuItem";
+import React from "react";
+
 export function arrayOfOptions(lengthOfArray: number) {
     return Array.from({length: lengthOfArray}).map((_e, k) => {
         return (
             <option key={k}>{k + 1}</option>
         );
+    });
+}
+
+export function arrayOfMenuItems(lengthOfArray: number) {
+    return Array.from({length: lengthOfArray}).map((_e, k) => {
+        return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
     });
 }
 
