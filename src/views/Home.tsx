@@ -27,6 +27,9 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { purple, red } from '@mui/material/colors';
 import CustomizedMenus from "../components/DropdownMenu";
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -361,32 +364,25 @@ function Home(){
         previousSessionSelector = Array.of(1).map((_e, k) => {
             return (
                 <div key={k} className={"basicSplitFlexContainer"}>
-                    <div className={"leftOfBasicSplitFlexContainer"}>
 
+                    <div className={"leftOfBasicSplitFlexContainer"}>
                     <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
                         <Select value={sessionState.selectedSessionToLoad} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
                                 onChange={(e) => {
                                     sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
                                 }}>
                             <MenuItem value={""}></MenuItem>
-                            {previousSessionOptions}
+                            {previousSessionOptions} {/*TODO Add erro handling*/}
                         </Select>
                     </FormControl>
-
-{/*                    <select key={k} onChange={(e) => {
-                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                    }}>
-                      <option></option> TODO Add error handling
-                      {previousSessionOptions}
-                    </select>*/}
                     </div>
 
                     <div className={"rightOfBasicSplitFlexContainer"}>
-
-                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
-                        applySpecificSessionHandler();
-                    }}>Load Prev. Session</Button>
+                        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
+                            applySpecificSessionHandler();
+                        }}>Load Prev. Session</Button>
                     </div>
+
                 </div>
             );
         });
@@ -492,12 +488,23 @@ function Home(){
                             sessionDispatch({type: "title", payload: e.target.value});
                         }}/>
                         <br/>
+                        <br/>
 
-                        <span>Session Date</span>
-                        <br />
-                        <input type={"date"} value={sessionState.date} onChange={(e) => {
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <MobileDatePicker
+                                label="Session Date"
+                                inputFormat="yyyy/MM/dd"
+                                value={sessionState.date}
+                                onChange={(e) => {
+                                    sessionDispatch({type: "date", payload: e.toISOString().slice(0, 10)})
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+
+                        {/*<input type={"date"} value={sessionState.date} onChange={(e) => {
                             sessionDispatch({type: "date", payload: e.target.value});
-                        }}/>
+                        }}/>*/}
 
                         <br />
                     </div>
