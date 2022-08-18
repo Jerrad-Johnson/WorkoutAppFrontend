@@ -122,8 +122,7 @@ function Progress(){
                     <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
                     <br/>
 
-                    Show data for all exercises named
-                    <br/>
+                    <h2>Session Data by Name</h2>
                     <FormControl className={"center"} variant={"standard"}>
                         <Select value={workoutSessionSelectorState} onChange={(e) => {
                             setWorkoutSessionSelectorState(e.target.value);

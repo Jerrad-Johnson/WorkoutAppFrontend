@@ -194,3 +194,7 @@ h2{
     display: block;
     width: 100%;
 }
+
+h2{
+    margin-bottom: 8px;
+}
