@@ -17,10 +17,10 @@ let cc = console.log;
 function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
-    const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365");
+    const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365 Days");
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
-    const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string | undefined>(undefined);
+    const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string | undefined>("");
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
@@ -28,7 +28,7 @@ function Progress(){
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
 
     useEffect(() => {
-        handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365");
+        handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
         handleGetListOfExercises(setExerciseListState);
         handleGetListOfSessionsByName(setWorkoutListState);
     }, []);

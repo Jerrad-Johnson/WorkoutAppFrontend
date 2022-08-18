@@ -53,7 +53,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
                             handleGetWorkoutsForHeatmap(setHeatmapState, e.target.value);
                         }}>
                             {yearsOfEntries}
-                            <MenuItem value={"Last 365"}>Last 365</MenuItem>
+                            <MenuItem value={"Last 365 Days"}>Last 365 Days</MenuItem>
                         </Select>
                     </FormControl>
                 }
@@ -62,7 +62,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
                 <ActivityCalendar
                     data={heatmapState}
                     labels={{
-                        totalCount: `{{count}} workouts in the last year`, /*TODO Add date range*/
+                        totalCount: `{{count}} workouts in ${selectedYearOfEntriesState}`, /*TODO Add date range*/
                         tooltip: '<strong>{{count}} workouts</strong>  {{date}}'
                     }}
                     theme={{
@@ -157,7 +157,8 @@ function createDataForHeatmap(response: any, yearOrLast365: string, setHeatmapSt
 }
 
 function getEmptySetOfHashmapData(yearOrLast365: string){
-    if (yearOrLast365 === "Last 365") {
+    if (yearOrLast365 === "Last 365 Days") {
+        cc(5)
         let oneYearBack: Date = new Date();
         oneYearBack.setDate(oneYearBack.getDate() - 364);
 
