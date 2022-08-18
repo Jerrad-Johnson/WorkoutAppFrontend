@@ -6,6 +6,7 @@ import {HandleActionsData, GenericAction} from "../utilities/interfaces";
 import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
 import CustomizedMenus from "../components/DropdownMenu";
+import {TextField} from "@mui/material";
 let cc = console.log;
 //TODO Add session default options
 
@@ -43,15 +44,17 @@ function Management(){
         <div className={"basicContainer"}>
             <h2>Change Password</h2>
             <form>
-                <input type={"password"} value={oldPasswordState} onChange={(e) => {
+                <TextField type={"password"} value={oldPasswordState} variant={"standard"} sx={{width: "100%"}} placeholder={"Old Password"} onChange={(e) => {
                     setOldPasswordState(e.target.value);
                 }}/>
                 <br />
-                <input type={"password"} value={newPasswordState} onChange={(e) => {
+                <br />
+                <TextField type={"password"} value={newPasswordState} variant={"standard"} sx={{width: "100%"}} placeholder={"New Password"} onChange={(e) => {
                     setNewPasswordState(e.target.value);
                 }}/>
                 <br />
-                <input type={"password"} value={newPasswordVerifyState} onChange={(e) => {
+                <br />
+                <TextField type={"password"} value={newPasswordVerifyState} variant={"standard"} sx={{width: "100%"}} placeholder={"Confirm New Password"} onChange={(e) => {
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
                 <br />
@@ -71,12 +74,14 @@ function Management(){
         <div className={"basicContainer"}>
             <h2>Change E-mail</h2>
             <form>
-                <input type={"text"} value={newEmailState} onChange={(e) => {
-                    setNewEmailState(e.target.value);
+
+                <TextField type={"text"} value={newEmailState} variant={"standard"} sx={{width: "100%"}} placeholder={"New E-mail"} onChange={(e) => {
+                    setNewPasswordVerifyState(e.target.value);
                 }}/>
-                <br />
-                <input type={"text"} value={newEmailVerifyState} onChange={(e) => {
-                    setNewEmailVerifyState(e.target.value);
+                <br/>
+                <br/>
+                <TextField type={"text"} value={newEmailVerifyState} variant={"standard"} sx={{width: "100%"}} placeholder={"Confirm New E-mail"} onChange={(e) => {
+                    setNewPasswordVerifyState(e.target.value);
                 }}/>
                 <br />
                 <br />
