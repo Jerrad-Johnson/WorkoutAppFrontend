@@ -52,8 +52,6 @@ body{
 }
 
 .listQuery{
-    @apply
-   block;
 }
 
 input{

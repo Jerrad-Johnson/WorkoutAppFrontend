@@ -7,6 +7,7 @@ import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns
 import Button from "@mui/material/Button";
 import CustomizedMenus from "../components/DropdownMenu";
 import {TextField} from "@mui/material";
+import DeleteIcon from '@mui/icons-material/Delete';
 let cc = console.log;
 //TODO Add session default options
 
@@ -102,14 +103,13 @@ function Management(){
 
     const displaySessionOrExerciseList = (
         <div className={"basicContainer"}>
-            <h2>Exercise Data</h2>
+            <h2>List</h2>
             {dataState}
+            <br />
             <Button variant={"contained"} size={"small"} sx={{marginRight: "9px"}} onClick={(e) => {
                 e.preventDefault();
                 setDataState(undefined);
             }}>Close</Button>
-{/*            <br/>
-            <br/>*/}
             {handleActionsState.confirmationBox === true && <>{confirmationPopup}</>}
         </div>
     );
@@ -177,11 +177,11 @@ function Management(){
             let listOfSessions: JSX.Element[] = response.data.map((entry, k) => {
                 return (
                     <div key={k}>
-                        <span className={"listQuery"}>{entry.session_title + " --- " + entry.session_date}</span> &nbsp;
-                        <button onClick={(event) => {
+                        <DeleteIcon onClick={(event) => {
                             event.preventDefault();
                             handleDeleteSessionRequest(entry.session_title, entry.session_date);
-                        }}>Delete</button>
+                        }}>Delete</DeleteIcon>
+                        <span className={"listQuery"}>{entry.session_title + " --- " + entry.session_date}</span> &nbsp;
                     </div>
                 );
             });
@@ -211,11 +211,14 @@ function Management(){
         if (response.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.map((e, k) => {
                 return (
-                    <span className={"listQuery"} key={k} onClick={(event) => {
-                        handleActionsDispatch({type: "confirmation", payload: true})
-                        handleDeleteExerciseRequest(e);
-                    }}>{e}</span>
-                )
+                    <div key={k}>
+                        <DeleteIcon onClick={(event) => {
+                            handleActionsDispatch({type: "confirmation", payload: true})
+                            handleDeleteExerciseRequest(e);
+                        }}/>
+                        <span className={"listQuery"}>{e}</span>
+                    </div>
+                );
             });
             setDataState(listOfExercises);
         } else {
