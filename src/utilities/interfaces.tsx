@@ -59,6 +59,7 @@ export interface SessionEntry {
     reps: number[][];
     weights: number[][];
     exercises: string[];
+    notes: string;
 }
 
 export interface StandardBackendResponse {

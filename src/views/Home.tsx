@@ -108,7 +108,7 @@ function Home(){
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
-        notes: undefined,
+        notes: "",
         previousSessions: undefined,
         selectedSessionToLoad: "",
         staticExerciseNames: [], //TODO Remove; unused.
@@ -279,6 +279,7 @@ function Home(){
         loadExerciseList();
     }
 
+
 /*    function initialSessionExercises(){
         let index = 0;
         while (loaderState.exercises.length > index && sessionState.reps.length > index){
@@ -403,9 +404,11 @@ function Home(){
             title: sessionState.title,
             reps: sessionState.reps,
             weights: sessionState.weights,
-            exercises: sessionState.exerciseNames
+            exercises: sessionState.exerciseNames,
+            notes: sessionState.notes,
         }
         let errorCheckStatus;
+
         try {
             errorCheckStatus = checkSessionData(entries);
         } catch (err) {
@@ -520,14 +523,24 @@ function Home(){
             {exerciseDataElements}
 
             <div className={"basicContainer"}>
-                <span>Notes</span> {/*TODO Make it possible to add notes to database*/}
+                <span className={"selectorTitle"}>Notes</span> {/*TODO Make it possible to add notes to database*/}
+                <TextField type={"text"}
+                           variant={"standard"}
+                           sx={{width: "100%"}}
+                           value={sessionState.notes}
+                           multiline
+                           onChange={(e) => {
+                               sessionDispatch({type: "notes", payload: e.target.value});
+                           }}
+                />
+
                 <input type={"text"} className={"notes"} onChange={(e) => {
                     sessionDispatch({type: "notes", payload: e.target.value});
                 }}/>
                 <br />
-                <button onClick={() => {
+                <Button variant={"contained"} size={"small"} onClick={(e) => {
                     handleSessionSubmission();
-                }}>Submit Session</button>
+                }}>Submit Session</Button>
             </div>
         </>
     )
