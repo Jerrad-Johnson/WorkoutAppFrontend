@@ -244,7 +244,8 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
     setWorkoutListState(listOfSesssionsByName);
 }
 
-async function handleGetListOfNotesAsDate(set){
+async function handleGetListOfNotesAsDate(setNotesListState: Dispatch<SetStateAction<string[]>>){
+    cc(5)
     let response = await getSessionDatesOfAllNotes();
     cc(response)
 }

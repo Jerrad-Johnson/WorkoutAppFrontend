@@ -9,6 +9,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import HomeIcon from '@mui/icons-material/Home';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import CheckIcon from '@mui/icons-material/Check';
+import SettingsApplicationsIcon from '@mui/icons-material/SettingsApplications';
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu
@@ -100,11 +101,19 @@ export default function CustomizedMenus() {
                 </MenuItem>
                 <MenuItem onClick={() => {
                     handleClose();
-                    window.location.href="Management";
+                    window.location.href="Account";
                 }} disableRipple>
                     <AccountBoxIcon />
                     Account
                 </MenuItem>
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Management";
+                }} disableRipple>
+                    <SettingsApplicationsIcon />
+                    View & Manage Data
+                </MenuItem>
+
                 {/*<Divider sx={{ my: 0.5 }} />
                 <MenuItem disableRipple>
                     <MoreHorizIcon />

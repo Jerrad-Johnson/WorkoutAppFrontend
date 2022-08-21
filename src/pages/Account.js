@@ -11,7 +11,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 let cc = console.log;
 //TODO Add session default options
 
-function Management(){
+function Account(){
     const [dataState, setDataState] = useState(undefined);
     const [oldPasswordState, setOldPasswordState] = useState("");
     const [newPasswordState, setNewPasswordState] = useState("");
@@ -238,7 +238,7 @@ function Management(){
         }});
     }
 
-    let title = "Account Management";
+    let title = "Account Account";
 
     return (
         <>
@@ -286,4 +286,4 @@ async function handleLogout(){
 
 }
 
-export default Management
+export default Account
