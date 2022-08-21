@@ -238,7 +238,7 @@ function Account(){
         }});
     }
 
-    let title = "Account Account";
+    let title = "Account";
 
     return (
         <>
