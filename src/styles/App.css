@@ -27,6 +27,10 @@ body{
 }
 
 .basicContainer{
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+
     @apply
     px-4
     py-6
@@ -36,12 +40,6 @@ body{
     rounded
     outline
     outline-1
-}
-
-.basicContainer{
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 .overlay{
@@ -74,7 +72,6 @@ input{
 }
 
 .pageTitle{
-    font-family: 'Libre Franklin', sans-serif;
 }
 
 .exerciseInputsContainer, .exerciseOptionsContainer, .basicSplitFlexContainer{
@@ -138,9 +135,7 @@ input{
 .exerciseHeading{
     display: block;
     text-align: center;
-}
 
-.exerciseHeading{
     @apply
     pb-2
     text-lg
@@ -165,19 +160,22 @@ input{
     py-4
 }
 
+h2, .pageTitle{
+    font-family: 'Libre Franklin', sans-serif;
+}
+
 h2{
+    text-align: center;
+
     @apply
     pb-2
     text-lg
     drop-shadow-sm
     font-semibold
     block
+    text-yellow-900;
 }
 
-h2{
-    text-align: center;
-    font-family: 'Libre Franklin', sans-serif;
-}
 
 .tableOfSession {
     border-collapse: collapse;
@@ -194,8 +192,6 @@ h2{
 }
 
 .tableSessionHeader{
-    /*new font family*/
-
 }
 
 .center{
