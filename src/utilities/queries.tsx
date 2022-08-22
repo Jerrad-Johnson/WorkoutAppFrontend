@@ -347,11 +347,12 @@ export async function getSessionDatesAndTitlesOfAllNotes(){
     return await response.json();
 }
 
-export async function getSingleSessionNote(){
+export async function getSingleSessionNote(id: string){
     const response = await fetch(`${baseURL}/getsinglesessionnote.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
+        body: id,
         headers: {
             'Content-Type': 'application/json'
         }

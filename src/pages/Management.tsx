@@ -5,7 +5,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import {useEffect} from "react";
 import {NotesDateAndTitleArray, StandardBackendResponse} from "../utilities/interfaces";
-import {getSessionDatesAndTitlesOfAllNotes} from "../utilities/queries";
+import {getSessionDatesAndTitlesOfAllNotes, getSingleSessionNote} from "../utilities/queries";
 import TextField from "@mui/material/TextField";
 let cc = console.log
 
@@ -42,7 +42,7 @@ function Management(){
                 <FormControl className={"center"} variant={"standard"}>
                     <Select value={notesSessionSelectorState} onChange={(e) => {
                         setNotesSessionSelectorState(e.target.value);
-                        handleGetSessionNotes(setNotesDataState);
+                        handleGetSessionNotes(setNotesDataState, e.target.value);
                     }}>
                         <MenuItem value={""}></MenuItem>
                         {menuItemsOfNotesDateAndTitle}
@@ -57,26 +57,13 @@ function Management(){
 
 async function handleGetListOfNotesBySessionDateAndTitle(setNotesListState: Dispatch<SetStateAction<string[]>>){
     let response: StandardBackendResponse = await getSessionDatesAndTitlesOfAllNotes();
-
-    //let formattedData = formatSesssionDateAndTitleBackendData(response.data)
-
     setNotesListState(response.data);
 }
 
-function formatSesssionDateAndTitleBackendData(data: NotesDateAndTitleArray){
-    let formattedData: string[] = [];
-
-/*    data.forEach((e) => {
-        let dateAndTitleCombined: string = e.session_date + " / " + e.session_title;
-        formattedData.push(dateAndTitleCombined);
-    });*/
-
-    return data;
-
-}
-
-function handleGetSessionNotes(setNotesSessionState: Dispatch<SetStateAction<string>>){
-
+async function handleGetSessionNotes(setNotesDataState: Dispatch<SetStateAction<string>>, id: string){
+    let response: StandardBackendResponse = await getSingleSessionNote(id);
+    cc(response)
+    setNotesDataState(response.data);
 }
 
 export default Management;
