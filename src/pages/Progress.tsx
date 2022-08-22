@@ -241,8 +241,8 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
     let listOfSesssionsByName: string[] = response.data.map((e: any) => {
         return (e.session_title);
     });
+
     setWorkoutListState(listOfSesssionsByName);
-    cc(response)
     if (response.data[0]?.session_title) setWorkoutSessionSelectorState(response.data[0].session_title);
 }
 

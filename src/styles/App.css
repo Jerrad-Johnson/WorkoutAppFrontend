@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Libre+Franklin&display=swap');
+
 body{
     @apply
     bg-gray-600 /*TODO Remove*/
@@ -38,6 +40,8 @@ body{
 
 .basicContainer{
     max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .overlay{
@@ -67,6 +71,10 @@ input{
     drop-shadow-sm
     font-semibold
     /*TODO Change font family*/
+}
+
+.pageTitle{
+    font-family: 'Libre Franklin', sans-serif;
 }
 
 .exerciseInputsContainer, .exerciseOptionsContainer, .basicSplitFlexContainer{
@@ -168,10 +176,12 @@ h2{
 
 h2{
     text-align: center;
+    font-family: 'Libre Franklin', sans-serif;
 }
 
 .tableOfSession {
     border-collapse: collapse;
+    width: 100%;
 }
 
 .tableSessionRow {
