@@ -2,10 +2,12 @@ import {deleteExercise, deleteSession, getAllSessions, getExercises} from "../ut
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
+let cc = console.log;
 
 function GetAndDisplaySessions(){
     const [dataState, setDataState] = useState<JSX.Element[] | JSX.Element | undefined>(undefined);
-    const [confirmationBoxState, setConfirmationBoxState] = useState<boolean | string>(false);
+    const [confirmationBoxState, setConfirmationBoxState] = useState<undefined | string | boolean>(false);
+    const [deleteFunctionState, setDeleteFunctionState] = useState<any>(undefined);
 
     const confirmationPopup = (
         <>
@@ -16,19 +18,21 @@ function GetAndDisplaySessions(){
 
             <Button variant={"contained"} size={"small"} onClick={(e) => {
                 e.preventDefault();
-                /*handleActionsDispatch({type: "performFunction"});*/
+                deleteFunctionState();
+                handleGetSessions();
             }}>Confirm</Button>
         </>
     );
 
     const displaySessionList = (
         <div className={"basicContainer"}>
-            <h2>List</h2>
+            <h2>Session List</h2>
             {dataState}
             <br />
             <Button variant={"contained"} size={"small"} sx={{marginRight: "9px"}} onClick={(e) => {
                 e.preventDefault();
                 setDataState(undefined);
+                setConfirmationBoxState(false);
             }}>Close</Button>
             {confirmationBoxState === true && <>{confirmationPopup}</>}
         </div>
@@ -54,15 +58,23 @@ function GetAndDisplaySessions(){
         }
     }
 
-    async function handleDeleteSessionRequest(title: string, date: string) {
-        let response = await deleteSession(title, date);
+    function handleDeleteSessionRequest(title: string, date: string) {
+        let deleteSessionFunction = (() => async () => {
+            let response = await deleteSession(title, date);
 
-        if (response.message === "Success") {
-            handleGetSessions(); //TODO Add mui
-        } else {
-            //TODO Add mui
-        }
+            if (response.message === "Success") {
+                handleGetSessions(); //TODO Add mui
+            } else {
+                //TODO Add mui
+            }
+
+        });
+
+        setDeleteFunctionState(deleteSessionFunction);
+        setConfirmationBoxState(true);
+
     }
+
 
 /*        handleActionsDispatch({type: "confirmation", payload: true});*/
 /*
@@ -105,7 +117,10 @@ function GetAndDisplaySessions(){
         <>
             <Button variant={"contained"} size={"small"} onClick={() => {
                 handleGetSessions();
-            }}>Get List of  Sessions</Button>
+            }}>Get List of Sessions</Button>
+            <Button variant={"contained"} size={"small"} onClick={() => {
+                cc(deleteFunctionState)
+            }}>Test Data</Button>
 
             {dataState && displaySessionList}
         </>
