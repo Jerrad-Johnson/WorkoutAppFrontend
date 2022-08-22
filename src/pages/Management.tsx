@@ -1,4 +1,4 @@
-import {Dispatch, SetStateAction, useState} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import Nav from "../components/Nav";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -6,13 +6,14 @@ import MenuItem from "@mui/material/MenuItem";
 import {useEffect} from "react";
 import {NotesDateAndTitleArray, StandardBackendResponse} from "../utilities/interfaces";
 import {getSessionDatesAndTitlesOfAllNotes} from "../utilities/queries";
+import TextField from "@mui/material/TextField";
 let cc = console.log
 
 
 function Management(){
     const [notesListState, setNotesListState] = useState<any[]>([""]);
     const [notesSessionSelectorState, setNotesSessionSelectorState] = useState<string>("");
-    const [notesDataState, setNotesDataState] = useState<any>();
+    const [notesDataState, setNotesDataState] = useState<string>("");
 
     useEffect(() => {
         handleGetListOfNotesBySessionDateAndTitle(setNotesListState);
@@ -24,6 +25,14 @@ function Management(){
            <MenuItem key={k} value={e.id}>{dateAndTitleCombined}</MenuItem>
        );
     });
+
+    let sessionNote: JSX.Element = (
+        <TextField type={"text"}
+                   sx={{width: "100%"}}
+                   value={notesDataState}
+                   multiline
+        />
+    );
 
     return (
         <div>
@@ -39,6 +48,8 @@ function Management(){
                         {menuItemsOfNotesDateAndTitle}
                     </Select>
                 </FormControl>
+                <br /><br />
+                {sessionNote}
             </div>
         </div>
     )
@@ -64,7 +75,7 @@ function formatSesssionDateAndTitleBackendData(data: NotesDateAndTitleArray){
 
 }
 
-function handleGetSessionNotes(setNotesSessionState: Dispatch<SetStateAction<string[]>>){
+function handleGetSessionNotes(setNotesSessionState: Dispatch<SetStateAction<string>>){
 
 }
 

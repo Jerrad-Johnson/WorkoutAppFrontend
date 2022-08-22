@@ -5,7 +5,7 @@ import {
     getAllSessionNames,
     getAllSessions, getAllSessionsByName,
     getExercisesFromSessionTable,
-    getSessionDataForOneRMCalculation, getSessionDatesOfAllNotes
+    getSessionDataForOneRMCalculation
 } from "../utilities/queries";
 import Nav from "../components/Nav.js";
 import OneRMLineGraph from "../components/OneRMLineGraph";
@@ -33,7 +33,6 @@ function Progress(){
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
         handleGetListOfExercises(setExerciseListState);
         handleGetListOfSessionsByName(setWorkoutListState);
-        handleGetListOfNotesAsDate(setNotesListState);
     }, []);
 
     useEffect(() => {
@@ -242,12 +241,6 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
         return (e.session_title);
     });
     setWorkoutListState(listOfSesssionsByName);
-}
-
-async function handleGetListOfNotesAsDate(setNotesListState: Dispatch<SetStateAction<string[]>>){
-    cc(5)
-    let response = await getSessionDatesOfAllNotes();
-    cc(response)
 }
 
 async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){

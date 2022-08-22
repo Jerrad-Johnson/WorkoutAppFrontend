@@ -95,3 +95,11 @@ export interface HeatmapByDate{
 }
 
 export interface FormattedSesssionHeatmapData extends Array<HeatmapByDate>{};
+
+export interface NotesDateAndTitle{
+    session_date: string;
+    session_title: string;
+    id: number;
+}
+
+export interface NotesDateAndTitleArray extends Array<NotesDateAndTitle>{};
