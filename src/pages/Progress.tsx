@@ -31,8 +31,8 @@ function Progress(){
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
-        handleGetListOfExercises(setExerciseListState);
-        handleGetListOfSessionsByName(setWorkoutListState);
+        handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState);
+        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState);
     }, []);
 
     useEffect(() => {
@@ -168,9 +168,10 @@ async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateActio
     }
 }
 
-async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>){
+async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>, setOneRMExerciseSelectorState: Dispatch<SetStateAction<string | undefined>>){
     let response = await getExercisesFromSessionTable();
     setExerciseListState(response.data);
+    if (response.data[0]) setOneRMExerciseSelectorState(response.data[0]);
 }
 
 function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateAction<any>>){
@@ -235,12 +236,14 @@ function getPercentageOf1RM(rep: number){
     return (100 / repsToPercentageMap[rep]);
 }
 
-async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>){
+async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>, setWorkoutSessionSelectorState: Dispatch<SetStateAction<string>>){
     let response = await getAllSessionNames();
     let listOfSesssionsByName: string[] = response.data.map((e: any) => {
         return (e.session_title);
     });
     setWorkoutListState(listOfSesssionsByName);
+    cc(response)
+    if (response.data[0]?.session_title) setWorkoutSessionSelectorState(response.data[0].session_title);
 }
 
 async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
