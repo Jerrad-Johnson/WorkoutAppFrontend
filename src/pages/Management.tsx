@@ -8,6 +8,7 @@ import {NotesDateAndTitleArray, StandardBackendResponse} from "../utilities/inte
 import {getSessionDatesAndTitlesOfAllNotes, getSingleSessionNote} from "../utilities/queries";
 import TextField from "@mui/material/TextField";
 import GetAndDisplaySessions from "../components/GetAndDisplaySessions";
+import GetAndDisplayExercises from "../components/GetAndDisplayExercises";
 let cc = console.log
 
 
@@ -51,7 +52,9 @@ function Management(){
                 </FormControl>
                 <br /><br />
                 {sessionNote}
+                <br /><br />
                 <GetAndDisplaySessions/>
+                <GetAndDisplayExercises/>
             </div>
         </div>
     )

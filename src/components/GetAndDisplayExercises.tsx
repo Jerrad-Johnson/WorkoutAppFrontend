@@ -20,7 +20,7 @@ function GetAndDisplaySessions(){
                 e.preventDefault();
                 deleteFunctionState();
                 setConfirmationBoxState(false);
-                handleGetSessions();
+                handleGetExercises();
             }}>Confirm</Button>
         </>
     );
@@ -39,36 +39,35 @@ function GetAndDisplaySessions(){
         </div>
     );
 
-    async function handleGetSessions(){
-        let response = await getAllSessions();
+    async function handleGetExercises(){
+        let response = await getExercises();
 
-        if (response.message === "Success") {
-            let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
+        if (response.data[0]) {
+            let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {
                 return (
                     <div key={k}>
-                        <DeleteIcon onClick={() => {
-                            handleDeleteSessionRequest(entry.session_title, entry.session_date);
-                        }}>Delete</DeleteIcon>
-                        <span className={"listQuery"}>{entry.session_title + " --- " + entry.session_date}</span> &nbsp;
+                        <DeleteIcon onClick={(event) => {
+                            handleDeleteExerciseRequest(e);
+                        }}/>
+                        <span className={"listQuery"}>{e}</span>
                     </div>
                 );
             });
-            setDataState(listOfSessions);
+            setDataState(listOfExercises);
         } else {
             setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
         }
     }
 
-    function handleDeleteSessionRequest(title: string, date: string) {
+    function handleDeleteExerciseRequest(exercise: string) {
         let deleteSessionFunction = (() => async () => {
-            let response = await deleteSession(title, date);
+            let response = await deleteExercise(exercise);
 
             if (response.message === "Success") {
-                handleGetSessions(); //TODO Add mui
+                handleGetExercises(); //TODO Add mui
             } else {
                 //TODO Add mui
             }
-
         });
 
         setDeleteFunctionState(deleteSessionFunction);
@@ -78,8 +77,8 @@ function GetAndDisplaySessions(){
     return (
         <>
             <Button variant={"contained"} size={"small"} onClick={() => {
-                handleGetSessions();
-            }}>Get List of Sessions</Button>
+                handleGetExercises();
+            }}>Get List of Exercises</Button>
             <br /><br />
 
             {dataState && displaySessionList}
