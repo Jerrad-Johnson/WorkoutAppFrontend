@@ -7,6 +7,7 @@ import {useEffect} from "react";
 import {NotesDateAndTitleArray, StandardBackendResponse} from "../utilities/interfaces";
 import {getSessionDatesAndTitlesOfAllNotes, getSingleSessionNote} from "../utilities/queries";
 import TextField from "@mui/material/TextField";
+import GetAndDisplaySessions from "../components/GetAndDisplaySessions";
 let cc = console.log
 
 
@@ -50,6 +51,7 @@ function Management(){
                 </FormControl>
                 <br /><br />
                 {sessionNote}
+                <GetAndDisplaySessions/>
             </div>
         </div>
     )
