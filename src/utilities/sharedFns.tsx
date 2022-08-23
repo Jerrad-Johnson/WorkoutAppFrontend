@@ -36,8 +36,8 @@ export function verifyPasswordForms(newPassword: string, newPasswordVerify: stri
     if (newPassword !== newPasswordVerify) throw new Error("New passwords must match");
 }
 
-export function toastFailedMessage(response: StandardBackendResponse){
+export function showResponseMessage(response: StandardBackendResponse){
     if (response && response.message !== successMessage){
-        toast(response?.message);
+        toast(response.message);
     }
 }

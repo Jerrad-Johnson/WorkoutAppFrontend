@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {successMessage} from "../utilities/sharedVariables";
 import {defaultToastMsg} from "../utilities/sharedVariables";
-import {toastFailedMessage} from "../utilities/sharedFns";
+import {showResponseMessage} from "../utilities/sharedFns";
 let cc = console.log;
 
 function GetAndDisplaySessions(){
@@ -45,7 +45,7 @@ function GetAndDisplaySessions(){
 
     async function handleGetSessions(){
         let response = await toast.promise(getAllSessions(), defaultToastMsg);
-        toastFailedMessage(response);
+        showResponseMessage(response);
 
         if (response.message === "Success") {
             let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
