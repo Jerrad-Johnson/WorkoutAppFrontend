@@ -206,9 +206,16 @@ h2{
 .tableSessionHeader{
 }
 
-.center{
-    display: block;
+.centerAndFullWidth{
     width: 100%;
+}
+
+.fullWidth{
+    display: block;
+}
+
+.smallerSelect{
+    width: 60px;
 }
 
 h2{
@@ -228,4 +235,16 @@ h2{
 .genericBottomMarginLarge{
     @apply
     mb-10
+}
+
+.defaultsSelectorTitle{
+    font-weight: 500;
+    @apply
+    mb-10
+}
+
+.defaultsSelectorsFlexbox{
+    @apply
+    flex
+    justify-evenly
 }

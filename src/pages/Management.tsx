@@ -44,7 +44,7 @@ function Management(){
             <Nav title={"View & Manage Session Data"}/>
             <div className={"basicContainer"}>
                 <h2>Load Session Note</h2>
-                <FormControl className={"center"} variant={"standard"}>
+                <FormControl className={"centerAndFullWidth"} variant={"standard"}>
                     <Select value={notesSessionSelectorState} onChange={(e) => {
                         setNotesSessionSelectorState(e.target.value);
                         handleGetSessionNotes(setNotesDataState, e.target.value);

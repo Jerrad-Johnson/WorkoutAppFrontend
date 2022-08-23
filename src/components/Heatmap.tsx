@@ -52,7 +52,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
             <div className={"genericBottomMarginLarge"}>
                 <h2>Workout History</h2>
                 {yearsOfEntries &&
-                    <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
+                    <FormControl className={"centerAndFullWidth"} variant={"standard"} placeholder={"Exercise"}>
                         <Select value={selectedYearOfEntriesState} onChange={(e) => {
                             setSelectedYearOfEntriesState(e.target.value);
                             handleGetWorkoutsForHeatmap(setHeatmapState, e.target.value);

@@ -87,7 +87,7 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
     }
 
     const oneRMSelectForm: JSX.Element = (
-        <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
+        <FormControl className={"centerAndFullWidth"} variant={"standard"} placeholder={"Exercise"}>
             <Select value={oneRMExerciseSelectorState} className={"genericBottomMargin"} onChange={(e) => {
                 setOneRMExerciseSelectorState(e.target.value);
             }}>
@@ -98,7 +98,7 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
     )
 
     const workoutSessionSelector: JSX.Element = (
-        <FormControl className={"center"} variant={"standard"}>
+        <FormControl className={"centerAndFullWidth"} variant={"standard"}>
             <Select value={workoutSessionSelectorState}  className={"genericBottomMargin"} onChange={(e) => {
                 setWorkoutSessionSelectorState(e.target.value);
             }}>

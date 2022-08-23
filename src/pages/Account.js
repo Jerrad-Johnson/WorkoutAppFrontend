@@ -8,6 +8,9 @@ import {TextField} from "@mui/material";
 import toast from "react-hot-toast";
 import {defaultToastMsg} from "../utilities/sharedVariables";
 import {defaultToastPromiseErrorMessage, defaultToastPromiseLoadingMessage} from "../utilities/sharedVariables";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
 let cc = console.log;
 //TODO Add session default options
 
@@ -25,8 +28,108 @@ function Account(){
         changeEmail: false,
     }
 
+//    localStorage.setItem("defaultWeight", 20);
+
     const [handleActionsState, handleActionsDispatch] = useReducer(handleActionsReducer, handleActionsDefaultState)
 
+    let defaultExercises: number = 3; //@ts-ignore
+    if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +JSON.parse(localStorage.getItem("defaultExercises"));
+
+    let defaultSets: number = 3; //@ts-ignore
+    if (localStorage.getItem("defaultSets") !== null) defaultSets = +JSON.parse(localStorage.getItem("defaultSets"));
+
+    let defaultReps: number = 5; //@ts-ignore
+    if (localStorage.getItem("defaultReps") !== null) defaultReps = +JSON.parse(localStorage.getItem("defaultReps"));
+
+    let defaultWeight: number = 100; //@ts-ignore
+    if (localStorage.getItem("defaultWeight") !== null) defaultWeight = +JSON.parse(localStorage.getItem("defaultWeight"));
+
+    const [defaultExercisesState, setDefaultExercisesState] = useState(defaultExercises);
+    const [defaultSetsState, setDefaultSets] = useState(defaultSets);
+    const [defaultRepsState, setDefaultRepsState] = useState(defaultReps);
+    const [defaultWeightState, setDefaultWeight] = useState(defaultWeight);
+
+
+    const exerciseSelectorMenuItems = new Array(12).fill(0).map((_e, k) => {
+        return (
+            <MenuItem value={k+1} key={k}>{k+1}</MenuItem>
+        );
+    });
+
+    const setSelectorMenuItems = new Array(12).fill(0).map((_e, k) => {
+        return (
+            <MenuItem value={k+1} key={k}>{k+1}</MenuItem>
+        );
+    });
+
+    const repSelectorMenuItems = new Array(20).fill(0).map((_e, k) => {
+        return (
+            <MenuItem value={k+1} key={k}>{k+1}</MenuItem>
+        );
+    });
+
+    const defaultOptionsSelectors = (
+      <>
+          <h2>Change defaults</h2>
+          <div className={"defaultsSelectorsFlexbox"}>
+              <div>
+                  <span className={"selectorTitle"}>Exercises</span>
+                  <FormControl className={"changeSessionDefaults"} variant={"standard"} placeholder={"Exercise"}>
+                      <Select value={defaultExercisesState} className={"genericBottomMargin smallerSelect"} onChange={(e) => {
+                          setDefaultExercisesState(+e.target.value);
+                          localStorage.setItem("defaultExercises", e.target.value);
+                      }}>
+                          {exerciseSelectorMenuItems}
+                      </Select>
+                  </FormControl>
+              </div>
+
+              <div>
+                  <span className={"selectorTitle"}>Sets</span>
+                  <FormControl className={"changeSessionDefaults"} variant={"standard"} placeholder={"Sets"}>
+                      <Select value={defaultSetsState} className={"genericBottomMargin smallerSelect"} onChange={(e) => {
+                          setDefaultSets(+e.target.value);
+                          localStorage.setItem("defaultSets", e.target.value);
+                      }}>
+                          {setSelectorMenuItems}
+                      </Select>
+                  </FormControl>
+              </div>
+
+              <div>
+                  <span className={"selectorTitle"}>Reps</span>
+                  <FormControl className={"changeSessionDefaults"} variant={"standard"} placeholder={"Reps"}>
+                      <Select value={defaultRepsState} className={"genericBottomMargin smallerSelect"} onChange={(e) => {
+                          setDefaultRepsState(+e.target.value);
+                          localStorage.setItem("defaultReps", e.target.value);
+                      }}>
+                          {repSelectorMenuItems}
+                      </Select>
+                  </FormControl>
+              </div>
+              <div>
+                  <span className={"selectorTitle"}>Weight</span>
+                  <TextField type={"number"}
+                         variant={"standard"}
+                         sx={{width: "60px"}}
+                         value={defaultWeightState}
+                         onChange={(e) => {
+                             if (e.target.value === '') return;
+                             let leadingZerosRemoved = e.target.value.replace(/^0+/, '');
+                             let isValue = /^[0-9.]*$/.test(leadingZerosRemoved);
+                             if (isValue) {
+                                setDefaultWeight(+e.target.value);
+                                cc(e.target.value)
+                                localStorage.setItem("defaultWeight", e.target.value);
+                             } else {
+                                 toast.error("Please only enter numbers.")
+                             }
+                         }}
+                  />
+              </div>
+          </div>
+      </>
+    );
 
     const changePasswordForm = (
         <div className={"basicContainer"}>
@@ -157,6 +260,8 @@ function Account(){
         <>
             <Nav title={title} />
             <div className={"basicContainer"}>
+                {defaultOptionsSelectors}
+                <br/>
                 <Button variant={"contained"} size={"small"} onClick={() => {
                     handleLogout();
                 }}>Log Out</Button>
