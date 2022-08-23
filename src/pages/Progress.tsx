@@ -32,6 +32,9 @@ function Progress(){
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
+    const [workoutSessionSelectorLoadingState, setWorkoutSessionSelectorLoadingState] = useState<string>("Loading");
+
+
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
     const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
 
@@ -131,6 +134,12 @@ function Progress(){
             </>
         );
 
+    function ConditionalCircularProgress({sizeInPx = 400}: {sizeInPx: number | string}){
+        return (
+                <CircularProgress size={sizeInPx} />
+            );
+    }
+
     return (
         <>
         <Nav title={"Progress"}/>
@@ -148,21 +157,20 @@ function Progress(){
             <h2>Find 1RM across time</h2>
 
             {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
-            {oneRMExerciseListLoadingState === "Loading" && <CircularProgress/>}
+            {oneRMExerciseListLoadingState === "Loading" && <ConditionalCircularProgress sizeInPx={70}/>}
             {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
             {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
-            {oneRMExerciseDataLoadingState === "Loading" && <><br /><CircularProgress/></>}
+            {oneRMExerciseDataLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={400}/></>}
             {oneRMExerciseDataLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
             <br/>
             <h2>Session Data by Title</h2>
-            {workoutSessionSelector}
+            {workoutSessionSelectorLoadingState === "Loaded" && workoutSessionSelector}
+            {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={400}/></>}
+            {workoutSessionSelectorLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
             <br/><br/>
             {workoutSessionDataTable}
-
-                {/*TODO Add a table to display hard data for session by name*/}
-
         </div>
         </>
     )
