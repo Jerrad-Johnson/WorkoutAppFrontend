@@ -3,7 +3,15 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import {DefaultToastLoadingMessage} from "../utilities/interfaces";
+import {successMessage} from "../utilities/sharedVariables";
+
 let cc = console.log;
+let defaultToastMsg: DefaultToastLoadingMessage  = {
+    loading: 'Loading',
+    success: 'Success',
+    error: (err: string) => `${err}`,
+}
 
 function GetAndDisplaySessions(){
     const [dataState, setDataState] = useState<JSX.Element[] | JSX.Element | undefined>(undefined);
@@ -28,7 +36,7 @@ function GetAndDisplaySessions(){
 
     const displaySessionList = (
         <div className={"basicContainer"}>
-            <h2>Session List</h2>
+            <h2>Exercise List</h2>
             {dataState}
             <br />
             <Button variant={"contained"} size={"small"} sx={{marginRight: "9px"}} onClick={(e) => {
@@ -41,13 +49,13 @@ function GetAndDisplaySessions(){
     );
 
     async function handleGetExercises(){
-        let response = await toast.promise(getExercises(), {
-            loading: 'test',
-            success: 'idk',
-            error: 'idk2',
-        });
+        let response = await toast.promise(getExercises(), defaultToastMsg);
 
-        if (response.data[0]) {
+        if (response && response.message !== successMessage){
+            toast(response?.message);
+        }
+
+        if (response?.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {
                 return (
                     <div key={k}>
@@ -59,7 +67,7 @@ function GetAndDisplaySessions(){
                 );
             });
             setDataState(listOfExercises);
-        } else {
+        } else if (response?.message === successMessage) {
             setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
         }
     }
