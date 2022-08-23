@@ -41,7 +41,12 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
     }
 
     if (heatmapState === undefined){
-        heatmapChart = (<CircularProgress size={150}/>);
+        heatmapChart = (
+            <>
+            <h2>Workout History</h2>
+            <CircularProgress size={150}/>
+            </>
+        );
     } else { //TODO Add overlay upon changing year
         heatmapChart = (
             <div>
