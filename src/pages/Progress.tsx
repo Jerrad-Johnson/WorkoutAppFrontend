@@ -15,13 +15,14 @@ import FormControl from "@mui/material/FormControl";
 import {CircularProgress} from "@mui/material";
 import {Alert} from "@mui/material";
 import {isEmptyArray} from "../utilities/genericFns";
+import ConditionalCircularProgress from "../components/ConditionalCircularProgress";
 let cc = console.log;
 
 function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365 Days");
-    const [yearsOfEntriesLoadingState, setYearsOfEntriesLoadingState] = useState<string>("Loading");
+    /*const [yearsOfEntriesLoadingState, setYearsOfEntriesLoadingState] = useState<string>("Loading");*/
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
     const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string>("");
@@ -34,7 +35,6 @@ function Progress(){
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
     const [workoutSessionSelectorLoadingState, setWorkoutSessionSelectorLoadingState] = useState<string>("Loading");
 
-
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
     const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
 
@@ -43,7 +43,7 @@ function Progress(){
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
         handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseListLoadingState);
-        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, setYearsOfEntriesLoadingState);
+        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, /*setYearsOfEntriesLoadingState,*/ setWorkoutSessionSelectorLoadingState);
     }, []);
 
     useEffect(() => {
@@ -134,12 +134,6 @@ function Progress(){
             </>
         );
 
-    function ConditionalCircularProgress({sizeInPx = 400}: {sizeInPx: number | string}){
-        return (
-                <CircularProgress size={sizeInPx} />
-            );
-    }
-
     return (
         <>
         <Nav title={"Progress"}/>
@@ -157,7 +151,7 @@ function Progress(){
             <h2>Find 1RM across time</h2>
 
             {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
-            {oneRMExerciseListLoadingState === "Loading" && <ConditionalCircularProgress sizeInPx={70}/>}
+            {oneRMExerciseListLoadingState === "Loading" && <ConditionalCircularProgress sizeInPx={50}/>}
             {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
             {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
@@ -167,7 +161,7 @@ function Progress(){
             <br/>
             <h2>Session Data by Title</h2>
             {workoutSessionSelectorLoadingState === "Loaded" && workoutSessionSelector}
-            {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={400}/></>}
+            {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
             {workoutSessionSelectorLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
             <br/><br/>
             {workoutSessionDataTable}
@@ -276,14 +270,24 @@ function getPercentageOf1RM(rep: number){
 
 async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>, 
                                              setWorkoutSessionSelectorState: Dispatch<SetStateAction<string>>,
-                                             setYearsOfEntriesLoadingState: Dispatch<SetStateAction<string>>){
-    let response = await getAllSessionNames();
-    let listOfSesssionsByName: string[] = response.data.map((e: any) => {
-        return (e.session_title);
-    });
+                                             /*setYearsOfEntriesLoadingState: Dispatch<SetStateAction<string>>*/
+                                             setWorkoutSessionSelectorLoadingState: Dispatch<SetStateAction<string>>,
+                                             ){
+    try {
+        let response = await getAllSessionNames();
+        let listOfSesssionsByName: string[] = response.data.map((e: any) => {
+            return (e.session_title);
+        });
 
-    setWorkoutListState(listOfSesssionsByName);
-    if (response.data[0]?.session_title) setWorkoutSessionSelectorState(response.data[0].session_title);
+        setWorkoutListState(listOfSesssionsByName);
+        if (response.data[0]?.session_title) {
+            setWorkoutSessionSelectorState(response.data[0].session_title);
+            setWorkoutSessionSelectorLoadingState("Loaded");
+        }
+    } catch (e) {
+        cc(e);
+        setWorkoutSessionSelectorLoadingState("Failed");
+    }
 }
 
 async function handleOneSessionNameAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
