@@ -141,6 +141,7 @@ function Account(){
                 loading: defaultToastPromiseLoadingMessage,
                 success: () => {
                     handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+                    return "Finished";
                 },
                 error: defaultToastPromiseErrorMessage,
             });

@@ -38,7 +38,7 @@ function Progress(){
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
-        /*handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseListLoadingState);*/
+        handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseListLoadingState);
         handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, setYearsOfEntriesLoadingState);
     }, []);
 
@@ -194,7 +194,7 @@ async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateActio
 }
 
 async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>,
-                                        setOneRMExerciseSelectorState: Dispatch<SetStateAction<string | undefined>>,
+                                        setOneRMExerciseSelectorState: Dispatch<SetStateAction<string>>,
                                         setOneRMExerciseLoadingState: Dispatch<SetStateAction<string>>){
 
     try {
