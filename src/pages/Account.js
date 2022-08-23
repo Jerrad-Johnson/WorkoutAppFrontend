@@ -127,7 +127,6 @@ function Account(){
                              let isValue = /^[0-9.]*$/.test(leadingZerosRemoved);
                              if (isValue) {
                                 setDefaultWeight(+e.target.value);
-                                cc(e.target.value)
                                 localStorage.setItem("defaultWeight", e.target.value);
                              } else {
                                  toast.error("Please only enter numbers.")
