@@ -22,7 +22,6 @@ function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365 Days");
-    /*const [yearsOfEntriesLoadingState, setYearsOfEntriesLoadingState] = useState<string>("Loading");*/
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
     const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string>("");
@@ -38,12 +37,11 @@ function Progress(){
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
     const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
 
-    const [notesListState, setNotesListState] = useState<string[]>([""]);
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
         handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseListLoadingState);
-        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, /*setYearsOfEntriesLoadingState,*/ setWorkoutSessionSelectorLoadingState);
+        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, setWorkoutSessionSelectorLoadingState);
     }, []);
 
     useEffect(() => {
@@ -51,7 +49,7 @@ function Progress(){
     }, [oneRMExerciseSelectorState]);
     
     useEffect(() => {
-        handleOneSessionNameAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState);
+        handleOneSessionNameAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState, setWorkoutSessionLoadingState);
     }, [workoutSessionSelectorState]);
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
@@ -164,7 +162,9 @@ function Progress(){
             {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
             {workoutSessionSelectorLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
             <br/><br/>
-            {workoutSessionDataTable}
+            {workoutSessionLoadingState === "Loaded" && workoutSessionDataTable}
+            {workoutSessionLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
+            {workoutSessionLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
         </div>
         </>
     )
@@ -270,7 +270,6 @@ function getPercentageOf1RM(rep: number){
 
 async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>, 
                                              setWorkoutSessionSelectorState: Dispatch<SetStateAction<string>>,
-                                             /*setYearsOfEntriesLoadingState: Dispatch<SetStateAction<string>>*/
                                              setWorkoutSessionSelectorLoadingState: Dispatch<SetStateAction<string>>,
                                              ){
     try {
@@ -290,11 +289,21 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
     }
 }
 
-async function handleOneSessionNameAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
-    let response = await getAllSessionsByName(workoutSessionSelectorState);
+async function handleOneSessionNameAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>,
+                                                    workoutSessionSelectorState: string,
+                                                    setWorkoutSessionLoadingState: Dispatch<SetStateAction<string>>){
+    setWorkoutSessionLoadingState("Loading");
 
-    let reformattedData = reformatSessionData(response.data);
-    setWorkoutSessionState(reformattedData);
+    try {
+        let response = await getAllSessionsByName(workoutSessionSelectorState);
+        let reformattedData = reformatSessionData(response.data);
+        setWorkoutSessionState(reformattedData);
+        setWorkoutSessionLoadingState("Loaded");
+    } catch (e) {
+        cc(e);
+        setWorkoutSessionLoadingState("Failed");
+    }
+
 }
 
 function reformatSessionData(data: any){
