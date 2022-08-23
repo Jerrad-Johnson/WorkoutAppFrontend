@@ -12,9 +12,7 @@ import OneRMLineGraph from "../components/OneRMLineGraph";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from "@mui/material/FormControl";
-import {Alert} from "@mui/material";
 import ConditionalCircularProgress from "../components/ConditionalCircularProgress";
-import {failedToLoad} from "../utilities/sharedVariables";
 import FailedToLoadAlert from "../components/FailedToLoadAlert";
 let cc = console.log;
 
@@ -28,7 +26,7 @@ function Progress(){
     const [oneRMExerciseListLoadingState, setOneRMExerciseListLoadingState] = useState<string>("Loading");
     
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
-    const [oneRMExerciseDataLoadingState, setOneRMExerciseDataLoadingState] = useState<string>("Failed");
+    const [oneRMExerciseDataLoadingState, setOneRMExerciseDataLoadingState] = useState<string>("Loading");
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
@@ -132,40 +130,58 @@ function Progress(){
             </>
         );
 
-    return (
+    const oneRMSelector: JSX.Element = (
         <>
-        <Nav title={"Progress"}/>
-        <div className={"basicContainer"}>
-            <Heatmap
-                heatmapState = {heatmapState}
-                setHeatmapState = {setHeatmapState}
-                yearsOfEntriesState = {yearsOfEntriesState}
-                setYearsOfEntriesState = {setYearsOfEntriesState}
-                selectedYearOfEntriesState = {selectedYearOfEntriesState}
-                setSelectedYearOfEntriesState = {setSelectedYearOfEntriesState}
-            />
-
-            <br/><br/>
             <h2>Find 1RM across time</h2>
-
             {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
             {oneRMExerciseListLoadingState === "Loading" && <ConditionalCircularProgress sizeInPx={50}/>}
             {oneRMExerciseListLoadingState === "Failed" && <FailedToLoadAlert/>}
+        </>
+    )
 
+    const oneRMGraph: JSX.Element = (
+        <>
             {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
             {oneRMExerciseDataLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={400}/></>}
             {oneRMExerciseDataLoadingState === "Failed" && <FailedToLoadAlert/>}
+        </>
+    );
 
-            <br/>
+    const sessionSelectorForTable: JSX.Element = (
+        <>
             <h2>Session Data by Title</h2>
             {workoutSessionSelectorLoadingState === "Loaded" && workoutSessionSelector}
             {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
             {workoutSessionSelectorLoadingState === "Failed" && <FailedToLoadAlert/>}
-            <br/><br/>
+        </>
+    );
+
+    const sessionTable: JSX.Element = (
+        <>
             {workoutSessionLoadingState === "Loaded" && workoutSessionDataTable}
             {workoutSessionLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
             {workoutSessionLoadingState === "Failed" && <FailedToLoadAlert/>}
-        </div>
+        </>
+    );
+
+    return (
+        <>
+            <Nav title={"Progress"}/>
+            <div className={"basicContainer"}>
+                <Heatmap
+                    heatmapState = {heatmapState}
+                    setHeatmapState = {setHeatmapState}
+                    yearsOfEntriesState = {yearsOfEntriesState}
+                    setYearsOfEntriesState = {setYearsOfEntriesState}
+                    selectedYearOfEntriesState = {selectedYearOfEntriesState}
+                    setSelectedYearOfEntriesState = {setSelectedYearOfEntriesState}
+                />
+
+                {oneRMSelector}
+                {oneRMGraph}
+                {sessionSelectorForTable}
+                {sessionTable}
+            </div>
         </>
     )
 }
