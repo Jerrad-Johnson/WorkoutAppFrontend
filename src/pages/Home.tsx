@@ -131,6 +131,7 @@ function Home(){
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
 
+
     function sessionReducer(state: SessionData, action: GenericAction){
         switch (action.type){
             case "title":
@@ -161,7 +162,7 @@ function Home(){
                 let newReps2: number[][] = [...state.reps];
 
                 if (state.reps[action.payload.topIndex][action.payload.bottomIndex] >= 2
-                && action.payload.value === -1){
+                    && action.payload.value === -1){
                     newReps2[action.payload.topIndex][action.payload.bottomIndex] = state.reps[action.payload.topIndex][action.payload.bottomIndex] -1
                 }
 
@@ -240,6 +241,40 @@ function Home(){
         }
     }
 
+    function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
+        while (session.reps.length > newExerciseCount){
+            session.reps.pop();
+            session.weights.pop();
+            session.sets.pop();
+            //session.exerciseNames.pop(); //TODO Because of this change, when I pull the data to submit to the DB I need to check exercisename length.
+        }
+
+        while (session.reps.length < newExerciseCount){
+            session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
+            session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
+            session.sets = [...session.sets, optionsState.sets];
+            //session.exerciseNames = [...session.exerciseNames, ""];
+        }
+
+        return session;
+    }
+
+    function handleSetCountChange(session: SessionData, value: number, topIndex: number){
+        while (session.sets[topIndex] > value){
+            session.sets[topIndex]--;
+            session.reps[topIndex].pop();
+            session.weights[topIndex].pop();
+        }
+
+        while (session.sets[topIndex] < value){
+            session.sets[topIndex]++;
+            session.reps[topIndex].push(optionsState.reps);
+            session.weights[topIndex].push(optionsState.weights);
+        }
+
+        return session;
+    }
+
     function combineExerciseLists(a: string[] | undefined = [], b: any){
         let newArrayOfExercises: string[] = [];
         let duplicatesRemoved: string[] = [];
@@ -250,7 +285,7 @@ function Home(){
 
         if (a.length > 0) {
             duplicatesRemoved = a.filter((v) => {
-               return newArrayOfExercises.indexOf(v) == -1;
+                return newArrayOfExercises.indexOf(v) == -1;
             });
         }
 
@@ -258,6 +293,7 @@ function Home(){
 
         return newArrayOfExercises;
     }
+
 
     const loadedDataTemplate: DatabaseData = {
         previousSessions: [{
@@ -312,40 +348,6 @@ function Home(){
         getExercises().then(exercises => {
             sessionDispatch({type: "loadedExercises", payload: exercises.data})
         });
-    }
-
-    function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
-            while (session.reps.length > newExerciseCount){
-                session.reps.pop();
-                session.weights.pop();
-                session.sets.pop();
-                //session.exerciseNames.pop(); //TODO Because of this change, when I pull the data to submit to the DB I need to check exercisename length.
-            }
-
-            while (session.reps.length < newExerciseCount){
-                session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
-                session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
-                session.sets = [...session.sets, optionsState.sets];
-                //session.exerciseNames = [...session.exerciseNames, ""];
-            }
-
-        return session;
-    }
-
-    function handleSetCountChange(session: SessionData, value: number, topIndex: number){
-        while (session.sets[topIndex] > value){
-            session.sets[topIndex]--;
-            session.reps[topIndex].pop();
-            session.weights[topIndex].pop();
-        }
-
-        while (session.sets[topIndex] < value){
-            session.sets[topIndex]++;
-            session.reps[topIndex].push(optionsState.reps);
-            session.weights[topIndex].push(optionsState.weights);
-        }
-
-        return session;
     }
 
     const exerciseOptionElements: JSX.Element[] = arrayOfMenuItems(12);
