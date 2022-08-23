@@ -3,7 +3,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import {successMessage} from "../utilities/sharedVariables";
 import {defaultToastMsg} from "../utilities/sharedVariables";
 import {showResponseMessage} from "../utilities/sharedFns";
 let cc = console.log;
