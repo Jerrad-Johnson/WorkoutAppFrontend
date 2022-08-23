@@ -49,7 +49,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
         );
     } else { //TODO Add overlay upon changing year
         heatmapChart = (
-            <div>
+            <div className={"genericBottomMarginLarge"}>
                 <h2>Workout History</h2>
                 {yearsOfEntries &&
                     <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>

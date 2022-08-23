@@ -93,7 +93,7 @@ function Progress(){
 
     const oneRMSelectForm: JSX.Element = (
         <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
-            <Select value={oneRMExerciseSelectorState} onChange={(e) => {
+            <Select value={oneRMExerciseSelectorState} className={"genericBottomMargin"} onChange={(e) => {
                 setOneRMExerciseSelectorState(e.target.value);
             }}>
                 <MenuItem value={""}></MenuItem>
@@ -104,7 +104,7 @@ function Progress(){
 
     const workoutSessionSelector: JSX.Element = (
         <FormControl className={"center"} variant={"standard"}>
-            <Select value={workoutSessionSelectorState} onChange={(e) => {
+            <Select value={workoutSessionSelectorState}  className={"genericBottomMargin"} onChange={(e) => {
                 setWorkoutSessionSelectorState(e.target.value);
             }}>
                 <MenuItem value={""}></MenuItem>
@@ -114,20 +114,20 @@ function Progress(){
     );
 
     const workoutSessionDataTable: JSX.Element = (
-        <>
-        {workoutSessionState?.length !== 0 &&
-            <table className={"tableOfSession"}>
-                <thead>
-                <tr className={"tableOfSession"}>
-                    <th className={"tableSessionHeader"}>Exercise</th>
-                    <th className={"tableSessionHeader"}>Weight Lifted</th>
-                    <th className={"tableSessionHeader"}>Reps</th>
-                </tr>
-                </thead>
-                {chosenSessionTableRows}
-            </table>
+        <div className={"genericBottomMargin"}>
+            {workoutSessionState?.length !== 0 &&
+                <table className={"tableOfSession"}>
+                    <thead>
+                    <tr className={"tableOfSession"}>
+                        <th className={"tableSessionHeader"}>Exercise</th>
+                        <th className={"tableSessionHeader"}>Weight Lifted</th>
+                        <th className={"tableSessionHeader"}>Reps</th>
+                    </tr>
+                    </thead>
+                    {chosenSessionTableRows}
+                </table>
             }
-            </>
+        </div>
         );
 
     const oneRMSelector: JSX.Element = (

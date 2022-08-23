@@ -21,28 +21,30 @@ function OneRMLineGraph({oneRMExerciseData}: {oneRMExerciseData: any}){
 
 
     return (
-        <Chart
-            series = {[
-                {
-                    data: oneRMValues
-                }
-            ]}
-            type="line"
-            /*                    stroke={{
-                                    curve: 'stepline'
-                                }}*/
-            height={400}
-            options = {{
-                plotOptions: {
-                    bar: {
-                        horizontal: true,
+        <div className={"genericBottomMarginLarge"}>
+            <Chart
+                series = {[
+                    {
+                        data: oneRMValues
                     }
-                },
-                xaxis: {
-                    categories: exerciseDates,
-                },
-            }}
-        />
+                ]}
+                type="line"
+                /*                    stroke={{
+                                        curve: 'stepline'
+                                    }}*/
+                height={400}
+                options = {{
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                        }
+                    },
+                    xaxis: {
+                        categories: exerciseDates,
+                    },
+                }}
+            />
+        </div>
     );
 }
 

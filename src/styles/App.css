@@ -219,3 +219,13 @@ h2{
     font-weight: 500;
     display: block;
 }
+
+.genericBottomMargin{
+    @apply
+    mb-6
+}
+
+.genericBottomMarginLarge{
+    @apply
+    mb-10
+}
