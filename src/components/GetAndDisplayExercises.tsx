@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {successMessage} from "../utilities/sharedVariables";
 import {defaultToastMsg} from "../utilities/sharedVariables";
+import {showResponseMessage} from "../utilities/sharedFns";
 let cc = console.log;
 
 
@@ -45,10 +46,7 @@ function GetAndDisplaySessions(){
 
     async function handleGetExercises(){
         let response = await toast.promise(getExercises(), defaultToastMsg);
-
-        if (response && response.message !== successMessage){
-            toast(response?.message);
-        }
+        showResponseMessage(response);
 
         if (response?.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {
@@ -63,19 +61,16 @@ function GetAndDisplaySessions(){
             });
             setDataState(listOfExercises);
         } else if (response?.message === successMessage) {
-            setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+            setDataState(<span className={"listQuery"}>No Results.</span>)
         }
     }
 
     function handleDeleteExerciseRequest(exercise: string) {
         let deleteSessionFunction = (() => async () => {
-            let response = await deleteExercise(exercise);
+            let response = await toast.promise(deleteExercise(exercise), defaultToastMsg);
+            showResponseMessage(response);
 
-            if (response.message === "Success") {
-                handleGetExercises(); //TODO Add mui
-            } else {
-                //TODO Add mui
-            }
+            if (response.message === "Success") handleGetExercises();
         });
 
         setDeleteFunctionState(deleteSessionFunction);
