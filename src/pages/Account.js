@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import toast from "react-hot-toast";
 import {defaultToastMsg} from "../utilities/sharedVariables";
-import {defaultToastPromiseErrorMessage} from "../utilities/sharedVariables";
+import {defaultToastPromiseErrorMessage, defaultToastPromiseLoadingMessage} from "../utilities/sharedVariables";
 let cc = console.log;
 //TODO Add session default options
 
@@ -121,11 +121,8 @@ function Account(){
         try {
             verifyPasswordChangeForms(oldPasswordState, newPasswordState, newPasswordVerifyState);
             let response = await toast.promise(changePassword(oldPasswordState, newPasswordState), {
-                loading: 'Loading',
+                loading: defaultToastPromiseLoadingMessage,
                 success: () => {
-                    setOldPasswordState("");
-                    setNewPasswordState("");
-                    setNewPasswordVerifyState("");
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
                     return "Finished";
                 },
@@ -141,12 +138,13 @@ function Account(){
         try {
             verifyEmailForm(newEmailState, newEmailVerifyState);
             let response = await toast.promise(changeEmail(newEmailState), {
-                loading: 'Loading',
+                loading: defaultToastPromiseLoadingMessage,
                 success: () => {
-                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+                    handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
                 },
                 error: defaultToastPromiseErrorMessage,
             });
+            showResponseMessage(response);
         } catch (e) {
             cc(e);
         }
