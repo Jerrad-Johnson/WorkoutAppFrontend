@@ -170,10 +170,6 @@ function Account(){
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
                 }}>Change Password</Button>
                 <br /><br />
-
-{/*                <Button variant={"contained"} size={"small"} onClick={() => {
-                    handleGetAllExercises();
-                }}>Get List of Exercises</Button>*/}
             </div>
 
             {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
@@ -183,11 +179,10 @@ function Account(){
 }
 
 async function handleLogout(){
-    await logout().then(response => {
-      if (response.data.loggedout === "true") window.location.href="/";
-    });
-
-
+    let response = await toast.promise(logout().then(response => {
+        if (response.data.loggedout === "true") window.location.href="/";
+    }), defaultToastMsg);
+    showResponseMessage(response);
 }
 
 export default Account
