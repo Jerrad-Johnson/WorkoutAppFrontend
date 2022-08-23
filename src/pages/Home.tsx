@@ -40,7 +40,6 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
      defaultToastPromiseErrorMessage,
     defaultToastPromiseSuccessMessage
 } from "../utilities/sharedVariables";
- import ConditionalCircularProgress from "../components/ConditionalCircularProgress";
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -482,7 +481,7 @@ function Home(){
 
             <div className={"basicContainer"}>
                 <h2>Previous Session</h2>
-{/*                <button onClick={() => {
+                {/*<button onClick={() => {
                     cc(sessionState)
                     cc(loaderState)
                 }}>For testing: Log sesssion state</button>*/}
@@ -490,20 +489,15 @@ function Home(){
                 {/*{previousSessionSelector}*/}
                 {/*<span className={"selectorTitle"}>Load Previous Session</span>*/}
 
-                {sessionState.previousSessions !== undefined &&
-                    <FormControl variant={"standard"}
-                                 sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
-                        <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"}
-                                className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                                onChange={(e) => {
-                                    sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                                }}>
-                            <MenuItem value={""}></MenuItem>
-                            {previousSessionOptions} {/*TODO Add error handling*/}
-                        </Select>
-                    </FormControl>
-                }
-                {sessionState.previousSessions === undefined && <ConditionalCircularProgress sizeInPx={28}/>}
+                <FormControl variant={"standard"} sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
+                    <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                            onChange={(e) => {
+                                sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                            }}>
+                        <MenuItem value={""}></MenuItem>
+                        {previousSessionOptions} {/*TODO Add error handling*/}
+                    </Select>
+                </FormControl>
                 <br/><br/>
 
                 <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
