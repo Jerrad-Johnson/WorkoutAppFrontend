@@ -9,6 +9,8 @@ import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import Progress from "./pages/Progress";
 import Management from "./pages/Management";
+import Toast, {Toaster} from "react-hot-toast";
+let cc = console.log;
 
 function App() {
   return (
@@ -25,7 +27,19 @@ function App() {
               </Routes>
           </BrowserRouter>
       </header>
+        <Toaster
+            position="bottom-center"
+            containerClassName={"toastContainer"}
+            toastOptions={{
+                className: '',
+                duration: 5000,
+                style: {
+                    background: '#363636',
+                    color: '#fff',
+                }}}
+        />
     </div>
+
   );
 }
 

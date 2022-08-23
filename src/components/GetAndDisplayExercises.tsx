@@ -2,6 +2,7 @@ import {deleteExercise, deleteSession, getAllSessions, getExercises} from "../ut
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
+import toast from "react-hot-toast";
 let cc = console.log;
 
 function GetAndDisplaySessions(){
@@ -40,7 +41,11 @@ function GetAndDisplaySessions(){
     );
 
     async function handleGetExercises(){
-        let response = await getExercises();
+        let response = await toast.promise(getExercises(), {
+            loading: 'test',
+            success: 'idk',
+            error: 'idk2',
+        });
 
         if (response.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {

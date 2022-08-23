@@ -1,13 +1,11 @@
 import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises, logout} from "../utilities/queries";
 import Nav from "../components/Nav";
 import {useReducer, useState} from "react";
-import {getAllSessions} from "../utilities/queries";
 import {HandleActionsData, GenericAction} from "../utilities/interfaces";
 import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
-import CustomizedMenus from "../components/DropdownMenu";
 import {TextField} from "@mui/material";
-import DeleteIcon from '@mui/icons-material/Delete';
+import toast from "react-hot-toast";
 let cc = console.log;
 //TODO Add session default options
 
@@ -17,6 +15,8 @@ function Account(){
     const [newPasswordVerifyState, setNewPasswordVerifyState] = useState("");
     const [newEmailState, setNewEmailState] = useState("");
     const [newEmailVerifyState, setNewEmailVerifyState] = useState("");
+    const testToast = () => toast('toasty');
+    toast('toasty');
 
     const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
@@ -146,6 +146,12 @@ function Account(){
 
     return (
         <>
+            <button onClick={(e) => {
+                cc(toast)
+                cc(testToast)
+                testToast();
+            }}>toast</button>
+
             <Nav title={title} />
             <div className={"basicContainer"}>
                 <Button variant={"contained"} size={"small"} onClick={() => {
@@ -161,8 +167,7 @@ function Account(){
                     e.preventDefault();
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
                 }}>Change Password</Button>
-                <br />
-                <br />
+                <br /><br />
 
 {/*                <Button variant={"contained"} size={"small"} onClick={() => {
                     handleGetAllExercises();
@@ -171,7 +176,6 @@ function Account(){
 
             {handleActionsState.changePassword === true && <>{changePasswordForm}</>}
             {handleActionsState.changeEmail === true && <>{changeEmailForm}</>}
-
         </>
     );
 }

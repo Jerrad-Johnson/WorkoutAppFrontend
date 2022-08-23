@@ -109,6 +109,18 @@ input{
     m-4
 }
 
+/*
+.toastContainer{
+    @apply
+    text-white
+}
+
+.toastLightTheme{
+    @apply
+    text-white
+}
+*/
+
 .exerciseNumberInput, .exerciseNumberSelector{
     @apply
     mx-2
