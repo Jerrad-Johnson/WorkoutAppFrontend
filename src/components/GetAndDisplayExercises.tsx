@@ -5,7 +5,7 @@ import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {successMessage} from "../utilities/sharedVariables";
 import {defaultToastMsg} from "../utilities/sharedVariables";
-import {showResponseMessage} from "../utilities/sharedFns";
+import {showResponseMessageWithCondition} from "../utilities/sharedFns";
 let cc = console.log;
 
 
@@ -46,7 +46,7 @@ function GetAndDisplaySessions(){
 
     async function handleGetExercises(){
         let response = await toast.promise(getExercises(), defaultToastMsg);
-        showResponseMessage(response);
+        showResponseMessageWithCondition(response);
 
         if (response?.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {
@@ -68,7 +68,7 @@ function GetAndDisplaySessions(){
     function handleDeleteExerciseRequest(exercise: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteExercise(exercise), defaultToastMsg);
-            showResponseMessage(response);
+            showResponseMessageWithCondition(response);
 
             if (response.message === "Success") handleGetExercises();
         });

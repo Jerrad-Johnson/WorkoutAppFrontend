@@ -2,7 +2,7 @@ import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises
 import Nav from "../components/Nav";
 import {useReducer, useState} from "react";
 import {HandleActionsData, GenericAction} from "../utilities/interfaces";
-import {showResponseMessage, verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
+import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import toast from "react-hot-toast";
@@ -128,7 +128,7 @@ function Account(){
                 },
                 error: defaultToastPromiseErrorMessage,
             });
-            showResponseMessage(response);
+            showResponseMessageWithCondition(response);
         } catch (e) {
             cc(e) //TODO handle error
         }
@@ -145,7 +145,7 @@ function Account(){
                 },
                 error: defaultToastPromiseErrorMessage,
             });
-            showResponseMessage(response);
+            showResponseMessageWithCondition(response);
         } catch (e) {
             cc(e);
         }
@@ -183,7 +183,7 @@ async function handleLogout(){
     let response = await toast.promise(logout().then(response => {
         if (response.data.loggedout === "true") window.location.href="/";
     }), defaultToastMsg);
-    showResponseMessage(response);
+    showResponseMessageWithCondition(response);
 }
 
 export default Account

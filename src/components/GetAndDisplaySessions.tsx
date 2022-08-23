@@ -4,7 +4,7 @@ import {useState} from "react";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {defaultToastMsg, successMessage} from "../utilities/sharedVariables";
-import {showResponseMessage} from "../utilities/sharedFns";
+import {showResponseMessageWithCondition} from "../utilities/sharedFns";
 let cc = console.log;
 
 function GetAndDisplaySessions(){
@@ -44,7 +44,7 @@ function GetAndDisplaySessions(){
 
     async function handleGetSessions(){
         let response = await toast.promise(getAllSessions(), defaultToastMsg);
-        showResponseMessage(response);
+        showResponseMessageWithCondition(response);
 
         if (response?.data[0]) {
             let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
@@ -66,7 +66,7 @@ function GetAndDisplaySessions(){
     function handleDeleteSessionRequest(title: string, date: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
-            showResponseMessage(response);
+            showResponseMessageWithCondition(response);
 
             if (response.message === "Success") handleGetSessions();
         });

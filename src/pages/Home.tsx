@@ -7,7 +7,12 @@ import {
     DatabaseData,
     SessionEntry
 } from "../utilities/interfaces";
-import {arrayOfMenuItems, arrayOfOptions} from "../utilities/sharedFns";
+import {
+    arrayOfMenuItems,
+    arrayOfOptions,
+    showResponseMessageWithCondition,
+    showResponseMessageWithoutCondition
+} from "../utilities/sharedFns";
 import {
     getRecentSessions,
     loginV2,
@@ -29,6 +34,12 @@ import { purple, red } from '@mui/material/colors';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+ import toast from "react-hot-toast";
+ import {
+    defaultToastMsg,
+     defaultToastPromiseErrorMessage,
+    defaultToastPromiseSuccessMessage
+} from "../utilities/sharedVariables";
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -417,7 +428,22 @@ function Home(){
         }
 
         if (errorCheckStatus !== "Passed") return errorCheckStatus;
-        let response = await submitSession(entries).then(data => cc(data));
+
+        try {
+            let response = await toast.promise(submitSession(entries).then(data => {
+                showResponseMessageWithoutCondition(data);
+            }), {
+                loading: 'Please wait',
+                success: 'Finished',
+                error: defaultToastPromiseErrorMessage,
+            }, {
+                success: {
+                    duration: 1, // This is hacky, but I cannot find a way to never-display the success message.
+                }
+            });
+        } catch (e) {
+            cc(e)
+        }
 
     }
 
