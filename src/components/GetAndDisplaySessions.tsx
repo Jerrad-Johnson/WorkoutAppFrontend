@@ -3,7 +3,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import {defaultToastMsg} from "../utilities/sharedVariables";
+import {defaultToastMsg, successMessage} from "../utilities/sharedVariables";
 import {showResponseMessage} from "../utilities/sharedFns";
 let cc = console.log;
 
@@ -46,7 +46,7 @@ function GetAndDisplaySessions(){
         let response = await toast.promise(getAllSessions(), defaultToastMsg);
         showResponseMessage(response);
 
-        if (response.message === "Success") {
+        if (response?.data[0]) {
             let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
                 return (
                     <div key={k}>
@@ -58,8 +58,8 @@ function GetAndDisplaySessions(){
                 );
             });
             setDataState(listOfSessions);
-        } else {
-            setDataState(<span className={"listQuery"}>No Results.</span>) //TODO Test this
+        } else if (response?.message === successMessage) {
+            setDataState(<span className={"listQuery"}>No Results.</span>)
         }
     }
 
