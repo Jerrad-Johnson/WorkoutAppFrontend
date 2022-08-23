@@ -1,4 +1,12 @@
-import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises, logout} from "../utilities/queries";
+import {
+    changeEmail,
+    changePassword,
+    changeSessionDefaults,
+    deleteExercise,
+    deleteSession,
+    getExercises,
+    logout
+} from "../utilities/queries";
 import Nav from "../components/Nav";
 import {useReducer, useState} from "react";
 import {HandleActionsData, GenericAction} from "../utilities/interfaces";
@@ -127,6 +135,14 @@ function Account(){
                          }}
                   />
               </div>
+          </div>
+          <div className={"center"}>
+              <Button variant={"contained"} size={"small"} onClick={(e) => {
+                  e.preventDefault();
+                  handleSaveDefaults(+defaultRepsState, +defaultSetsState, +defaultExercisesState, +defaultWeightState);
+
+              }}>Save Defaults</Button>
+
           </div>
       </>
     );
@@ -288,6 +304,19 @@ async function handleLogout(){
         if (response.data.loggedout === "true") window.location.href="/";
     }), defaultToastMsg);
     showResponseMessageWithCondition(response);
+}
+
+async function handleSaveDefaults(reps: number, sets: number, exercises: number, weight: number){
+    try {
+        let response = await toast.promise(changeSessionDefaults(reps, sets, exercises, weight), {
+            loading: defaultToastPromiseLoadingMessage,
+            success: "Saved",
+            error: defaultToastPromiseErrorMessage,
+        });
+        showResponseMessageWithCondition(response);
+    } catch (e) {
+        cc(e);
+    }
 }
 
 export default Account
