@@ -67,6 +67,7 @@ function GetAndDisplaySessions(){
     function handleDeleteSessionRequest(title: string, date: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
+            showResponseMessage(response);
 
             if (response.message === "Success") {
                 handleGetSessions(); //TODO Add mui
