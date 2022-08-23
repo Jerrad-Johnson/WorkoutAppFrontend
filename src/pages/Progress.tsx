@@ -21,11 +21,14 @@ function Progress(){
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365 Days");
+    const [yearsOfEntriesLoadingState, setYearsOfEntriesLoadingState] = useState<string>("Loading");
 
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
-    const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string | undefined>("");
+    const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string>("");
+    const [oneRMExerciseListLoadingState, setOneRMExerciseListLoadingState] = useState<string>("Loading");
+    
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
-    const [oneRMExerciseLoadingState, setOneRMExerciseLoadingState] = useState<string>("Loading");
+    const [oneRMExerciseDataLoadingState, setOneRMExerciseDataLoadingState] = useState<string>("Failed");
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
@@ -35,16 +38,16 @@ function Progress(){
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
-        handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseLoadingState);
-        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState);
+        /*handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseListLoadingState);*/
+        handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState, setYearsOfEntriesLoadingState);
     }, []);
 
     useEffect(() => {
-        handleOneRMSelection(setOneRMExerciseData, oneRMExerciseSelectorState);
+        handleOneRMSelection(setOneRMExerciseData, oneRMExerciseSelectorState, setOneRMExerciseDataLoadingState);
     }, [oneRMExerciseSelectorState]);
     
     useEffect(() => {
-        handleOneSessionAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState);
+        handleOneSessionNameAllDataSelection(setWorkoutSessionState, workoutSessionSelectorState);
     }, [workoutSessionSelectorState]);
 
     let exerciseOptions: JSX.Element[] = exerciseListState.map((entry, k) => {
@@ -129,16 +132,15 @@ function Progress(){
                     <br/>
                     <h2>Find 1RM across time</h2>
 
-                    {oneRMExerciseLoadingState === "Loaded" && oneRMSelectForm}
-                    {oneRMExerciseLoadingState === "Loading" && <CircularProgress/>}
-                    {oneRMExerciseLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+                    {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
+                    {oneRMExerciseListLoadingState === "Loading" && <CircularProgress/>}
+                    {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
-
-                    {exerciseListState[0] !== "" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
-                    {exerciseListState[0] === "" && <><br /><CircularProgress/></>}
+                    {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
+                    {oneRMExerciseDataLoadingState === "Loading" && <><br /><CircularProgress/></>}
+                    {oneRMExerciseDataLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
                     <br/>
-
                     <h2>Session Data by Title</h2>
                     <FormControl className={"center"} variant={"standard"}>
                         <Select value={workoutSessionSelectorState} onChange={(e) => {
@@ -174,10 +176,18 @@ function Progress(){
 }
 
 async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
-                              oneRMExerciseChosenState: string | undefined){
-    if (oneRMExerciseChosenState !== undefined){
-        let response = await getSessionDataForOneRMCalculation(oneRMExerciseChosenState);
-        formatOneRMData(response, setOneRMExerciseData);
+                                    oneRMExerciseChosenState: string,
+                                    setOneRMExerciseDataLoadingState: Dispatch<SetStateAction<string>>){
+    setOneRMExerciseDataLoadingState("Loading");
+
+    if (oneRMExerciseChosenState !== ""){
+        try {
+            let response = await getSessionDataForOneRMCalculation(oneRMExerciseChosenState);
+            formatOneRMData(response, setOneRMExerciseData, setOneRMExerciseDataLoadingState);
+        } catch (e) {
+            cc(e);
+            setOneRMExerciseDataLoadingState("Failed");
+        }
     } else {
         setOneRMExerciseData(undefined);
     }
@@ -199,7 +209,9 @@ async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateA
 
 }
 
-function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateAction<any>>){
+function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateAction<any>>,
+                         setOneRMExerciseDataLoadingState: Dispatch<SetStateAction<string>>){
+
     let formattedSessionData: any = [];
 
     for (let i = 0; i < response.data.length; i++) {
@@ -229,7 +241,7 @@ function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateA
         formattedSessionDataWith1RM[i].date = formattedSessionData[i].date;
         formattedSessionDataWith1RM[i].exercise = response.data[0].exercise;
     }
-
+    setOneRMExerciseDataLoadingState("Loaded");
     setOneRMExerciseData(formattedSessionDataWith1RM);
 }
 
@@ -261,7 +273,9 @@ function getPercentageOf1RM(rep: number){
     return (100 / repsToPercentageMap[rep]);
 }
 
-async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>, setWorkoutSessionSelectorState: Dispatch<SetStateAction<string>>){
+async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetStateAction<string[]>>, 
+                                             setWorkoutSessionSelectorState: Dispatch<SetStateAction<string>>,
+                                             setYearsOfEntriesLoadingState: Dispatch<SetStateAction<string>>){
     let response = await getAllSessionNames();
     let listOfSesssionsByName: string[] = response.data.map((e: any) => {
         return (e.session_title);
@@ -271,7 +285,7 @@ async function handleGetListOfSessionsByName(setWorkoutListState: Dispatch<SetSt
     if (response.data[0]?.session_title) setWorkoutSessionSelectorState(response.data[0].session_title);
 }
 
-async function handleOneSessionAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
+async function handleOneSessionNameAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>, workoutSessionSelectorState: string){
     let response = await getAllSessionsByName(workoutSessionSelectorState);
 
     let reformattedData = reformatSessionData(response.data);
