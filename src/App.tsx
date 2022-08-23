@@ -6,7 +6,6 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Account from "./pages/Account";
 import Nav from "./components/Nav";
 import Login from "./pages/Login";
-import CreateAccount from "./pages/CreateAccount";
 import Progress from "./pages/Progress";
 import Management from "./pages/Management";
 import Toast, {Toaster} from "react-hot-toast";
@@ -21,7 +20,6 @@ function App() {
                   <Route path={""} element={<Login />} />
                   <Route path={"Home"} element={<Home />} />
                   <Route path={"Account"} element={<Account/>} />
-                  <Route path={"CreateAccount"} element={<CreateAccount/>} />
                   <Route path={"Progress"} element={<Progress/>} />
                   <Route path={"Management"} element={<Management/>} />
               </Routes>
