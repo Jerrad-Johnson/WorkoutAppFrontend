@@ -69,12 +69,7 @@ function GetAndDisplaySessions(){
             let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
             showResponseMessage(response);
 
-            if (response.message === "Success") {
-                handleGetSessions(); //TODO Add mui
-            } else {
-                //TODO Add mui
-            }
-
+            if (response.message === "Success") handleGetSessions();
         });
 
         setDeleteFunctionState(deleteSessionFunction);
