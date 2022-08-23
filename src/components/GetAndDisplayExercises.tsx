@@ -3,15 +3,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
-import {DefaultToastLoadingMessage} from "../utilities/interfaces";
 import {successMessage} from "../utilities/sharedVariables";
-
+import {defaultToastMsg} from "../utilities/sharedVariables";
 let cc = console.log;
-let defaultToastMsg: DefaultToastLoadingMessage  = {
-    loading: 'Loading',
-    success: 'Success',
-    error: (err: string) => `${err}`,
-}
+
 
 function GetAndDisplaySessions(){
     const [dataState, setDataState] = useState<JSX.Element[] | JSX.Element | undefined>(undefined);
