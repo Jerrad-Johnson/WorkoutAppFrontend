@@ -167,7 +167,6 @@ function Account(){
         <div className={"basicContainer"}>
             <h2>Change E-mail</h2>
             <form>
-
                 <TextField type={"text"} value={newEmailState} variant={"standard"} sx={{width: "100%"}} placeholder={"New E-mail"} onChange={(e) => {
                     setNewPasswordVerifyState(e.target.value);
                 }}/>
@@ -266,12 +265,12 @@ function Account(){
                     handleLogout();
                 }}>Log Out</Button>
 
-                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
                     e.preventDefault()
                     handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
                 }}>Change E-mail Address</Button>
 
-                <Button variant={"contained"} size={"small"} onClick={(e) => {
+                <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
                     e.preventDefault();
                     handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
                 }}>Change Password</Button>
