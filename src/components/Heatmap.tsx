@@ -26,7 +26,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
     setSelectedYearOfEntriesState: Dispatch<SetStateAction<any>>}){
 
     let inactiveDaysColor: string = "#ccc" //Set dynamically
-    let activeDaysColor: string = "#f00"
+    let activeDaysColor: string = "#f00";
 
     let heatmapChart: JSX.Element;
     let yearsOfEntries: JSX.Element[] | undefined = undefined;
