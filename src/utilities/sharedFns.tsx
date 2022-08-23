@@ -1,5 +1,8 @@
 import MenuItem from "@mui/material/MenuItem";
 import React from "react";
+import toast from "react-hot-toast";
+import {successMessage} from "./sharedVariables";
+import {StandardBackendResponse} from "./interfaces";
 
 export function arrayOfOptions(lengthOfArray: number) {
     return Array.from({length: lengthOfArray}).map((_e, k) => {
@@ -31,4 +34,10 @@ export function verifyPasswordChangeForms(oldPassword: string, newPassword: stri
 export function verifyPasswordForms(newPassword: string, newPasswordVerify: string){
     if (newPassword === "" || newPasswordVerify === "") throw new Error("New password must not be blank.");
     if (newPassword !== newPasswordVerify) throw new Error("New passwords must match");
+}
+
+export function toastFailedMessage(response: StandardBackendResponse){
+    if (response && response.message !== successMessage){
+        toast(response?.message);
+    }
 }

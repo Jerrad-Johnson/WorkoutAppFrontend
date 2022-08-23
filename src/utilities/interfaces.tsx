@@ -106,6 +106,6 @@ export interface NotesDateAndTitleArray extends Array<NotesDateAndTitle>{};
 
 export interface DefaultToastLoadingMessage{
     loading: 'Loading';
-    success: 'Success';
+    success: string;
     error: any;
 }

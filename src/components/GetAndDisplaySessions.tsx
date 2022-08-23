@@ -2,6 +2,10 @@ import {deleteExercise, deleteSession, getAllSessions, getExercises} from "../ut
 import DeleteIcon from "@mui/icons-material/Delete";
 import {useState} from "react";
 import Button from "@mui/material/Button";
+import toast from "react-hot-toast";
+import {successMessage} from "../utilities/sharedVariables";
+import {defaultToastMsg} from "../utilities/sharedVariables";
+import {toastFailedMessage} from "../utilities/sharedFns";
 let cc = console.log;
 
 function GetAndDisplaySessions(){
@@ -40,7 +44,8 @@ function GetAndDisplaySessions(){
     );
 
     async function handleGetSessions(){
-        let response = await getAllSessions();
+        let response = await toast.promise(getAllSessions(), defaultToastMsg);
+        toastFailedMessage(response);
 
         if (response.message === "Success") {
             let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
@@ -61,7 +66,7 @@ function GetAndDisplaySessions(){
 
     function handleDeleteSessionRequest(title: string, date: string) {
         let deleteSessionFunction = (() => async () => {
-            let response = await deleteSession(title, date);
+            let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
 
             if (response.message === "Success") {
                 handleGetSessions(); //TODO Add mui

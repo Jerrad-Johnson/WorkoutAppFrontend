@@ -137,7 +137,7 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
 }
 
 export async function getAllSessions(){
-    const response = await fetch(`${baseURL}/getallsessions.php`, {
+    const response = await fetch(`${baseURL}/getallsessions2.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
