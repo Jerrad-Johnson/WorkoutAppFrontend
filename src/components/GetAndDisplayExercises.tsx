@@ -77,6 +77,8 @@ function GetAndDisplaySessions(){
         setConfirmationBoxState(true);
     }
 
+    //handleGetExercises();
+
     return (
         <>
             <Button variant={"contained"} size={"small"} onClick={() => {
