@@ -136,7 +136,7 @@ function Account(){
                   />
               </div>
           </div>
-          <div className={"center"}>
+          <div>
               <Button variant={"contained"} size={"small"} onClick={(e) => {
                   e.preventDefault();
                   handleSaveDefaults(+defaultRepsState, +defaultSetsState, +defaultExercisesState, +defaultWeightState);
@@ -277,6 +277,7 @@ function Account(){
             <div className={"basicContainer"}>
                 {defaultOptionsSelectors}
                 <br/>
+                <h2>Account Security</h2>
                 <Button variant={"contained"} size={"small"} onClick={() => {
                     handleLogout();
                 }}>Log Out</Button>
