@@ -2,10 +2,12 @@ import {changeEmail, changePassword, deleteExercise, deleteSession, getExercises
 import Nav from "../components/Nav";
 import {useReducer, useState} from "react";
 import {HandleActionsData, GenericAction} from "../utilities/interfaces";
-import {verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
+import {showResponseMessage, verifyEmailForm, verifyPasswordChangeForms} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import toast from "react-hot-toast";
+import {defaultToastMsg} from "../utilities/sharedVariables";
+import {defaultToastPromiseErrorMessage} from "../utilities/sharedVariables";
 let cc = console.log;
 //TODO Add session default options
 
@@ -15,8 +17,6 @@ function Account(){
     const [newPasswordVerifyState, setNewPasswordVerifyState] = useState("");
     const [newEmailState, setNewEmailState] = useState("");
     const [newEmailVerifyState, setNewEmailVerifyState] = useState("");
-    const testToast = () => toast('toasty');
-    toast('toasty');
 
     const handleActionsDefaultState: HandleActionsData = {
         confirmationBox: false,
@@ -120,12 +120,18 @@ function Account(){
     async function handleChangePassword(){
         try {
             verifyPasswordChangeForms(oldPasswordState, newPasswordState, newPasswordVerifyState);
-            let response = await changePassword(oldPasswordState, newPasswordState)
-            cc(response); //TODO Display in DOM
-            setOldPasswordState("");
-            setNewPasswordState("");
-            setNewPasswordVerifyState("");
-            handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
+            let response = await toast.promise(changePassword(oldPasswordState, newPasswordState), {
+                loading: 'Loading',
+                success: () => {
+                    setOldPasswordState("");
+                    setNewPasswordState("");
+                    setNewPasswordVerifyState("");
+                    handleActionsDispatch({type: "displayChangePasswordForm", payload: false});
+                    return "Finished";
+                },
+                error: defaultToastPromiseErrorMessage,
+            });
+            showResponseMessage(response);
         } catch (e) {
             cc(e) //TODO handle error
         }
@@ -134,9 +140,13 @@ function Account(){
     async function handleChangeEmail(){
         try {
             verifyEmailForm(newEmailState, newEmailVerifyState);
-            let response = await changeEmail(newEmailState);
-            cc(response); //TODO Print to DOM
-            handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+            let response = await toast.promise(changeEmail(newEmailState), {
+                loading: 'Loading',
+                success: () => {
+                handleActionsDispatch({type: "displayChangeEmailForm", payload: false});
+                },
+                error: defaultToastPromiseErrorMessage,
+            });
         } catch (e) {
             cc(e);
         }
@@ -146,12 +156,6 @@ function Account(){
 
     return (
         <>
-            <button onClick={(e) => {
-                cc(toast)
-                cc(testToast)
-                testToast();
-            }}>toast</button>
-
             <Nav title={title} />
             <div className={"basicContainer"}>
                 <Button variant={"contained"} size={"small"} onClick={() => {

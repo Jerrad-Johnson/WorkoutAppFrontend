@@ -203,12 +203,12 @@ export async function queryCheckLogin(){
 }
 
 export async function changePassword(oldPw: string, newPw: string){
-    let passwords: any = {
+    let passwords: {oldPassword: string; newPassword: string} = {
         oldPassword: oldPw,
         newPassword: newPw,
     }
 
-    const response = await fetch(`${baseURL}/changepassword.php`, {
+    const response = await fetch(`${baseURL}/changepassword2.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
