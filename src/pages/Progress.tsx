@@ -12,6 +12,9 @@ import OneRMLineGraph from "../components/OneRMLineGraph";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from "@mui/material/FormControl";
+import {CircularProgress} from "@mui/material";
+import {Alert} from "@mui/material";
+import {isEmptyArray} from "../utilities/genericFns";
 let cc = console.log;
 
 function Progress(){
@@ -22,6 +25,7 @@ function Progress(){
     const [exerciseListState, setExerciseListState] = useState<string[]>([""]);
     const [oneRMExerciseSelectorState, setOneRMExerciseSelectorState] = useState<string | undefined>("");
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
+    const [oneRMExerciseLoadingState, setOneRMExerciseLoadingState] = useState<string>("Loading");
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
@@ -31,7 +35,7 @@ function Progress(){
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
-        handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState);
+        handleGetListOfExercises(setExerciseListState, setOneRMExerciseSelectorState, setOneRMExerciseLoadingState);
         handleGetListOfSessionsByName(setWorkoutListState, setWorkoutSessionSelectorState);
     }, []);
 
@@ -84,6 +88,17 @@ function Progress(){
         });
     }
 
+    const oneRMSelectForm: JSX.Element = (
+        <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
+            <Select value={oneRMExerciseSelectorState} onChange={(e) => {
+                setOneRMExerciseSelectorState(e.target.value);
+            }}>
+                <MenuItem value={""}></MenuItem>
+                {exerciseOptions}
+            </Select>
+        </FormControl>
+    )
+
     return (
         <>
         <Nav title={"Progress"}/>
@@ -113,15 +128,15 @@ function Progress(){
                     <br/>
                     <br/>
                     <h2>Find 1RM across time</h2>
-                    <FormControl className={"center"} variant={"standard"} placeholder={"Exercise"}>
-                        <Select value={oneRMExerciseSelectorState} onChange={(e) => {
-                            setOneRMExerciseSelectorState(e.target.value);
-                        }}>
-                            <MenuItem value={""}></MenuItem>
-                            {exerciseOptions}
-                        </Select>
-                    </FormControl>
-                    <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>
+
+                    {oneRMExerciseLoadingState === "Loaded" && oneRMSelectForm}
+                    {oneRMExerciseLoadingState === "Loading" && <CircularProgress/>}
+                    {oneRMExerciseLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+
+
+                    {exerciseListState[0] !== "" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
+                    {exerciseListState[0] === "" && <><br /><CircularProgress/></>}
+
                     <br/>
 
                     <h2>Session Data by Title</h2>
@@ -168,10 +183,20 @@ async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateActio
     }
 }
 
-async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>, setOneRMExerciseSelectorState: Dispatch<SetStateAction<string | undefined>>){
-    let response = await getExercisesFromSessionTable();
-    setExerciseListState(response.data);
-    if (response.data[0]) setOneRMExerciseSelectorState(response.data[0]);
+async function handleGetListOfExercises(setExerciseListState: Dispatch<SetStateAction<string[]>>,
+                                        setOneRMExerciseSelectorState: Dispatch<SetStateAction<string | undefined>>,
+                                        setOneRMExerciseLoadingState: Dispatch<SetStateAction<string>>){
+
+    try {
+        let response = await getExercisesFromSessionTable();
+        if (response?.data[0]) setExerciseListState(response.data);
+        if (response?.data[0]) setOneRMExerciseSelectorState(response.data[0]);
+        setOneRMExerciseLoadingState("Loaded");
+    } catch (e) {
+        cc(e)
+        setOneRMExerciseLoadingState("Failed");
+    }
+
 }
 
 function formatOneRMData(response: any, setOneRMExerciseData: Dispatch<SetStateAction<any>>){
