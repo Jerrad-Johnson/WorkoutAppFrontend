@@ -12,7 +12,7 @@ import {handleOneRMSelection, handleGetListOfExercises, handleGetListOfSessionsB
 
 let cc = console.log;
 
-function Progress(){
+function Progress(){ //TODO Switch to Reducer for loading states, in order to simplify.
     const [heatmapState, setHeatmapState] = useState<FormattedSesssionHeatmapData | undefined>(undefined);
     const [yearsOfEntriesState, setYearsOfEntriesState] = useState<string[] | undefined>(undefined);
     const [selectedYearOfEntriesState, setSelectedYearOfEntriesState] = useState<string>("Last 365 Days");
@@ -30,7 +30,6 @@ function Progress(){
 
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
     const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
-
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
