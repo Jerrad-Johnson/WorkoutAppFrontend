@@ -12,10 +12,10 @@ import OneRMLineGraph from "../components/OneRMLineGraph";
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import FormControl from "@mui/material/FormControl";
-import {CircularProgress} from "@mui/material";
 import {Alert} from "@mui/material";
-import {isEmptyArray} from "../utilities/genericFns";
 import ConditionalCircularProgress from "../components/ConditionalCircularProgress";
+import {failedToLoad} from "../utilities/sharedVariables";
+import FailedToLoadAlert from "../components/FailedToLoadAlert";
 let cc = console.log;
 
 function Progress(){
@@ -150,21 +150,21 @@ function Progress(){
 
             {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
             {oneRMExerciseListLoadingState === "Loading" && <ConditionalCircularProgress sizeInPx={50}/>}
-            {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+            {oneRMExerciseListLoadingState === "Failed" && <FailedToLoadAlert/>}
 
             {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
             {oneRMExerciseDataLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={400}/></>}
-            {oneRMExerciseDataLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+            {oneRMExerciseDataLoadingState === "Failed" && <FailedToLoadAlert/>}
 
             <br/>
             <h2>Session Data by Title</h2>
             {workoutSessionSelectorLoadingState === "Loaded" && workoutSessionSelector}
             {workoutSessionSelectorLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
-            {workoutSessionSelectorLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+            {workoutSessionSelectorLoadingState === "Failed" && <FailedToLoadAlert/>}
             <br/><br/>
             {workoutSessionLoadingState === "Loaded" && workoutSessionDataTable}
             {workoutSessionLoadingState === "Loading" && <><br /><ConditionalCircularProgress sizeInPx={50}/></>}
-            {workoutSessionLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
+            {workoutSessionLoadingState === "Failed" && <FailedToLoadAlert/>}
         </div>
         </>
     )
