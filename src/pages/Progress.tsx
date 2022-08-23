@@ -33,6 +33,7 @@ function Progress(){
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
+    const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
 
     const [notesListState, setNotesListState] = useState<string[]>([""]);
 
@@ -102,74 +103,66 @@ function Progress(){
         </FormControl>
     )
 
+    const workoutSessionSelector: JSX.Element = (
+        <FormControl className={"center"} variant={"standard"}>
+            <Select value={workoutSessionSelectorState} onChange={(e) => {
+                setWorkoutSessionSelectorState(e.target.value);
+            }}>
+                <MenuItem value={""}></MenuItem>
+                {sessionOptions}
+            </Select>
+        </FormControl>
+    );
+
+    const workoutSessionDataTable: JSX.Element = (
+        <>
+        {workoutSessionState?.length !== 0 &&
+            <table className={"tableOfSession"}>
+                <thead>
+                <tr className={"tableOfSession"}>
+                    <th className={"tableSessionHeader"}>Exercise</th>
+                    <th className={"tableSessionHeader"}>Weight Lifted</th>
+                    <th className={"tableSessionHeader"}>Reps</th>
+                </tr>
+                </thead>
+                {chosenSessionTableRows}
+            </table>
+            }
+            </>
+        );
+
     return (
         <>
         <Nav title={"Progress"}/>
         <div className={"basicContainer"}>
-{/*            <button onClick={(e) => {
-                e.preventDefault();
-                cc(workoutListState);
-                cc(workoutSessionSelectorState);
-                cc(workoutSessionState)
-                cc(chosenSessionTableRows)
-            }}>test data</button>*/}
+            <Heatmap
+                heatmapState = {heatmapState}
+                setHeatmapState = {setHeatmapState}
+                yearsOfEntriesState = {yearsOfEntriesState}
+                setYearsOfEntriesState = {setYearsOfEntriesState}
+                selectedYearOfEntriesState = {selectedYearOfEntriesState}
+                setSelectedYearOfEntriesState = {setSelectedYearOfEntriesState}
+            />
 
-            <div className={"options"}>
-            </div>
+            <br/><br/>
+            <h2>Find 1RM across time</h2>
 
-            <div className={"chartContainer"}>
-                <Heatmap
-                    heatmapState = {heatmapState}
-                    setHeatmapState = {setHeatmapState}
-                    yearsOfEntriesState = {yearsOfEntriesState}
-                    setYearsOfEntriesState = {setYearsOfEntriesState}
-                    selectedYearOfEntriesState = {selectedYearOfEntriesState}
-                    setSelectedYearOfEntriesState = {setSelectedYearOfEntriesState}
-                />
+            {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
+            {oneRMExerciseListLoadingState === "Loading" && <CircularProgress/>}
+            {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
-                <div>
-                    <br/>
-                    <br/>
-                    <h2>Find 1RM across time</h2>
+            {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
+            {oneRMExerciseDataLoadingState === "Loading" && <><br /><CircularProgress/></>}
+            {oneRMExerciseDataLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
 
-                    {oneRMExerciseListLoadingState === "Loaded" && oneRMSelectForm}
-                    {oneRMExerciseListLoadingState === "Loading" && <CircularProgress/>}
-                    {oneRMExerciseListLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
-
-                    {oneRMExerciseDataLoadingState === "Loaded" && <OneRMLineGraph oneRMExerciseData = {oneRMExerciseData}/>}
-                    {oneRMExerciseDataLoadingState === "Loading" && <><br /><CircularProgress/></>}
-                    {oneRMExerciseDataLoadingState === "Failed" && <Alert severity={"warning"}>Failed to load. Try again.</Alert>}
-
-                    <br/>
-                    <h2>Session Data by Title</h2>
-                    <FormControl className={"center"} variant={"standard"}>
-                        <Select value={workoutSessionSelectorState} onChange={(e) => {
-                            setWorkoutSessionSelectorState(e.target.value);
-                        }}>
-                            <MenuItem value={""}></MenuItem>
-                            {sessionOptions}
-                        </Select>
-                    </FormControl>
-                    <br/>
-                    <br/>
-                    {workoutSessionState?.length !== 0 &&
-
-                        <table className={"tableOfSession"}>
-                            <thead>
-                                <tr className={"tableOfSession"}>
-                                    <th className={"tableSessionHeader"}>Exercise</th>
-                                    <th className={"tableSessionHeader"}>Weight Lifted</th>
-                                    <th className={"tableSessionHeader"}>Reps</th>
-                                </tr>
-                            </thead>
-                                {chosenSessionTableRows}
-                        </table>
-                    }
-                </div>
+            <br/>
+            <h2>Session Data by Title</h2>
+            {workoutSessionSelector}
+            <br/><br/>
+            {workoutSessionDataTable}
 
                 {/*TODO Add a table to display hard data for session by name*/}
 
-            </div>
         </div>
         </>
     )
