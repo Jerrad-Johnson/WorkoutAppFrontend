@@ -91,7 +91,7 @@ function Heatmap({heatmapState, setHeatmapState, yearsOfEntriesState, setYearsOf
 
 export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetStateAction<FormattedSesssionHeatmapData | undefined>>,
                                                   selectedYearOfEntriesState: string){
-    //setHeatmapState(undefined);
+    setHeatmapState(undefined);
     let response = await getWorkoutsForHeatmap(selectedYearOfEntriesState);
 
     let sessionDatesAndCount: SessionDateHashmap = {};
@@ -120,7 +120,6 @@ export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetS
     let allEntriesCombined: HeatmapByDate[] = combineEmptyAndRealHashmapData(emptyEntries, sortedAndFormattedSessionHeatmapData);
 
     setHeatmapState(allEntriesCombined);
-
 
     //response().then(createDataForHeatmap(response, yearOrLast365, setHeatmapState));
     //response.then(createDataForHeatmap(response, yearOrLast365, setHeatmapState));
