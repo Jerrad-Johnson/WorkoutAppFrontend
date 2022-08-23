@@ -9,6 +9,9 @@ import {getSessionDatesAndTitlesOfAllNotes, getSingleSessionNote} from "../utili
 import TextField from "@mui/material/TextField";
 import GetAndDisplaySessions from "../components/GetAndDisplaySessions";
 import GetAndDisplayExercises from "../components/GetAndDisplayExercises";
+import toast from "react-hot-toast";
+import {defaultToastMsg} from "../utilities/sharedVariables";
+import {showResponseMessageWithCondition} from "../utilities/sharedFns";
 let cc = console.log
 
 
@@ -66,9 +69,13 @@ async function handleGetListOfNotesBySessionDateAndTitle(setNotesListState: Disp
 }
 
 async function handleGetSessionNotes(setNotesDataState: Dispatch<SetStateAction<string>>, id: string){
-    let response: StandardBackendResponse = await getSingleSessionNote(id);
-    cc(response)
-    setNotesDataState(response.data);
+    try {
+        let response: StandardBackendResponse = await toast.promise(getSingleSessionNote(id), defaultToastMsg);
+        setNotesDataState(response.data);
+        showResponseMessageWithCondition(response);
+    } catch (e) {
+        cc(e);
+    }
 }
 
 export default Management;
