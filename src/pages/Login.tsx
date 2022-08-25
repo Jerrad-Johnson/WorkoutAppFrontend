@@ -3,6 +3,7 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {CircularProgress} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
+import Nav from "../components/Nav";
 let cc = console.log;
 
 //TODO Add password reset option to login page
@@ -78,8 +79,9 @@ function Login(){
                     <span>Checking login.</span>
                 </div>
             }
-            <div className={"loginContainer"}>
-                <span> Please Login.</span>
+            <Nav title={"Login"}/>
+            <div className={"basicContainer"}>
+                <h2> Please Login.</h2>
                 <form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                         handleLoginFormEntry(usernameState, passwordState, setLoginState);
