@@ -25,7 +25,7 @@ function CreateAccount(){
                             usernameState, emailAddressState, emailAddressVerifyState);
                     }
                 }}>
-                    <TextFieldReusable state={usernameState} setState={setUsernameState} placeholder={"Usernawme"} type={"text"}/>
+                    <TextFieldReusable state={usernameState} setState={setUsernameState} placeholder={"Username"} type={"text"}/>
                     <TextFieldReusable state={emailAddressState} setState={setEmailAddressState} placeholder={"E-mail"} type={"text"}/>
                     <TextFieldReusable state={emailAddressVerifyState} setState={setEmailAddressVerifyState} placeholder={"Re-enter E-mail"} type={"text"}/>
                     <TextFieldReusable state={passwordState} setState={setPasswordState} placeholder={"Password"} type={"password"}/>
