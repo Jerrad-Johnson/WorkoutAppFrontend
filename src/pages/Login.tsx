@@ -7,6 +7,13 @@ import Nav from "../components/Nav";
 import CustomizedMenus from "../components/DropdownMenu";
 import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
+import {
+    defaultToastMsg,
+    defaultToastPromiseErrorMessage,
+    defaultToastPromiseLoadingMessage
+} from "../utilities/sharedVariables";
+import {showResponseMessageWithCondition} from "../utilities/sharedFns";
+import toast from "react-hot-toast";
 let cc = console.log;
 
 //TODO Add password reset option to login page
@@ -15,8 +22,18 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
     if (!checkFormEntry(usernameState, passwordState)) return;
     setLoginState("pending");
 
-    let response = await doLogin(usernameState, passwordState);
-    let confirmLoggedIn = await checkLogin();
+    let response = await toast.promise(doLogin(usernameState, passwordState), {
+        loading: defaultToastPromiseLoadingMessage,
+        success: "Checking login.",
+        error: defaultToastPromiseErrorMessage,
+    });
+
+    let confirmLoggedIn = await toast.promise(checkLogin(), {
+        loading: defaultToastPromiseLoadingMessage,
+        success: "Logged in, redirecting now.",
+        error: defaultToastPromiseErrorMessage,
+    });
+
     handleCheckIfLoggedIn(confirmLoggedIn, setLoginState);
 }
 
