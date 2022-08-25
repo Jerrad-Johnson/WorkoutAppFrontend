@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {createAccount} from "../utilities/queries";
-import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordForms, isUserValid} from "../utilities/sharedFns";
+import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordFormsNewAccount, isUserValid} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
 import TextFieldReusable from "./createaccount/TextFieldReusable";
 import toast from "react-hot-toast";
@@ -53,16 +53,17 @@ async function handleCreateAccount(passwordState: string, passwordVerifyState: s
     try{
         isUserValid(usernameState);
         verifyEmailForm(emailAddressState, emailAddressVerifyState);
-        verifyPasswordForms(passwordState, passwordVerifyState);
+        verifyPasswordFormsNewAccount(passwordState, passwordVerifyState);
         let response = await toast.promise(createAccount(passwordState, usernameState, emailAddressState), {
             loading: defaultToastPromiseLoadingMessage,
-            success: "Success",
+            success: "Request Sent",
             error: defaultToastPromiseErrorMessage,
         });
-        showResponseMessageWithCondition(response);
-        cc(response);
-        //cc(response); //TODO Handle resposne
-        //window.location.href="/";
+
+        if (response.message === "Success"){
+            toast.success("Account Created. Redirecting.")
+            setTimeout(() => { window.location.href="/" }, 2000);
+        }
     } catch (e) {
         cc(e);
     }

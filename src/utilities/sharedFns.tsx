@@ -52,20 +52,41 @@ export function verifyPasswordChangeForms(oldPassword: string, newPassword: stri
     }
 
     if (newPassword !== newPasswordVerify) {
-        let msg: string = "New passwords must match\""
+        let msg: string = "New passwords must match";
         toast.error(msg);
         throw new Error(msg);
     }
     if (oldPassword === ""){
-        let msg: string = "Old password field must not be blank."
+        let msg: string = "Old password field must not be blank.";
         toast.error(msg);
         throw new Error(msg);
     }
 }
 
 export function verifyPasswordForms(newPassword: string, newPasswordVerify: string){
-    if (newPassword === "" || newPasswordVerify === "") throw new Error("New password must not be blank.");
-    if (newPassword !== newPasswordVerify) throw new Error("New passwords must match");
+    if (newPassword === "" || newPasswordVerify === ""){
+        let msg: string = "New password fields must not be blank.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+    if (newPassword !== newPasswordVerify){
+        let msg: string = "New passwords must match";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+}
+
+export function verifyPasswordFormsNewAccount(password: string, passwordVerify: string){
+    if (password === "" || passwordVerify === ""){
+        let msg: string = "Password fields must not be blank.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+    if (password !== passwordVerify){
+        let msg: string = "Passwords must match";
+        toast.error(msg);
+        throw new Error(msg);
+    }
 }
 
 export function showResponseMessageWithCondition(response: StandardBackendResponse){
