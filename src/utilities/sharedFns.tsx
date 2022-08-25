@@ -3,6 +3,7 @@ import React from "react";
 import toast from "react-hot-toast";
 import {successMessage} from "./sharedVariables";
 import {StandardBackendResponse} from "./interfaces";
+let cc = console.log;
 
 export function arrayOfOptions(lengthOfArray: number) {
     return Array.from({length: lengthOfArray}).map((_e, k) => {
@@ -19,8 +20,10 @@ export function arrayOfMenuItems(lengthOfArray: number) {
 }
 
 export function isUserValid(username: string){
-    const res = /^[a-z0-9_\.]+$/.exec(username);
-    if (!!res) {
+    const usernameRegex = /^[a-z0-9_.]+$/
+    const isValid = usernameRegex.test(username);
+
+    if (!isValid) {
         let msg: string = "Invalid username. Please use only letters, numbers, underscores, and periods.";
         toast.error(msg);
         throw new Error(msg);

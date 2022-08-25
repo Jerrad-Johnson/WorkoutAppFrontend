@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {createAccount} from "../utilities/queries";
-import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordForms} from "../utilities/sharedFns";
+import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordForms, isUserValid} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
 import TextFieldReusable from "./createaccount/TextFieldReusable";
 import toast from "react-hot-toast";
@@ -51,6 +51,7 @@ function CreateAccount(){
 async function handleCreateAccount(passwordState: string, passwordVerifyState: string, usernameState: string,
                                    emailAddressState: string, emailAddressVerifyState: string){
     try{
+        isUserValid(usernameState);
         verifyEmailForm(emailAddressState, emailAddressVerifyState);
         verifyPasswordForms(passwordState, passwordVerifyState);
         let response = await toast.promise(createAccount(passwordState, usernameState, emailAddressState), {
