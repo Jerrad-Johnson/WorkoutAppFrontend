@@ -15,7 +15,7 @@ function CreateAccount(){
     return (
         <>
             <div className={"basicContainer headerContainer"}>
-                <span className={"pageTitle"}>Workout Progress Tracker</span>
+                <span className={"pageTitle"}>Create Account</span>
             </div>
 
             <div className={"basicContainer"}>
