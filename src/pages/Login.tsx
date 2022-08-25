@@ -97,12 +97,9 @@ function Login(){
                     <span>Checking login.</span>
                 </div>
             }
+
             <div className={"basicContainer headerContainer"}>
-                <div className={"headerLeft"}>
                     <span className={"pageTitle"}>Workout Progress Tracker</span>
-                </div>
-                <div className={"headerRight"}>
-                </div>
             </div>
 
             <div className={"basicContainer"}>
