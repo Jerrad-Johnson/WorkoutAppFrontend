@@ -4,16 +4,20 @@ let cc = console.log;
 //let baseURL: string = "/php";
 let baseURL: string = "http://localhost:80/php";
 
-export function loginQuery(data: LoginCredentials) {
-    fetch(`${baseURL}/login.php`, {
+export async function loginQuery(data: LoginCredentials) {
+    let response = await fetch(`${baseURL}/login.php`, {
         method: 'POST',
         mode: 'cors',
         body: JSON.stringify(data),
         credentials: "include",
         headers: {
-            'Content-Type': 'application/json' }
-    }).then(response => response.json())
-        .then(data => cc(data));
+            'Content-Type': 'application/json'
+        }
+    });
+
+
+
+    return await response.json();
 }
 
 export async function loginV2(){
