@@ -19,7 +19,12 @@ function CreateAccount(){
             </div>
 
             <div className={"basicContainer"}>
-                <form>
+                <form onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                        handleCreateAccount(passwordState, passwordVerifyState,
+                            usernameState, emailAddressState, emailAddressVerifyState);
+                    }
+                }}>
                     <TextFieldReusable state={usernameState} setState={setUsernameState} placeholder={"Usernawme"} type={"text"}/>
                     <TextFieldReusable state={emailAddressState} setState={setEmailAddressState} placeholder={"E-mail"} type={"text"}/>
                     <TextFieldReusable state={emailAddressVerifyState} setState={setEmailAddressVerifyState} placeholder={"Re-enter E-mail"} type={"text"}/>
