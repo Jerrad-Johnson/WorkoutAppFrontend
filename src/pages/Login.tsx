@@ -1,9 +1,12 @@
 import {StandardBackendResponse, LoginCredentials} from "../utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {CircularProgress} from "@mui/material";
+import {CircularProgress, TextField} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
 import Nav from "../components/Nav";
+import CustomizedMenus from "../components/DropdownMenu";
+import FormControl from "@mui/material/FormControl";
+import Button from "@mui/material/Button";
 let cc = console.log;
 
 //TODO Add password reset option to login page
@@ -79,14 +82,44 @@ function Login(){
                     <span>Checking login.</span>
                 </div>
             }
-            <Nav title={"Login"}/>
+            <div className={"basicContainer headerContainer"}>
+                <div className={"headerLeft"}>
+                    <span className={"pageTitle"}>Workout Progress Tracker</span>
+                </div>
+                <div className={"headerRight"}>
+                </div>
+            </div>
+
             <div className={"basicContainer"}>
                 <h2> Please Login.</h2>
-                <form onKeyPress={(e) => {
+
+
+
+
+                    <TextField type={"text"} variant={"standard"} value={usernameState} placeholder={"Username"}
+                       onChange={(e) => {
+                            e.preventDefault();
+                            setUsernameState(e.target.value);
+                    }}/>
+
+                    <TextField type={"password"} variant={"standard"} value={passwordState} placeholder={"Password"}
+                       onChange={(e) => {
+                           e.preventDefault();
+                           setUsernameState(e.target.value);
+                   }}/>
+
+                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleLoginFormEntry(usernameState, passwordState, setLoginState)
+                        }}>Submit</Button>
+
+                {/*<form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                         handleLoginFormEntry(usernameState, passwordState, setLoginState);
                     }//TODO Does not redirect if login is attempted too quickly. Fix this.
                 }}>
+
                     <input type={"text"} value={usernameState} placeholder={"Username"} className={"textInputsShort"}
                            onChange={(e) => {
                                e.preventDefault();
@@ -101,7 +134,8 @@ function Login(){
                         e.preventDefault();
                         handleLoginFormEntry(usernameState, passwordState, setLoginState)
                     }}>Submit</button>
-                </form>
+                </form>*/}
+                <br />
                 <span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
             </div>
             </>
