@@ -1,6 +1,8 @@
 import {useState} from "react";
 import {createAccount} from "../utilities/queries";
 import {verifyEmailForm, verifyPasswordForms} from "../utilities/sharedFns";
+import {TextField} from "@mui/material";
+import TextFieldReusable from "./createaccount/TextFieldReusable";
 let cc = console.log;
 
 function CreateAccount(){
@@ -11,35 +13,27 @@ function CreateAccount(){
     const [passwordVerifyState, setPasswordVerifyState] = useState("");
 
     return (
-        <div>
-            <form>
-                <input type={"text"} value={usernameState} placeholder={"Username"} onChange={(e) => {
-                    setUsernameState(e.target.value);
-                }}/>
-                <br />
-                <input type={"text"} value={emailAddressState} placeholder={"E-mail"} onChange={(e) => {
-                    setEmailAddressState(e.target.value);
-                }}/>
-                <br />
-                <input type={"text"} value={emailAddressVerifyState} placeholder={"Re-enter E-mail"} onChange={(e) => {
-                    setEmailAddressVerifyState(e.target.value);
-                }}/>
-                <br />
-                <input type={"password"} value={passwordState} placeholder={"Password"} onChange={(e) => {
-                    setPasswordState(e.target.value);
-                }}/>
-                <br />
-                <input type={"password"} value={passwordVerifyState} placeholder={"Re-enter Password"} onChange={(e) => {
-                    setPasswordVerifyState(e.target.value);
-                }}/>
-                <br />
-                <button onClick={(e) => {
-                    e.preventDefault();
-                    handleCreateAccount(passwordState, passwordVerifyState,
-                        usernameState, emailAddressState, emailAddressVerifyState);
-                }}>Submit</button>
-            </form>
-        </div>
+        <>
+            <div className={"basicContainer headerContainer"}>
+                <span className={"pageTitle"}>Workout Progress Tracker</span>
+            </div>
+
+            <div className={"basicContainer"}>
+                <form>
+                    <TextFieldReusable state={usernameState} setState={setUsernameState} placeholder={"Usernawme"} type={"text"}/>
+                    <TextFieldReusable state={emailAddressState} setState={setEmailAddressState} placeholder={"E-mail"} type={"text"}/>
+                    <TextFieldReusable state={emailAddressVerifyState} setState={setEmailAddressVerifyState} placeholder={"Re-enter E-mail"} type={"text"}/>
+                    <TextFieldReusable state={passwordState} setState={setPasswordState} placeholder={"Password"} type={"password"}/>
+                    <TextFieldReusable state={passwordVerifyState} setState={setPasswordVerifyState} placeholder={"Re-enter Password"} type={"password"}/>
+
+                    <button onClick={(e) => {
+                        e.preventDefault();
+                        handleCreateAccount(passwordState, passwordVerifyState,
+                            usernameState, emailAddressState, emailAddressVerifyState);
+                    }}>Submit</button>
+                </form>
+            </div>
+        </>
     );
 }
 
