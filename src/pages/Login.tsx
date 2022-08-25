@@ -3,12 +3,8 @@ import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
 import {CircularProgress, TextField} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
-import Nav from "../components/Nav";
-import CustomizedMenus from "../components/DropdownMenu";
-import FormControl from "@mui/material/FormControl";
 import Button from "@mui/material/Button";
 import {
-    defaultToastMsg,
     defaultToastPromiseErrorMessage,
     defaultToastPromiseLoadingMessage
 } from "../utilities/sharedVariables";
@@ -28,13 +24,14 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
         error: defaultToastPromiseErrorMessage,
     });
 
-    let confirmLoggedIn = await toast.promise(checkLogin(), {
+    let confirmLoggedIn = await checkLogin();
+    showResponseMessageWithCondition(confirmLoggedIn);
+
+    await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, setLoginState), {
         loading: defaultToastPromiseLoadingMessage,
         success: "Logged in, redirecting now.",
         error: defaultToastPromiseErrorMessage,
     });
-
-    handleCheckIfLoggedIn(confirmLoggedIn, setLoginState);
 }
 
 function checkFormEntry(usernameState: string, passwordState: string){
@@ -43,7 +40,6 @@ function checkFormEntry(usernameState: string, passwordState: string){
 }
 
 async function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
-    cc(response)
     if (response.data.loggedin === true){
         response = await getSessionDefaults();
         if (response.data !== false) {
@@ -112,8 +108,6 @@ function Login(){
             <div className={"basicContainer"}>
                 <h2> Please Login.</h2>
 
-
-
                 <form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                         handleLoginFormEntry(usernameState, passwordState, setLoginState);
@@ -140,29 +134,7 @@ function Login(){
                         }}>Submit</Button>
                 </form>
 
-                {/*<form onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                        handleLoginFormEntry(usernameState, passwordState, setLoginState);
-                    }//TODO Does not redirect if login is attempted too quickly. Fix this.
-                }}>
-
-                    <input type={"text"} value={usernameState} placeholder={"Username"} className={"textInputsShort"}
-                           onChange={(e) => {
-                               e.preventDefault();
-                               setUsernameState(e.target.value);
-                           }}/>
-                    <input type={"password"} value={passwordState} placeholder={"Password"} className={"textInputsShort"}
-                        onChange={(e) => {
-                            e.preventDefault();
-                            setPasswordState(e.target.value);
-                    }}/>
-                    <button onClick={(e) => {
-                        e.preventDefault();
-                        handleLoginFormEntry(usernameState, passwordState, setLoginState)
-                    }}>Submit</button>
-                </form>*/}
-                <br />
-                <span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
+                <br /><span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
             </div>
             </>
         )
