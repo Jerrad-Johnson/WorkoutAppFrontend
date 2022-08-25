@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {createAccount} from "../utilities/queries";
 import {verifyEmailForm, verifyPasswordForms} from "../utilities/sharedFns";
-import {TextField} from "@mui/material";
+import Button from "@mui/material/Button";
 import TextFieldReusable from "./createaccount/TextFieldReusable";
 let cc = console.log;
 
@@ -31,11 +31,11 @@ function CreateAccount(){
                     <TextFieldReusable state={passwordState} setState={setPasswordState} placeholder={"Password"} type={"password"}/>
                     <TextFieldReusable state={passwordVerifyState} setState={setPasswordVerifyState} placeholder={"Re-enter Password"} type={"password"}/>
 
-                    <button onClick={(e) => {
+                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
                         e.preventDefault();
                         handleCreateAccount(passwordState, passwordVerifyState,
                             usernameState, emailAddressState, emailAddressVerifyState);
-                    }}>Submit</button>
+                    }}>Submit</Button>
                 </form>
             </div>
         </>
