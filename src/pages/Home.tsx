@@ -54,27 +54,6 @@ let cc = console.log;
 
 function Home(){
 
-    let testString: string = "810J-&J2KAn98mLwgi5on&*nuij"; //@ts-ignore
-    let convertedString: string = convertString(testString);
-
-    function convertString(testString: string){
-        let strippedString: string = testString.replace(/\D/g, ''); //@ts-ignore
-        let setsOfThree: string[] = strippedString.match(/.{1,3}/g);
-        //@ts-ignore
-        if (setsOfThree.at(-1).length === 1) { //@ts-ignore
-            let stringToMoveCharacterFrom: string = setsOfThree.at(-2)
-            let characterToMove: string = stringToMoveCharacterFrom.charAt(2);
-            let shortenedString: string = stringToMoveCharacterFrom.substr(0, stringToMoveCharacterFrom.length -1);
-            let finalString: string[] | string = setsOfThree;
-            let lengthenedString: string = characterToMove + finalString.at(-1);
-            finalString.splice(-2);
-            finalString.push(shortenedString, lengthenedString);
-            return finalString.join("-");
-        } else {
-            return setsOfThree.join("-");
-        }
-    }
-
     let defaultExercises: number = 3; //@ts-ignore
     if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +JSON.parse(localStorage.getItem("defaultExercises"));
 
@@ -95,7 +74,6 @@ function Home(){
     } //TODO Save to / load from database.
 
     const [optionsState, optionsDispatch] = useReducer(optionsReducer, defaultOptions);
-    const [optionsDropdownState, setOptionsDropdownState] = useState(false);
 
     function optionsReducer(state: OptionsData, action: GenericAction){
         switch (action.type){
@@ -128,7 +106,6 @@ function Home(){
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
-
 
     function sessionReducer(state: SessionData, action: GenericAction){
         switch (action.type){
@@ -278,7 +255,7 @@ function Home(){
 
         if (a.length > 0) {
             duplicatesRemoved = a.filter((v) => {
-                return newArrayOfExercises.indexOf(v) == -1;
+                return newArrayOfExercises.indexOf(v) === -1;
             });
         }
 
@@ -324,7 +301,7 @@ function Home(){
     }
 
     async function loadPrevSessions(){
-        let prevSessions: any = await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
+        await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
     }
 
     async function loadExerciseList(){
@@ -404,9 +381,8 @@ function Home(){
                 }
             });
         } catch (e) {
-            cc(e)
+            cc(e);
         }
-
     }
 
     function checkSessionData(entries: SessionEntry){
@@ -551,7 +527,7 @@ function Home(){
                 }}>Submit Session</Button>
             </div>
         </>
-    )
+    );
 }
 
 export default Home;
