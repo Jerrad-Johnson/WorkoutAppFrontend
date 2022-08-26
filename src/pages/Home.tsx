@@ -1,7 +1,6 @@
-import React, {Dispatch, ReactNode, SetStateAction, useEffect, useReducer, useState} from "react";
+import React, {useReducer, useState} from "react";
 import {
     OptionsData,
-    OptionsAction,
     SessionData,
     GenericAction,
     DatabaseData,
@@ -35,7 +34,6 @@ import toast from "react-hot-toast";
 import {
     defaultToastMsg,
     defaultToastPromiseErrorMessage,
-    defaultToastPromiseSuccessMessage
 } from "../utilities/sharedVariables";
 import {
     ExerciseElements,
@@ -214,7 +212,6 @@ function Home(){
                 let combinedExercises = combineExerciseLists(state.staticExerciseNames, action.payload);
                 let allReps: number[][] = [];
                 let allWeights: number[][] = [];
-                let allExerciseNames: string[] = [];
                 let numbersOfSets: number[] = [];
                 let newTitle: string = action.payload[0]?.session_title;
                 let selectorOrInput: number[] = [];
@@ -224,13 +221,11 @@ function Home(){
                     let repsAsNumbers: number[] = repsSets.map((e) => +e);
                     let weightSets: string[] = action.payload[i].weight_lifted.split(",");
                     let weightsAsNumbers: number[] = weightSets.map((e) => +e);
-                    //let exerciseName: string = action.payload[i].exercise;
 
                     selectorOrInput.push(0);
                     numbersOfSets[i] = repsSets.length;
                     allReps.push(repsAsNumbers);
                     allWeights.push(weightsAsNumbers);
-                    //allExerciseNames.push(exerciseName);
                 }
 
                 return {...state, reps: allReps, weights: allWeights, exerciseNames: combinedExercises,
@@ -246,14 +241,12 @@ function Home(){
             session.reps.pop();
             session.weights.pop();
             session.sets.pop();
-            //session.exerciseNames.pop(); //TODO Because of this change, when I pull the data to submit to the DB I need to check exercisename length.
         }
 
         while (session.reps.length < newExerciseCount){
             session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
             session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
             session.sets = [...session.sets, optionsState.sets];
-            //session.exerciseNames = [...session.exerciseNames, ""];
         }
 
         return session;
@@ -330,16 +323,6 @@ function Home(){
         loadExerciseList();
     }
 
-
-/*    function initialSessionExercises(){
-        let index = 0;
-        while (loaderState.exercises.length > index && sessionState.reps.length > index){
-            index++;
-            sessionDispatch({type: "initialExercises", payload: { exercise: loaderState.exercises[index], position: [index]}} )
-        }
-    }*/
-
-
     async function loadPrevSessions(){
         let prevSessions: any = await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
     }
@@ -365,38 +348,13 @@ function Home(){
         );
     });
 
-    let previousSessionSelector: JSX.Element[] = [];
     let previousSessionOptions: JSX.Element[] = [];
 
-    if (sessionState.previousSessions !== undefined){
-        previousSessionOptions = sessionState.previousSessions.map((e: {session_date: string, session_title: string}, k: number) => {
+    if (sessionState.previousSessions !== undefined) {
+        previousSessionOptions = sessionState.previousSessions.map((e: { session_date: string, session_title: string }, k: number) => {
             return (
-                <MenuItem key={k} value={`${e.session_title} @ ${e.session_date}`}>{e.session_title} @ {e.session_date}</MenuItem>
-            );
-        });
-
-        previousSessionSelector = Array.of(1).map((_e, k) => {
-            return (
-                <div key={k} className={"sessionDetailsContainer"}>
-                    <div className={"leftOfBasicSplitFlexContainer"}>
-                        <FormControl variant={"standard"}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
-                            <Select value={sessionState.selectedSessionToLoad} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                                    onChange={(e) => {
-                                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                                    }}>
-                                <MenuItem value={""}></MenuItem>
-                                {previousSessionOptions} {/*TODO Add error handling*/}
-                            </Select>
-                        </FormControl>
-                    </div>
-
-                    <div className={"rightOfBasicSplitFlexContainer"}>
-                        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
-                            applySpecificSessionHandler();
-                        }}>Load Prev. Session</Button>
-                    </div>
-
-                </div>
+                <MenuItem key={k}
+                          value={`${e.session_title} @ ${e.session_date}`}>{e.session_title} @ {e.session_date}</MenuItem>
             );
         });
     }
@@ -429,7 +387,6 @@ function Home(){
             errorCheckStatus = checkSessionData(entries);
         } catch (err) {
             cc(err);
-            //errorHandler(err); TODO Add handler
         }
 
         if (errorCheckStatus !== "Passed") return errorCheckStatus;
@@ -520,13 +477,6 @@ function Home(){
 
             <div className={"basicContainer"}>
                 <h2>Previous Session</h2>
-                {/*<button onClick={() => {
-                    cc(sessionState)
-                    cc(loaderState)
-                }}>For testing: Log sesssion state</button>*/}
-
-                {/*{previousSessionSelector}*/}
-                {/*<span className={"selectorTitle"}>Load Previous Session</span>*/}
 
                 <FormControl variant={"standard"} sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
                     <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
