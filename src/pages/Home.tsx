@@ -402,6 +402,12 @@ function Home(){
                 throw new Error(msg);
             }
 
+            if (entries.exercises[i].length > 30){
+                let msg: string = "Exercise name may not be longer than 30 characters.";
+                toast.error(msg);
+                throw new Error(msg);
+            }
+
             titleMap[entries.exercises[i]] = 1;
         }
 
@@ -428,6 +434,13 @@ function Home(){
                     toast.error(msg);
                     throw new Error(msg);
                 }
+
+                let currentWeight: string = entries.weights[i][j].toString();
+                if (currentWeight.length > 8){
+                    let msg: string = "Weight must not be longer than eight characters.";
+                    toast.error(msg);
+                    throw new Error(msg);
+                }
             }
         }
 
@@ -437,8 +450,20 @@ function Home(){
             throw new Error(msg);
         }
 
+        if (entries.title.length > 60) {
+            let msg: string = "Session title must not be longer than 60 characters.";
+            toast.error(msg);
+            throw new Error(msg);
+        }
+
         if (!entries.date) {
             let msg: string = "Please enter a date.";
+            toast.error(msg);
+            throw new Error(msg);
+        }
+
+        if (entries.notes.length > 6000) {
+            let msg: string = "Session note must not be longer than 5,000 characters.";
             toast.error(msg);
             throw new Error(msg);
         }
