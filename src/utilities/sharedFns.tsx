@@ -23,7 +23,13 @@ export function isUserValid(username: string){
     const usernameRegex = /^[a-z0-9_.]+$/
     const isValid = usernameRegex.test(username);
 
-    if (!isValid) {
+    if (username.length > 20){
+        let msg: string = "Username may not be longer than 20 characters.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+
+    if (!isValid){
         let msg: string = "Invalid username. Please use only letters, numbers, underscores, and periods.";
         toast.error(msg);
         throw new Error(msg);
@@ -31,6 +37,12 @@ export function isUserValid(username: string){
 }
 
 export function verifyEmailForm(newEmail: string, newEmailVerify: string){
+    if (newEmail.length > 60){
+        let msg: string = "E-mail address may not be longer than 60 characters.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+
     if (newEmail !== newEmailVerify) {
         let msg: string = "E-mail address must match in both fields.";
         toast.error(msg);
@@ -69,6 +81,7 @@ export function verifyPasswordForms(newPassword: string, newPasswordVerify: stri
         toast.error(msg);
         throw new Error(msg);
     }
+
     if (newPassword !== newPasswordVerify){
         let msg: string = "New passwords must match";
         toast.error(msg);
@@ -77,11 +90,18 @@ export function verifyPasswordForms(newPassword: string, newPasswordVerify: stri
 }
 
 export function verifyPasswordFormsNewAccount(password: string, passwordVerify: string){
+    if (password.length > 255){
+        let msg: string = "Password may not be longer than 255 characters.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+
     if (password === "" || passwordVerify === ""){
         let msg: string = "Password fields must not be blank.";
         toast.error(msg);
         throw new Error(msg);
     }
+
     if (password !== passwordVerify){
         let msg: string = "Passwords must match";
         toast.error(msg);
