@@ -25,6 +25,7 @@ function CreateAccount(){
             </div>
 
             <div className={"basicContainer"}>
+                <h2>Enter details.</h2>
                 <form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                         handleCreateAccount(passwordState, passwordVerifyState,
