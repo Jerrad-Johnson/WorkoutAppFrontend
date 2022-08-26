@@ -57,6 +57,12 @@ export function verifyEmailForm(newEmail: string, newEmailVerify: string){
 }
 
 export function verifyPasswordChangeForms(oldPassword: string, newPassword: string, newPasswordVerify: string){
+    if (newPassword.length > 255){
+        let msg: string = "Password may not be longer than 255 characters.";
+        toast.error(msg);
+        throw new Error(msg);
+    }
+
     if (newPassword === "" || newPasswordVerify === ""){
         let msg: string = "New password must not be blank.";
         toast.error(msg);
