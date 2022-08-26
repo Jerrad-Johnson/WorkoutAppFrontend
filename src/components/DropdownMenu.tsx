@@ -92,6 +92,7 @@ export default function CustomizedMenus() {
                     <HomeIcon/>
                     Home
                 </MenuItem>
+
                 <MenuItem onClick={() => {
                     handleClose();
                     window.location.href="Progress";
@@ -99,13 +100,7 @@ export default function CustomizedMenus() {
                     <CheckIcon />
                     Progress
                 </MenuItem>
-                <MenuItem onClick={() => {
-                    handleClose();
-                    window.location.href="Account";
-                }} disableRipple>
-                    <AccountBoxIcon />
-                    Account
-                </MenuItem>
+
                 <MenuItem onClick={() => {
                     handleClose();
                     window.location.href="Management";
@@ -114,11 +109,14 @@ export default function CustomizedMenus() {
                     View & Manage Data
                 </MenuItem>
 
-                {/*<Divider sx={{ my: 0.5 }} />
-                <MenuItem disableRipple>
-                    <MoreHorizIcon />
-                    Defaults
-                </MenuItem>*/}
+                <MenuItem onClick={() => {
+                    handleClose();
+                    window.location.href="Account";
+                }} disableRipple>
+                    <AccountBoxIcon />
+                    Account
+                </MenuItem>
+
             </StyledMenu>
         </div>
     );
