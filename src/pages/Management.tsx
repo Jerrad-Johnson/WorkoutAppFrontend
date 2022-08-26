@@ -14,6 +14,8 @@ import {defaultToastMsg} from "../utilities/sharedVariables";
 import {showResponseMessageWithCondition} from "../utilities/sharedFns";
 let cc = console.log
 
+//TODO Stop "Loaded" from displaying twice when items are deleted.
+
 
 function Management(){
     const [notesListState, setNotesListState] = useState<any[]>([""]);
