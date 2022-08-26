@@ -5,7 +5,6 @@ import Button from "@mui/material/Button";
 import TextFieldReusable from "./createaccount/TextFieldReusable";
 import toast from "react-hot-toast";
 import {
-    defaultToastMsg,
     defaultToastPromiseErrorMessage,
     defaultToastPromiseLoadingMessage
 } from "../utilities/sharedVariables";
