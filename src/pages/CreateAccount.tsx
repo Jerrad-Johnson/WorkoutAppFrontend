@@ -50,7 +50,7 @@ function CreateAccount(){
 
 async function handleCreateAccount(passwordState: string, passwordVerifyState: string, usernameState: string,
                                    emailAddressState: string, emailAddressVerifyState: string){
-    try{
+    try{ //TODO Add query checks for existing username and email, lest a mysql error be returned.
         isUserValid(usernameState);
         verifyEmailForm(emailAddressState, emailAddressVerifyState);
         verifyPasswordFormsNewAccount(passwordState, passwordVerifyState);

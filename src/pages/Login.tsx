@@ -14,20 +14,27 @@ let cc = console.log;
 
 //TODO Add password reset option to login page
 
-async function handleLoginFormEntry(usernameState: string, passwordState: string, setLoginState: Dispatch<SetStateAction<string>>){
+async function handleLoginFormEntry(usernameState: string, passwordState: string, firstLoadState: boolean,
+                                    setFirstLoadState: Dispatch<SetStateAction<boolean>>){
     if (!checkFormEntry(usernameState, passwordState)) return;
-    setLoginState("pending");
 
     let response = await toast.promise(doLogin(usernameState, passwordState), {
         loading: defaultToastPromiseLoadingMessage,
         success: "Checking login.",
         error: defaultToastPromiseErrorMessage,
     });
+    showResponseMessageWithCondition(response)
+
+    if (response.message === "Already logged in.") {
+        window.location.href="Home";
+        return;
+    }
+
+    if (response.message === "Wrong password.") return;
 
     let confirmLoggedIn = await checkLogin();
-    showResponseMessageWithCondition(confirmLoggedIn);
 
-    await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, setLoginState), {
+    await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState), {
         loading: defaultToastPromiseLoadingMessage,
         success: "Logged in, redirecting now.",
         error: defaultToastPromiseErrorMessage,
@@ -39,7 +46,14 @@ function checkFormEntry(usernameState: string, passwordState: string){
     return true;
 }
 
-async function handleCheckIfLoggedIn(response: StandardBackendResponse, setLoginState: Dispatch<SetStateAction<string>>){
+async function handleCheckIfLoggedIn(response: StandardBackendResponse, firstLoadState: boolean,
+                                     setFirstLoadState: Dispatch<SetStateAction<boolean>>){
+    if (response.data.loggedin !== true && firstLoadState === false){
+        toast.error("Not logged in.");
+    }
+
+    setFirstLoadState(true);
+
     if (response.data.loggedin === true){
         response = await getSessionDefaults();
         if (response.data !== false) {
@@ -50,7 +64,6 @@ async function handleCheckIfLoggedIn(response: StandardBackendResponse, setLogin
         }
         window.location.href="Home";
     }
-    setLoginState("false");
 }
 
 async function checkLogin(){
@@ -69,37 +82,19 @@ async function doLogin(usernameState: string, passwordState: string){
     return response;
 }
 
-function Login(){
-    let [loginState, setLoginState] = useState("pending");
-    let [usernameState, setUsernameState] = useState("");
-    let [passwordState, setPasswordState] = useState("");
+function Login() {
+    const [usernameState, setUsernameState] = useState("");
+    const [passwordState, setPasswordState] = useState("");
+    const [firstLoadState, setFirstLoadState] = useState(true);
 
     useEffect(() => {
-        loginState === "pending" ? cc(5) : cc(7); //TODO Set to change opacity of loginContainer
-    }, [loginState]);
-
-    useEffect(() => {
-        checkLogin().then((response) => handleCheckIfLoggedIn(response, setLoginState));
+        checkLogin().then((response) => handleCheckIfLoggedIn(response, firstLoadState, setFirstLoadState));
     }, []);
 
-    if (loginState === "true"){
-        return (
-            <div className={"loginContainer"}>
-                Logged in, please proceed.
-            </div>
-        )
-    } else {
-        return (
-            <>
-            {loginState === "pending" &&
-                <div className={"overlay"}>
-                    <CircularProgress size={150}/>
-                    <span>Checking login.</span>
-                </div>
-            }
-
+    return (
+        <>
             <div className={"basicContainer headerContainer"}>
-                    <span className={"pageTitle"}>Workout Progress Tracker</span>
+                <span className={"pageTitle"}>Workout Progress Tracker</span>
             </div>
 
             <div className={"basicContainer"}>
@@ -107,35 +102,34 @@ function Login(){
 
                 <form onKeyPress={(e) => {
                     if (e.key === 'Enter') {
-                        handleLoginFormEntry(usernameState, passwordState, setLoginState);
+                        handleLoginFormEntry(usernameState, passwordState, firstLoadState, setFirstLoadState);
                     }//TODO Does not redirect if login is attempted too quickly. Fix this.
                 }}>
                     <TextField type={"text"} variant={"standard"} sx={{"display": "block", "marginBottom": "8px"}}
                                value={usernameState} placeholder={"Username"}
-                        onChange={(e) => {
-                            e.preventDefault();
-                            setUsernameState(e.target.value);
-                    }}/>
+                               onChange={(e) => {
+                                   e.preventDefault();
+                                   setUsernameState(e.target.value);
+                               }}/>
 
                     <TextField type={"password"} variant={"standard"} sx={{"display": "block", "marginBottom": "8px"}}
                                value={passwordState} placeholder={"Password"}
-                       onChange={(e) => {
-                           e.preventDefault();
-                           setPasswordState(e.target.value);
-                   }}/>
+                               onChange={(e) => {
+                                   e.preventDefault();
+                                   setPasswordState(e.target.value);
+                               }}/>
 
-                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
-                        onClick={(e) => {
-                            e.preventDefault();
-                            handleLoginFormEntry(usernameState, passwordState, setLoginState)
-                        }}>Submit</Button>
+                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
+                            onClick={(e) => {
+                                e.preventDefault();
+                                handleLoginFormEntry(usernameState, passwordState, firstLoadState, setFirstLoadState)
+                            }}>Submit</Button>
                 </form>
 
-                <br /><span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
+                <br/><span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
             </div>
-            </>
-        )
-    }
+        </>
+    );
 }
 
 export default Login
