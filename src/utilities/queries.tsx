@@ -1,6 +1,6 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
-//let cc = console.log;
+let cc = console.log;
 //let baseURL: string = "/php";
 let baseURL: string = "http://localhost:80/php";
 
@@ -364,11 +364,12 @@ export async function getSingleSessionNote(id: string){
 }
 
 export async function requestPasswordReset(email: string){
+    cc(email);
     const response = await fetch(`${baseURL}/passwordresetrequest.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
-        body: email,
+        body: JSON.stringify(email),
         headers: {
             'Content-Type': 'application/json'
         }

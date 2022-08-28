@@ -3,6 +3,9 @@ import Button from "@mui/material/Button";
 import {Dispatch, SetStateAction} from "react";
 import {useState} from "react";
 import toast from "react-hot-toast";
+import {requestPasswordReset} from "../utilities/queries";
+import {defaultToastMsg} from "../utilities/sharedVariables";
+import {showResponseMessageWithoutCondition} from "../utilities/sharedFns";
 let cc = console.log;
 
 function PasswordReset(){
@@ -28,7 +31,9 @@ function PasswordReset(){
 }
 
 async function handleResetPasswordRequest(emailState: string, setEmailState: Dispatch<SetStateAction<string>>){
-    let response = await toast.promise()
+    let response = await requestPasswordReset(emailState);
+    showResponseMessageWithoutCondition(response);
+    setEmailState("");
 }
 
 export default PasswordReset;
