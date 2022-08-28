@@ -127,6 +127,7 @@ function Login() {
                 </form>
 
                 <br/><span> Don't have an account? Create one <Link to={"CreateAccount"}>here.</Link></span>
+                <br/><span><Link to={"PasswordReset"}>Forgot password?</Link></span>
             </div>
         </>
     );

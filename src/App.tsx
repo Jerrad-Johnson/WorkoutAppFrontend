@@ -8,6 +8,7 @@ import Progress from "./pages/Progress";
 import Management from "./pages/Management";
 import CreateAccount from "./pages/CreateAccount";
 import {Toaster} from "react-hot-toast";
+import PasswordReset from "./pages/PasswordReset";
 let cc = console.log;
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                   <Route path={"CreateAccount"} element={<CreateAccount/>} />
                   <Route path={"Progress"} element={<Progress/>} />
                   <Route path={"Management"} element={<Management/>} />
+                  <Route path={"PasswordReset"} element={<PasswordReset/>} />
               </Routes>
           </BrowserRouter>
       </header>
