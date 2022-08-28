@@ -2,7 +2,7 @@ import {useState} from "react";
 import {createAccount} from "../utilities/queries";
 import {showResponseMessageWithCondition, verifyEmailForm, verifyPasswordFormsNewAccount, isUserValid} from "../utilities/sharedFns";
 import Button from "@mui/material/Button";
-import TextFieldReusable from "./createaccount/TextFieldReusable";
+import TextFieldReusable from "../components/TextFieldReusable";
 import toast from "react-hot-toast";
 import {
     defaultToastPromiseErrorMessage,
