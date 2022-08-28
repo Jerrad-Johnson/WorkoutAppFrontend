@@ -1,6 +1,13 @@
-import {TextField} from "@mui/material";
+import TextFieldReusable from "../components/TextFieldReusable";
+import Button from "@mui/material/Button";
+import {Dispatch, SetStateAction} from "react";
+import {useState} from "react";
+import toast from "react-hot-toast";
+let cc = console.log;
 
 function PasswordReset(){
+    const [emailState, setEmailState] = useState<string>("");
+
     return (
         <>
             <div className={"basicContainer"}>
@@ -8,11 +15,20 @@ function PasswordReset(){
             </div>
 
             <div className={"basicContainer"}>
-                <h2>Enter your information</h2>
-                {/*<TextField*/}
+                <h2>Enter details</h2>
+                <TextFieldReusable state={emailState} setState={setEmailState} placeholder={"E-mail address"} type={"text"}/>
+                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
+                    onClick={(e) => {
+                        handleResetPasswordRequest(emailState, setEmailState);
+                    }}
+                >Submit</Button>
             </div>
         </>
     );
+}
+
+async function handleResetPasswordRequest(emailState: string, setEmailState: Dispatch<SetStateAction<string>>){
+    let response = await toast.promise()
 }
 
 export default PasswordReset;
