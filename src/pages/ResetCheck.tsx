@@ -1,11 +1,12 @@
 import {useSearchParams} from "react-router-dom";
-import {useState} from "react";
+import {Dispatch, SetStateAction, useState} from "react";
 import TextFieldReusable from "../components/TextFieldReusable";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
 import {setNewPassword} from "../utilities/queries";
 import {defaultToastMsg, defaultToastPromiseErrorMessage} from "../utilities/sharedVariables";
 import {showResponseMessageWithCondition} from "../utilities/sharedFns";
+import {Link} from "react-router-dom";
 const cc = console.log;
 
 function ResetCheck(){
@@ -23,20 +24,21 @@ function ResetCheck(){
 
             <div className={"basicContainer"}>
                 <h2>Set your new password.</h2>
-                <TextFieldReusable state={newPasswordState} setState={setNewPasswordState} placeholder={"New Password"} type={"text"}/>
-                <TextFieldReusable state={newPasswordConfirmState} setState={setNewPasswordConfirmState} placeholder={"Confirm New Password"} type={"text"}/>
+                <TextFieldReusable state={newPasswordState} setState={setNewPasswordState} placeholder={"New Password"} type={"password"}/>
+                <TextFieldReusable state={newPasswordConfirmState} setState={setNewPasswordConfirmState} placeholder={"Confirm New Password"} type={"password"}/>
                 <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
                         onClick={(e) => {
-                            handleSetNewPassword(newPasswordState, newPasswordConfirmState, resetKey, email);
+                            handleSetNewPassword(newPasswordState, newPasswordConfirmState, resetKey, email, setNewPasswordConfirmState);
                         }}
                 >Submit</Button>
+                <br/><br/><span>Finished? <Link to={"/"}>Return back to the login page.</Link></span>
             </div>
         </>
     );
 }
 
 async function handleSetNewPassword(newPasswordState: string, newPasswordConfirmState: string,
-                                    resetKey: string | null, email: string | null){
+                                    resetKey: string | null, email: string | null, setNewPasswordConfirmState: Dispatch<SetStateAction<string>>){
     if (email === null){
         toast.error("E-mail address not set.");
         return;
@@ -67,6 +69,8 @@ async function handleSetNewPassword(newPasswordState: string, newPasswordConfirm
     } catch (e) {
         cc(e);
     }
+
+    setNewPasswordConfirmState("");
 
 }
 
