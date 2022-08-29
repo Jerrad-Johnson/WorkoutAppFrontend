@@ -9,6 +9,8 @@ import Management from "./pages/Management";
 import CreateAccount from "./pages/CreateAccount";
 import {Toaster} from "react-hot-toast";
 import PasswordReset from "./pages/PasswordReset";
+import ResetCheck from "./pages/ResetCheck";
+
 let cc = console.log;
 
 function App() {
@@ -24,6 +26,7 @@ function App() {
                   <Route path={"Progress"} element={<Progress/>} />
                   <Route path={"Management"} element={<Management/>} />
                   <Route path={"PasswordReset"} element={<PasswordReset/>} />
+                  <Route path={"ResetCheck"} element={<ResetCheck/>} />
               </Routes>
           </BrowserRouter>
       </header>
