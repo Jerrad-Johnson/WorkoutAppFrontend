@@ -62,10 +62,10 @@ async function handleCheckIfLoggedIn(response: StandardBackendResponse, firstLoa
     if (response.data.loggedin === true){
         let sessionDefaultsResponse = await getSessionDefaults();
         if (sessionDefaultsResponse.data !== false) {
-            localStorage.setItem("defaultExercises", JSON.stringify(response.data.exercises));
-            localStorage.setItem("defaultSets", JSON.stringify(response.data.sets));
-            localStorage.setItem("defaultReps", JSON.stringify(response.data.reps));
-            localStorage.setItem("defaultWeight", JSON.stringify(response.data.weight));
+            localStorage.setItem("defaultExercises", JSON.stringify(sessionDefaultsResponse.data.exercises));
+            localStorage.setItem("defaultSets", JSON.stringify(sessionDefaultsResponse.data.sets));
+            localStorage.setItem("defaultReps", JSON.stringify(sessionDefaultsResponse.data.reps));
+            localStorage.setItem("defaultWeight", JSON.stringify(sessionDefaultsResponse.data.weight));
         }
         window.location.href="Home";
     }
