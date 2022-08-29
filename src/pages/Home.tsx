@@ -54,6 +54,8 @@ let cc = console.log;
 
 function Home(){
 
+    const [showPreviousSessionElementsState, setShowPreviousSessionElementsState] = useState<boolean>(false);
+
     let defaultExercises: number = 3; //@ts-ignore
     if (localStorage.getItem("defaultExercises") !== null) defaultExercises = +JSON.parse(localStorage.getItem("defaultExercises"));
 
@@ -471,30 +473,35 @@ function Home(){
         return "Passed";
     }
 
+    const previousSessionElements: JSX.Element = (
+      <>
+          <br/>
+          <br/>
+        <h2>Previous Session</h2>
+
+        <FormControl variant={"standard"} sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
+            <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                    onChange={(e) => {
+                        sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
+                    }}>
+                <MenuItem value={""}></MenuItem>
+                {previousSessionOptions} {/*TODO Add error handling*/}
+            </Select>
+        </FormControl>
+        <br/><br/>
+
+        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
+            applySpecificSessionHandler();
+        }}>Load Now</Button>
+      </>
+    );
+
 
     return (
         <>
             <Nav title={"Add Workout"}/>
 
             <div className={"basicContainer"}>
-                <h2>Previous Session</h2>
-
-                <FormControl variant={"standard"} sx={{width: "100%"}}> {/*TODO Check max length so that user can see the date of the session they chose.*/}
-                    <Select value={sessionState.selectedSessionToLoad} sx={{width: "100%"}} label={"Exercise"} className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                            onChange={(e) => {
-                                sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
-                            }}>
-                        <MenuItem value={""}></MenuItem>
-                        {previousSessionOptions} {/*TODO Add error handling*/}
-                    </Select>
-                </FormControl>
-                <br/><br/>
-
-                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
-                    applySpecificSessionHandler();
-                }}>Load Prev. Session</Button>
-
-                <br/><br/>
                 <h2>Current Session Details</h2>
 
                 <span className={"selectorTitle"}>Session Title</span>
@@ -503,30 +510,39 @@ function Home(){
                 }}/>
                 <br /><br />
 
-                <span className={"selectorTitle"}>Number of Exercises</span>
-                <FormControl variant={"standard"} sx={{width: "100%"}}>
-                    <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"} sx={{width: "100%"}}
-                            onChange={(e) => {
-                                sessionDispatch({type: "exercises", payload: +e.target.value});
-                            }}>
-                        {exerciseOptionElements}
-                    </Select>
-                </FormControl>
+                <div className={"homePageSplitFlex"}>
+                    <div>
+                        <span className={"selectorTitle"}>Number of Exercises</span>
+                        <FormControl variant={"standard"} sx={{width: "100%"}}>
+                            <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"} sx={{width: "100%"}}
+                                    onChange={(e) => {
+                                        sessionDispatch({type: "exercises", payload: +e.target.value});
+                                    }}>
+                                {exerciseOptionElements}
+                            </Select>
+                        </FormControl>
+                    </div>
 
-                <br/>
-                <br/>
+                    <div>
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                            <MobileDatePicker
+                                label="Session Date"
+                                inputFormat="yyyy/MM/dd"
+                                value={sessionState.date}
+                                onChange={(e) => {
+                                    sessionDispatch({type: "date", payload: e.toISOString().slice(0, 10)})
+                                }}
+                                renderInput={(params) => <TextField {...params} />}
+                            />
+                        </LocalizationProvider>
+                        <br/><br/>
+                    </div>
+                </div>
 
-                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <MobileDatePicker
-                        label="Session Date"
-                        inputFormat="yyyy/MM/dd"
-                        value={sessionState.date}
-                        onChange={(e) => {
-                            sessionDispatch({type: "date", payload: e.toISOString().slice(0, 10)})
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
+                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
+                    setShowPreviousSessionElementsState(!showPreviousSessionElementsState);
+                }}>Or Select Previous Session</Button>
+                {showPreviousSessionElementsState === true && previousSessionElements}
             </div>
 
             {exerciseDataElements}
