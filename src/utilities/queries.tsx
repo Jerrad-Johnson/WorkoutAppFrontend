@@ -364,12 +364,31 @@ export async function getSingleSessionNote(id: string){
 }
 
 export async function requestPasswordReset(email: string){
-    cc(email);
     const response = await fetch(`${baseURL}/passwordresetrequest.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
         body: JSON.stringify(email),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    return await response.json();
+}
+
+export async function setNewPassword(resetKey: string, newPassword: string, email: string){
+    let userData: {resetKey: string; newPassword: string; email: string} = {
+        "resetKey": resetKey,
+        "newPassword": newPassword,
+        "email": email,
+    }
+
+    const response = await fetch(`${baseURL}/passwordresetsubmit.php`, {
+        method: 'POST',
+        credentials: 'include',
+        mode: 'cors',
+        body: JSON.stringify(userData),
         headers: {
             'Content-Type': 'application/json'
         }

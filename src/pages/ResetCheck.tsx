@@ -3,13 +3,17 @@ import {useState} from "react";
 import TextFieldReusable from "../components/TextFieldReusable";
 import Button from "@mui/material/Button";
 import toast from "react-hot-toast";
+import {setNewPassword} from "../utilities/queries";
+import {defaultToastMsg, defaultToastPromiseErrorMessage} from "../utilities/sharedVariables";
+import {showResponseMessageWithCondition} from "../utilities/sharedFns";
 const cc = console.log;
 
 function ResetCheck(){
     const [newPasswordState, setNewPasswordState] = useState<string>("");
     const [newPasswordConfirmState, setNewPasswordConfirmState] = useState<string>("");
     const [searchParams] = useSearchParams();
-    const resetKey: string | null = searchParams.get("resetKey")
+    const resetKey: string | null = searchParams.get("resetKey");
+    const email: string | null = searchParams.get("email");
 
     return (
         <>
@@ -23,7 +27,7 @@ function ResetCheck(){
                 <TextFieldReusable state={newPasswordConfirmState} setState={setNewPasswordConfirmState} placeholder={"Confirm New Password"} type={"text"}/>
                 <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"}
                         onClick={(e) => {
-                            handleSetNewPassword(newPasswordState, newPasswordConfirmState);
+                            handleSetNewPassword(newPasswordState, newPasswordConfirmState, resetKey, email);
                         }}
                 >Submit</Button>
             </div>
@@ -31,14 +35,38 @@ function ResetCheck(){
     );
 }
 
-function handleSetNewPassword(newPasswordState: string, newPasswordConfirmState: string){
-    let errorCheckResult: string = checkNewPassword(newPasswordState, newPasswordConfirmState);
-    if (errorCheckResult !== "passed") {
-        toast.error(errorCheckResult);
+async function handleSetNewPassword(newPasswordState: string, newPasswordConfirmState: string,
+                                    resetKey: string | null, email: string | null){
+    if (email === null){
+        toast.error("E-mail address not set.");
         return;
     }
 
+    if (resetKey === null){
+        toast.error("Reset Key not set.");
+        return;
+    }
 
+    let passwordErrorCheckResult: string = checkNewPassword(newPasswordState, newPasswordConfirmState);
+    if (passwordErrorCheckResult !== "passed") {
+        toast.error(passwordErrorCheckResult);
+        return;
+    }
+
+    try {
+        let result = await toast.promise(setNewPassword(resetKey, newPasswordState, email), {
+            loading: 'Please wait',
+            success: '',
+            error: defaultToastPromiseErrorMessage,
+        }, {
+            success: {
+                duration: 1,
+            }
+        });
+        showResponseMessageWithCondition(result);
+    } catch (e) {
+        cc(e);
+    }
 
 }
 
