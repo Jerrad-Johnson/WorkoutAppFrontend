@@ -36,9 +36,14 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
 
     await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState), {
         loading: defaultToastPromiseLoadingMessage,
-        success: "Logged in, redirecting now.",
+        success: "",
         error: defaultToastPromiseErrorMessage,
+    }, {
+        success: {
+            duration: 1,
+        }
     });
+
 }
 
 function checkFormEntry(usernameState: string, passwordState: string){
@@ -55,8 +60,8 @@ async function handleCheckIfLoggedIn(response: StandardBackendResponse, firstLoa
     setFirstLoadState(true);
 
     if (response.data.loggedin === true){
-        response = await getSessionDefaults();
-        if (response.data !== false) {
+        let sessionDefaultsResponse = await getSessionDefaults();
+        if (sessionDefaultsResponse.data !== false) {
             localStorage.setItem("defaultExercises", JSON.stringify(response.data.exercises));
             localStorage.setItem("defaultSets", JSON.stringify(response.data.sets));
             localStorage.setItem("defaultReps", JSON.stringify(response.data.reps));
