@@ -42,6 +42,7 @@ import {
     getStartingValuesNestedArray,
     addArrayEntryToSession,
 } from "./home/specificFunctions";
+import {parseISO} from "date-fns";
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -114,7 +115,8 @@ function Home(){
             case "title":
                 return {...state, title: action.payload};
             case "date":
-                return {...state, date: action.payload};
+                let reformattedDate: any = parseISO(action.payload);
+                return {...state, date: reformattedDate};
             case "exercises":
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
