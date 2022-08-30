@@ -341,8 +341,10 @@ function Home(){
     async function applySpecificSessionHandler(){
         if (sessionState.selectedSessionToLoad !== "" && sessionState.selectedSessionToLoad.length !== 0) {
             let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
-            let sessionResponseFromDB = await toast.promise(getSpecificSession(sessionDate, sessionTitle).then(response =>
-                sessionDispatch({type: "insertPreviousSession", payload: response.data})), defaultToastMsg);
+            let sessionResponseFromDB = await toast.promise(getSpecificSession(sessionDate, sessionTitle).then(response => {
+                sessionDispatch({type: "insertPreviousSession", payload: response.data});
+                setShowPreviousSessionElementsState(false);
+                }), defaultToastMsg);
         }
     }
 
