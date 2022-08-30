@@ -1,10 +1,11 @@
-# Front-end install
+# Front-end install / deployment
 
 - Get [repository](https://github.com/Jerrad-Johnson/WorkoutAppRedo)
 - Run `npm install` in project folder
 - Update `queries.tsx` variable `baseURL` to reference your php directory
+- Use `npm run build` to create a deployable version of the frontend app, then navigate to the project's folder, then to the `build` subfolder. Upload the `build` folder's contents to a webserver, and set URL rewrites.
 
-# Back-end install
+# Back-end install / deployment
 
 - Get [repository](https://github.com/Jerrad-Johnson/WorkoutAppBackend)
 - Create a database
