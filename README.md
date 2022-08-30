@@ -39,9 +39,9 @@ $sendgridKey = "Your key goes here";
 
 ## Known issues
 
-- Loading indicators on Progress page do not disappear after a failed fetch.
-- Need to update e-mail address so that messages come from my domain, rather than (presently) from my school e-mail address.
-- Needs to inform users when the server has ended their session (when they get logged out).
+- A couple of elements lack spacing on mobile devices. Need to fix margins and test.
+- Loading indicators on Progress page do not disappear after an empty fetch.
+- Needs to inform users when the server has ended their session (i.e. when they get logged out).
 
 ## TODO Features
 - Home page needs an “Update” button, so old sessions can be changed without being deleted first.
@@ -49,9 +49,5 @@ $sendgridKey = "Your key goes here";
 - Users need the option to download their entire session history, so that they never have to rely on my database / risk losing all of their history.
 - MUI button recoloring needed for home page.
 - Couldn’t find a way to not render success messages with react-hot-toast. Partial solution was to set the success-message timeout to 1ms.
-- - Many DOM elements should fade upon data load / etc.
+- Many DOM elements should fade upon data load / etc.
 - Needs Cypress tests.
-- 
-
-
-
