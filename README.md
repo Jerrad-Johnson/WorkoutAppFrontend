@@ -9,7 +9,7 @@
 - Get [repository](https://github.com/Jerrad-Johnson/WorkoutAppBackend)
 - Create a database
 - Create `connect.php` and `sendgridKey.php` in parent php folder. Sample formats:
-###connect.php
+### connect.php
 ```
 <?php
 
@@ -28,7 +28,7 @@ try {
 
 ?>
 ```
-###sendgridKey.php
+### sendgridKey.php
 ```
 <?php
 $sendgridKey = "Your key goes here";
