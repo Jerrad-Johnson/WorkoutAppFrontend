@@ -10,6 +10,8 @@ import ConditionalCircularProgress from "../components/ConditionalCircularProgre
 import FailedToLoadAlert from "../components/FailedToLoadAlert";
 import {handleOneRMSelection, handleGetListOfExercises, handleGetListOfSessionsByName, handleOneSessionNameAllDataSelection} from "./progress/specificFunctions";
 
+//TODO Shows loading indicators constantly even if there is no data to load. Fix this.
+
 let cc = console.log;
 
 function Progress(){ //TODO Switch to Reducer for loading states, in order to simplify.
