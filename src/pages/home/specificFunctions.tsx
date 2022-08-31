@@ -187,22 +187,16 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
         });
     }
 
-    let exerciseHeader: JSX.Element = (
-        <div className={"tripleWidthFlex"}>
-            <div className={"threeEqualWidth"}></div>
-            <div className={"threeEqualWidth"}>
-                <span className={"exerciseHeading"}>Exercise Title</span>
-            </div>
-            <div className={"threeEqualWidth"}><DeleteIcon/></div>
-        </div>
-    );
-
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
-        if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
+        /*if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){*/ // "0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
                     <div className={"tripleWidthFlex"}>
-                        <div className={"threeEqualWidth"}></div>
+                        <div className={"threeEqualWidth"}>
+                            <button onClick={(e) => {
+                                cc(sessionState)
+                            }}>Log</button>
+                        </div>
                         <div className={"threeEqualWidth"}>
                             <span className={"exerciseHeading"}>Exercise Title</span>
                         </div>
@@ -210,57 +204,56 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                     </div>
 
                     <div className={"exerciseOptionsContainer"} key={k}>
-                        <div className={"leftSideOfExerciseInputs"}>
-                            <FormControl variant={"standard"}>
-                                <Select label={"Exercise"} value={sessionState.exerciseNames[parentIndex]} className={"selectOrAddExercise selectOrAddExerciseSelector"}
-                                        onChange={(e) => {
-                                            sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
-                                        }}>
-                                    <MenuItem value={""}></MenuItem>
-                                    {previousExercises}
-                                </Select>
-                            </FormControl>
-                        </div>
+                        {sessionState.exerciseSelectorOrInput[parentIndex] === 0 &&
+                            <>
+                                <div className={"leftSideOfExerciseInputs"}>
+                                    <FormControl variant={"standard"}>
+                                        <Select label={"Exercise"} value={sessionState.exerciseNames[parentIndex]}
+                                                className={"selectOrAddExercise selectOrAddExerciseSelector"}
+                                                onChange={(e) => {
+                                                    sessionDispatch({
+                                                        type: "exerciseNameChange",
+                                                        payload: {index: parentIndex, value: e.target.value}
+                                                    })
+                                                }}>
+                                            <MenuItem value={""}></MenuItem>
+                                            {previousExercises}
+                                        </Select>
+                                    </FormControl>
+                                </div>
 
-                        <div className={"rightSideOfExerciseInputs"}>
-                            <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
-                                sessionDispatch({ type: "addOrSelectExercise", payload: {value: 1, index: parentIndex }});
-                                sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
-                            }}>Add Title</Button>
-                        </div>
-                    </div>
-                    <br/>
-                </div>
-            );
-        } else {
-            return (
-                <div key={k}>
-                    <div className={"tripleWidthFlex"}>
-                        <div></div>
-                        <span className={"exerciseHeading"}>Exercise Title</span>
-                        <div><DeleteIcon/></div>
-                    </div>
+                                <div className={"rightSideOfExerciseInputs"}>
+                                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
+                                            sessionDispatch({ type: "addOrSelectExercise", payload: {value: 1, index: parentIndex }});
+                                            sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
+                                        }}>Add Title
+                                    </Button>
+                                </div>
+                            </>
+                        }
 
-                    <div className={"exerciseOptionsContainer"} key={k}>
-                        <div className={"leftSideOfExerciseInputs"}>
-                            <TextField variant={"standard"} defaultValue={""} className={"selectOrAddExercise selectOrAddExerciseInput"}
+                        {sessionState.exerciseSelectorOrInput[parentIndex] !== 0 &&
+                            <>
+                                <div className={"leftSideOfExerciseInputs"}>
+                                    <TextField variant={"standard"} defaultValue={""} className={"selectOrAddExercise selectOrAddExerciseInput"}
                                        onChange={(e) => {
                                            sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
-                                       }} />
-                        </div>
+                                       }}
+                                    />
+                                </div>
 
-                        <div className={"rightSideOfExerciseInputs"}>
-                            <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
-                                sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
-                                sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
-                            }}>Select Existing</Button>
-                        </div>
+                                <div className={"rightSideOfExerciseInputs"}>
+                                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
+                                        sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
+                                        sessionDispatch({type: "changedExerciseEntryToSelector", payload: { index: parentIndex, value: ""}})
+                                    }}>Select Existing</Button>
+                                </div>
+                            </>
+                        }
                     </div>
                     <br/>
                 </div>
-
             );
-        }
     });
 
     /*TODO Add increment number input and apply button. Add auto-increment checkbox (database).
