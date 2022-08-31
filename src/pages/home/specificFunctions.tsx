@@ -201,7 +201,13 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
         if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
-                    {exerciseHeader}
+                    <div className={"tripleWidthFlex"}>
+                        <div className={"threeEqualWidth"}></div>
+                        <div className={"threeEqualWidth"}>
+                            <span className={"exerciseHeading"}>Exercise Title</span>
+                        </div>
+                        <div className={"threeEqualWidth"}><DeleteIcon/></div>
+                    </div>
 
                     <div className={"exerciseOptionsContainer"} key={k}>
                         <div className={"leftSideOfExerciseInputs"}>
@@ -229,7 +235,12 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
         } else {
             return (
                 <div key={k}>
-                    {exerciseHeader}
+                    <div className={"tripleWidthFlex"}>
+                        <div></div>
+                        <span className={"exerciseHeading"}>Exercise Title</span>
+                        <div><DeleteIcon/></div>
+                    </div>
+
                     <div className={"exerciseOptionsContainer"} key={k}>
                         <div className={"leftSideOfExerciseInputs"}>
                             <TextField variant={"standard"} defaultValue={""} className={"selectOrAddExercise selectOrAddExerciseInput"}
@@ -237,6 +248,7 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                                            sessionDispatch({type: "exerciseNameChange", payload: { index: parentIndex, value: e.target.value }})
                                        }} />
                         </div>
+
                         <div className={"rightSideOfExerciseInputs"}>
                             <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
                                 sessionDispatch({ type: "addOrSelectExercise", payload: {value: 0, index: parentIndex }});
