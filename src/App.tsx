@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
+import LoginRecruiter from "./pages/LoginRecruiter";
 import Progress from "./pages/Progress";
 import Management from "./pages/Management";
 import CreateAccount from "./pages/CreateAccount";
@@ -20,6 +21,7 @@ function App() {
           <BrowserRouter>
               <Routes>
                   <Route path={""} element={<Login />} />
+                  <Route path={"/LoginRecruiter"} element={<LoginRecruiter />} />
                   <Route path={"Home"} element={<Home />} />
                   <Route path={"Account"} element={<Account/>} />
                   <Route path={"CreateAccount"} element={<CreateAccount/>} />
