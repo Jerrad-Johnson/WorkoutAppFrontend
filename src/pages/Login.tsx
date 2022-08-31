@@ -18,7 +18,7 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
                                     setFirstLoadState: Dispatch<SetStateAction<boolean>>){
     if (!checkFormEntry(usernameState, passwordState)) return;
 
-    let response = await toast.promise(doLogin(usernameState, passwordState), {
+    let response = await toast.promise(doLogin(usernameState.toLowerCase(), passwordState), {
         loading: defaultToastPromiseLoadingMessage,
         success: "Checking login.",
         error: defaultToastPromiseErrorMessage,
