@@ -22,7 +22,6 @@ The app also graphs your progress with each exercise, showing your calculated 1R
 
 ## Known issues
 
-- A couple of elements lack spacing on mobile devices. Need to fix margins and test.
 - Loading indicators on Progress page do not disappear after an empty fetch.
 - Needs to inform users when the server has ended their session (i.e. when they get logged out).
 
@@ -35,3 +34,4 @@ The app also graphs your progress with each exercise, showing your calculated 1R
 - Couldn’t find a way to not render success messages with react-hot-toast. Partial solution was to set the success-message timeout to 1ms.
 - Many DOM elements should fade upon data load / etc.
 - Needs Cypress tests.
+- Add the ability to load a previous session with only one set per exercise.

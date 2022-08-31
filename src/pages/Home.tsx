@@ -120,8 +120,10 @@ function Home(){
             case "exercises":
                 let newSession: SessionData = handleExerciseCountChange({...state}, action.payload);
                 return {...newSession, exerciseCount: action.payload}
+            case "removeThisExercise":
+                let sessionWithOneExerciseRemoved: SessionData = handleRemoveSingleExerciseCard({...state}, action.payload);
+                return {...sessionWithOneExerciseRemoved};
             case "sets":
-                cc(state.sets);
                 if (action.payload.value === -1 && state.sets[action.payload.topIndex] > 1) {
                     let newSetsCount = state.sets[action.payload.topIndex] + action.payload.value;
                     let newSets: SessionData = handleSetCountChange({...state}, newSetsCount, action.payload.topIndex);
@@ -222,15 +224,29 @@ function Home(){
             session.reps.pop();
             session.weights.pop();
             session.sets.pop();
+            /*session.exerciseNames.pop();*/
         }
 
         while (session.reps.length < newExerciseCount){
             session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
             session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
             session.sets = [...session.sets, optionsState.sets];
+         /*   session.exerciseNames.push("");*/
         }
 
         return session;
+    }
+
+    function handleRemoveSingleExerciseCard(session: SessionData, exerciseToRemove: number){
+        let test = JSON.stringify(session);
+        let test2 = JSON.parse(test);
+        test2.reps.splice(exerciseToRemove, 1);
+        test2.weights.splice(exerciseToRemove, 1);
+        test2.sets.splice(exerciseToRemove, 1);
+        test2.exerciseNames.splice(exerciseToRemove, 1);
+        test2.exerciseCount--;
+
+        return {...test2};
     }
 
     function handleSetCountChange(session: SessionData, value: number, topIndex: number){

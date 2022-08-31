@@ -188,7 +188,6 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
     }
 
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
-        /*if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){*/ // "0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
                     <div className={"tripleWidthFlex"}>
@@ -200,7 +199,11 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                         <div className={"threeEqualWidth"}>
                             <span className={"exerciseHeading"}>Exercise Title</span>
                         </div>
-                        <div className={"threeEqualWidth"}><DeleteIcon/></div>
+                        <div className={"threeEqualWidth"}>
+                            <DeleteIcon onClick={(_e) => {
+                                sessionDispatch({type: "removeThisExercise", payload: parentIndex})
+                            }}/>
+                        </div>
                     </div>
 
                     <div className={"exerciseOptionsContainer"} key={k}>
@@ -282,6 +285,9 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                                  value: 1,
                              }});
                      }}>+</Fab>
+            </div>
+            <div className={"setsCompletedCounter"}>
+                Sets Completed Counter goes here
             </div>
         </>
     );

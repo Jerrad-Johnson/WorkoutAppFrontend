@@ -18,7 +18,7 @@ export interface GenericAction{
 export interface SessionData{
     title: string;
     date: string;
-    exerciseCount: number[];
+    exerciseCount: number;
     exerciseNames: string[];
     sets: number[];
     reps: number[][];
