@@ -21,7 +21,8 @@ export function arrayOfMenuItems(lengthOfArray: number) {
 
 export function isUserValid(username: string){
     const usernameRegex = /^[a-z0-9_.]+$/
-    const isValid = usernameRegex.test(username);
+    const lowercaseUsername = username.toLowerCase();
+    const isValid = usernameRegex.test(lowercaseUsername);
 
     if (username.length > 20){
         let msg: string = "Username may not be longer than 20 characters.";
