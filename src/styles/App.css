@@ -261,3 +261,19 @@ h2{
     margin: auto;
     display: block;
 }
+
+.tripleWidthFlex{
+    @apply
+    flex
+    mb-6
+}
+
+.threeEqualWidth{
+    width: 33.3%
+}
+
+.threeEqualWidth:last-child{
+    text-align: end;
+}
+
+

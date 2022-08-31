@@ -9,6 +9,7 @@ import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Home from "../Home";
+import DeleteIcon from "@mui/icons-material/Delete";
 let cc = console.log;
 
 export function OptionsDropdown({optionsDispatch, optionsState, optionsDropdownState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData,
@@ -186,11 +187,22 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
         });
     }
 
+    let exerciseHeader: JSX.Element = (
+        <div className={"tripleWidthFlex"}>
+            <div className={"threeEqualWidth"}></div>
+            <div className={"threeEqualWidth"}>
+                <span className={"exerciseHeading"}>Exercise Title</span>
+            </div>
+            <div className={"threeEqualWidth"}><DeleteIcon/></div>
+        </div>
+    );
+
     let exerciseSelectorOrInput: JSX.Element[] = [0].map((_e, k) => {
         if (sessionState.exerciseSelectorOrInput[parentIndex] === 0){ // "0" just means it will return a selector. Use "1" for input-text.
             return (
                 <div key={k}>
-                    <span className={"exerciseHeading"}>Exercise Title</span>
+                    {exerciseHeader}
+
                     <div className={"exerciseOptionsContainer"} key={k}>
                         <div className={"leftSideOfExerciseInputs"}>
                             <FormControl variant={"standard"}>
@@ -217,7 +229,7 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
         } else {
             return (
                 <div key={k}>
-                    <span className={"exerciseHeading"}>Exercise Title</span>
+                    {exerciseHeader}
                     <div className={"exerciseOptionsContainer"} key={k}>
                         <div className={"leftSideOfExerciseInputs"}>
                             <TextField variant={"standard"} defaultValue={""} className={"selectOrAddExercise selectOrAddExerciseInput"}
