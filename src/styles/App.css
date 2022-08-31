@@ -276,4 +276,14 @@ h2{
     text-align: end;
 }
 
+.selectPreviousSessionButton{
+    @apply
+    mt-20
+    block
 
+}
+
+.selectPreviousSessionButtonContainer{
+    @apply
+    mt-4
+}

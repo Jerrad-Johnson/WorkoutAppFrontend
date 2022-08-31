@@ -543,10 +543,13 @@ function Home(){
                     </div>
                 </div>
 
-                <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={() => {
-                    setShowPreviousSessionElementsState(!showPreviousSessionElementsState);
-                }}>Or Select Previous Session</Button>
-                {showPreviousSessionElementsState === true && previousSessionElements}
+
+                <div className={"selectPreviousSessionButtonContainer"}>
+                    <Button variant={"contained"} size={"small"} className={"selectPreviousSessionButton"} onClick={() => {
+                        setShowPreviousSessionElementsState(!showPreviousSessionElementsState);
+                    }}>Or Select Previous Session</Button>
+                    {showPreviousSessionElementsState === true && previousSessionElements}
+                </div>
             </div>
 
             {exerciseDataElements}
