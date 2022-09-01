@@ -99,6 +99,16 @@ export function getStartingValuesStringArray(sets: number, value: string){
     return arrayOfValues;
 }
 
+export function getDefaultExerciseKeysArray(exerciseCount: number){
+    let arrayOfKeys: number[] = [];
+
+    for (let i = 0; i < exerciseCount; i++){
+        arrayOfKeys.push(i);
+    }
+
+    return arrayOfKeys;
+}
+
 export function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
                               {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
                                   loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){

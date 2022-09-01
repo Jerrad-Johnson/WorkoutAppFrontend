@@ -41,6 +41,7 @@ import {
     getStartingValuesArray,
     getStartingValuesNestedArray,
     addArrayEntryToSession,
+    getDefaultExerciseKeysArray,
 } from "./home/specificFunctions";
 import {parseISO} from "date-fns";
 
@@ -93,11 +94,14 @@ function Home(){
         }
     }
 
+    const [exerciseKeyRunningValueState, setExerciseKeyRunningValueState] = useState<number>(9001);
+
     const defaultSession: SessionData = { //TODO Considered using localStorage, but instead: use a confirmation when trying nav away.
         title: "",
         date: todaysDateForHTMLCalendar(),
         exerciseCount: optionsState.exercises,
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
+        exerciseKeys: getDefaultExerciseKeysArray(optionsState.exercises),
         exerciseSelectorOrInput: [0, 0],
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
@@ -106,6 +110,7 @@ function Home(){
         previousSessions: undefined,
         selectedSessionToLoad: "",
         staticExerciseNames: [], //TODO Remove; unused.
+
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -238,15 +243,15 @@ function Home(){
     }
 
     function handleRemoveSingleExerciseCard(session: SessionData, exerciseToRemove: number){
-        let test = JSON.stringify(session);
-        let test2 = JSON.parse(test);
-        test2.reps.splice(exerciseToRemove, 1);
-        test2.weights.splice(exerciseToRemove, 1);
-        test2.sets.splice(exerciseToRemove, 1);
-        test2.exerciseNames.splice(exerciseToRemove, 1);
-        test2.exerciseCount--;
+        let sessionAsString = JSON.stringify(session);
+        let sessionAsPBV = JSON.parse(sessionAsString);
+        sessionAsPBV.reps.splice(exerciseToRemove, 1);
+        sessionAsPBV.weights.splice(exerciseToRemove, 1);
+        sessionAsPBV.sets.splice(exerciseToRemove, 1);
+        sessionAsPBV.exerciseNames.splice(exerciseToRemove, 1);
+        sessionAsPBV.exerciseCount--;
 
-        return {...test2};
+        return {...sessionAsPBV};
     }
 
     function handleSetCountChange(session: SessionData, value: number, topIndex: number){

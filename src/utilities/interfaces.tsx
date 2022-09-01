@@ -20,6 +20,7 @@ export interface SessionData{
     date: string;
     exerciseCount: number;
     exerciseNames: string[];
+    exerciseKeys: number[];
     sets: number[];
     reps: number[][];
     weights: number[][];
