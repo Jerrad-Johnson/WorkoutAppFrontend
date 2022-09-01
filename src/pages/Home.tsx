@@ -276,9 +276,10 @@ function Home(){
         }
 
         while (session.sets[topIndex] < value){
+            let bottomIndex = session.reps[topIndex].length-1;
             session.sets[topIndex]++;
-            session.reps[topIndex].push(optionsState.reps);
-            session.weights[topIndex].push(optionsState.weights);
+            session.reps[topIndex].push(+session.reps[topIndex][bottomIndex]);
+            session.weights[topIndex].push(+session.weights[topIndex][bottomIndex]);
         }
 
         return session;

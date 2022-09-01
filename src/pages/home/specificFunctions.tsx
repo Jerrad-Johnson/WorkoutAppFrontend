@@ -1,4 +1,4 @@
-import React, {Dispatch} from "react";
+import React, {Dispatch, useState} from "react";
 import {DatabaseData, GenericAction, OptionsData, SessionData} from "../../utilities/interfaces";
 import {arrayOfOptions} from "../../utilities/sharedFns";
 import {changeSessionDefaults} from "../../utilities/queries";
@@ -112,6 +112,9 @@ export function getDefaultExerciseKeysArray(exerciseCount: number){
 export function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
                               {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
                                   loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){
+
+    const [counterState, setCounterState] = useState<number>(0);
+
     const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
         return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
     })
