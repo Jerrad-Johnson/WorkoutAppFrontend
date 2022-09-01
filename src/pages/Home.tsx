@@ -225,19 +225,25 @@ function Home(){
     }
 
     function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
+        let currentKeyValue = exerciseKeyRunningValueState;
+
         while (session.reps.length > newExerciseCount){
             session.reps.pop();
             session.weights.pop();
             session.sets.pop();
-            /*session.exerciseNames.pop();*/
+            session.exerciseKeys.pop();
         }
 
         while (session.reps.length < newExerciseCount){
             session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
             session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
             session.sets = [...session.sets, optionsState.sets];
-         /*   session.exerciseNames.push("");*/
+            session.exerciseKeys.push(+currentKeyValue);
+
+            currentKeyValue++;
         }
+
+        setExerciseKeyRunningValueState(currentKeyValue);
 
         return session;
     }
