@@ -225,39 +225,47 @@ function Home(){
     }
 
     function handleExerciseCountChange(session: SessionData, newExerciseCount: number){
+        let sessionAsString = JSON.stringify(session);
+        let sessionAsPBV = JSON.parse(sessionAsString);
         let currentKeyValue = exerciseKeyRunningValueState;
 
-        while (session.reps.length > newExerciseCount){
-            session.reps.pop();
-            session.weights.pop();
-            session.sets.pop();
-            session.exerciseKeys.pop();
+        while (sessionAsPBV.reps.length > newExerciseCount){
+            sessionAsPBV.reps.pop();
+            sessionAsPBV.weights.pop();
+            sessionAsPBV.sets.pop();
+            sessionAsPBV.exerciseKeys.pop();
+            sessionAsPBV.exerciseNames.pop();
         }
 
-        while (session.reps.length < newExerciseCount){
-            session.reps = [...session.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
-            session.weights = [...session.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
-            session.sets = [...session.sets, optionsState.sets];
-            session.exerciseKeys.push(+currentKeyValue);
+        while (sessionAsPBV.reps.length < newExerciseCount){
+            sessionAsPBV.reps = [...sessionAsPBV.reps, addArrayEntryToSession(optionsState.sets, optionsState.reps)];
+            sessionAsPBV.weights = [...sessionAsPBV.weights, addArrayEntryToSession(optionsState.sets, optionsState.weights)];
+            sessionAsPBV.sets = [...sessionAsPBV.sets, optionsState.sets];
+            sessionAsPBV.exerciseNames.push("");
+            sessionAsPBV.exerciseKeys.push(+currentKeyValue);
 
             currentKeyValue++;
         }
 
         setExerciseKeyRunningValueState(currentKeyValue);
 
-        return session;
+        return sessionAsPBV;
     }
 
     function handleRemoveSingleExerciseCard(session: SessionData, exerciseToRemove: number){
+        if (session.reps.length === 1) return session;
+
         let sessionAsString = JSON.stringify(session);
         let sessionAsPBV = JSON.parse(sessionAsString);
+
         sessionAsPBV.reps.splice(exerciseToRemove, 1);
         sessionAsPBV.weights.splice(exerciseToRemove, 1);
         sessionAsPBV.sets.splice(exerciseToRemove, 1);
         sessionAsPBV.exerciseNames.splice(exerciseToRemove, 1);
+        sessionAsPBV.exerciseKeys.splice(exerciseToRemove, 1);
         sessionAsPBV.exerciseCount--;
 
-        return {...sessionAsPBV};
+        return {...sessionAsPBV, exerciseCount: session.exerciseCount-1};
     }
 
     function handleSetCountChange(session: SessionData, value: number, topIndex: number){
@@ -342,9 +350,10 @@ function Home(){
     }
 
     const exerciseOptionElements: JSX.Element[] = arrayOfMenuItems(12);
+    /*const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {*/
     const exerciseDataElements: JSX.Element[] = Array.from({length: +sessionState.exerciseCount}).map((_e, k) => {
         return(
-            <div key={k} className={"basicContainer exerciseContainer"}>
+            <div key={sessionState.exerciseKeys[k]} className={"basicContainer exerciseContainer"}>
                 <ExerciseElements
                     parentIndex = {k}
                     sessionState = {sessionState}
