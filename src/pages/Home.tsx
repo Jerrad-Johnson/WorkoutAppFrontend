@@ -554,8 +554,8 @@ function Home(){
                 <div className={"homePageSplitFlex"}>
                     <div>
                         <span className={"selectorTitle"}>Number of Exercises</span>
-                        <FormControl variant={"standard"} sx={{width: "100%"}}>
-                            <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"exerciseNumberSelector"} sx={{width: "100%"}}
+                        <FormControl variant={"standard"} sx={{width: "50%"}}>
+                            <Select value={+sessionState.exerciseCount || +optionsState.exercises} className={"totalExerciseNumberSelector"} sx={{width: "100%"}}
                                     onChange={(e) => {
                                         sessionDispatch({type: "exercises", payload: +e.target.value});
                                     }}>

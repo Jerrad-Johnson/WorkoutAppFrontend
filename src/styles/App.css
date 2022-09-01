@@ -132,6 +132,11 @@ input{
     mx-2
 }
 
+.totalExerciseNumberSelector{
+    @apply
+    mr-2
+}
+
 .selectOrAddExercise{
     @apply
     w-40

@@ -205,9 +205,9 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                 <div key={k}>
                     <div className={"tripleWidthFlex"}>
                         <div className={"threeEqualWidth"}>
-                            <button onClick={(e) => {
+                            {/*<button onClick={(e) => {
                                 cc(sessionState)
-                            }}>Log</button>
+                            }}>Log</button>*/}
                         </div>
                         <div className={"threeEqualWidth"}>
                             <span className={"exerciseHeading"}>Exercise Title</span>
@@ -300,7 +300,7 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                      }}>+</Fab>
             </div>
             <div className={"setsCompletedCounter"}>
-                Sets Completed Counter goes here
+                {/*Sets Completed Counter goes here*/}
             </div>
         </>
     );

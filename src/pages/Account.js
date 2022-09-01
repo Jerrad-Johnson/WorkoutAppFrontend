@@ -277,19 +277,27 @@ function Account(){
                 {defaultOptionsSelectors}
                 <br/>
                 <h2>Account Security</h2>
-                <Button variant={"contained"} size={"small"} onClick={() => {
-                    handleLogout();
-                }}>Log Out</Button>
+                <div className={"tripleWidthFlex"}>
+                    <div>
+                        <Button variant={"contained"} size={"small"} onClick={() => {
+                            handleLogout();
+                        }}>Log Out</Button>
+                    </div>
 
-                <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
-                    e.preventDefault()
-                    handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
-                }}>Change E-mail Address</Button>
+                    <div>
+                        <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
+                            e.preventDefault()
+                            handleActionsDispatch({type: "displayChangeEmailForm", payload: true});
+                        }}>Change E-mail Address</Button>
+                    </div>
 
-                <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
-                    e.preventDefault();
-                    handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
-                }}>Change Password</Button>
+                    <div>
+                        <Button variant={"contained"} size={"small"} sx={{marginLeft: "8px"}} onClick={(e) => {
+                            e.preventDefault();
+                            handleActionsDispatch({type: "displayChangePasswordForm", payload: true});
+                        }}>Change Password</Button>
+                    </div>
+                </div>
                 <br /><br />
             </div>
 
