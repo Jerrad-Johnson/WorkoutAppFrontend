@@ -28,10 +28,10 @@ The app also graphs your progress with each exercise, showing your calculated 1R
 ## TODO Features
 - Add more graphs / show more data.
 - Home page needs an “Update” button, so old sessions can be changed without being deleted first.
-- Need the option to remove specific execises from current session. This way e.g. if good-and-bad exercises are ordered as OXOOO, it won’t be necessary to remove the OOO at the end to get rid of X (because exercises are currently removed end-first).
-- Users need the option to Kdownload their entire session history, so that they never have to rely on my database / risk losing all of their history.
+- Users need the option to download their entire session history, so that they never have to rely on my database / risk losing all of their history.
 - MUI button recoloring needed for home page.
 - Couldn’t find a way to not render success messages with react-hot-toast. Partial solution was to set the success-message timeout to 1ms.
 - Many DOM elements should fade upon data load / etc.
 - Needs Cypress tests.
-- Add the ability to load a previous session with only one set per exercise.
+- Add a per-card counter to track how many sets you've completed during the current workout.
+- Add an alert when attempting to navigate away with unsaved data.
