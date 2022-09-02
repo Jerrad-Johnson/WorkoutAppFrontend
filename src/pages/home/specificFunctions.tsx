@@ -10,6 +10,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Home from "../Home";
 import DeleteIcon from "@mui/icons-material/Delete";
+import swal from "sweetalert";
 let cc = console.log;
 
 export function OptionsDropdown({optionsDispatch, optionsState, optionsDropdownState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData,
@@ -214,7 +215,22 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                         </div>
                         <div className={"threeEqualWidth"}>
                             <DeleteIcon onClick={(_e) => {
-                                sessionDispatch({type: "removeThisExercise", payload: parentIndex})
+                                swal({
+                                    title: "Are you sure?",
+                                    text: "Do you want to remove this exercise from your current workout?",
+                                    icon: "warning", //@ts-ignore
+                                    buttons: true,
+                                    dangerMode: true,
+                                })
+                                    .then((willDelete) => {
+                                        if (willDelete) {
+                                            sessionDispatch({type: "removeThisExercise", payload: parentIndex})
+
+                                            swal("Exercise removed.", {
+                                                icon: "success",
+                                            });
+                                        }
+                                    });
                             }}/>
                         </div>
                     </div>
