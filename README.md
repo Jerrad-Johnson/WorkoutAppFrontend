@@ -17,20 +17,19 @@ The app also graphs your progress with each exercise, showing your calculated 1R
 
 ## Back-end install / deployment
 
-- Go to [repository](https://github.com/Jerrad-Johnson/WorkoutAppBackend)
-- Run setupTables.php
+- Instructions in [repository](https://github.com/Jerrad-Johnson/WorkoutAppBackend)
 
 ## Known issues
 
 - Loading indicators on Progress page do not disappear after an empty fetch.
 - Needs to inform users when the server has ended their session (i.e. when they get logged out).
+- Couldn’t find a way to avoid rendering success messages with react-hot-toast. Partial solution was to set the success-message timeout to 1ms.
 
 ## TODO Features
 - Add more graphs / show more data.
 - Home page needs an “Update” button, so old sessions can be changed without being deleted first.
 - Users need the option to download their entire session history, so that they never have to rely on my database / risk losing all of their history.
 - MUI button recoloring needed for home page.
-- Couldn’t find a way to not render success messages with react-hot-toast. Partial solution was to set the success-message timeout to 1ms.
 - Many DOM elements should fade upon data load / etc.
 - Needs Cypress tests.
 - Add a per-card counter to track how many sets you've completed during the current workout.
