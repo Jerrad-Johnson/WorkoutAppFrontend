@@ -13,64 +13,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import swal from "sweetalert";
 let cc = console.log;
 
-export function OptionsDropdown({optionsDispatch, optionsState, optionsDropdownState}: {optionsDispatch: Dispatch<GenericAction>, optionsState: OptionsData,
-    optionsDropdownState: boolean}) {
-    const exerciseOptions: JSX.Element[] = arrayOfOptions(12);
-    const setOptions: JSX.Element[] = arrayOfOptions(12);
-    const repOptions: JSX.Element[] = arrayOfOptions(20);
-
-    async function handleSaveDefaults(){
-        let response = await changeSessionDefaults(optionsState.reps, optionsState.sets,
-            optionsState.exercises, optionsState.weights);
-
-        cc(response); //TODO Handle response
-    }
-
-    let optionsHTML: JSX.Element = (
-        <div className={"optionsContainer"}>
-            <span>Default exercise count</span>
-            <select value={optionsState.exercises} onChange={(e) => {
-                optionsDispatch({type: "exercises", payload: +e.target.value});
-                localStorage.setItem("defaultExercises", JSON.stringify(+e.target.value));
-            }}>
-                {exerciseOptions}
-            </select>
-            <span>Default set count</span>
-            <select value={optionsState.sets} onChange={(e) => {
-                optionsDispatch({type: "sets", payload: +e.target.value});
-                localStorage.setItem("defaultSets", JSON.stringify(+e.target.value));
-            }}>
-                {setOptions}
-            </select>
-            <span>Default rep count</span>
-            <select value={optionsState.reps} onChange={(e) => {
-                optionsDispatch({type: "reps", payload: +e.target.value});
-                localStorage.setItem("defaultReps", JSON.stringify(+e.target.value));
-            }}>
-                {repOptions}
-            </select>
-            <span>Default weight</span>
-            <input type={"number"} value={optionsState.weights} onChange={(e) => {
-                optionsDispatch({type: "weights", payload: +e.target.value});
-                localStorage.setItem("defaultWeight", JSON.stringify(+e.target.value));
-            }}/>
-            <br />
-            <button onClick={(e) => {
-                e.preventDefault();
-                handleSaveDefaults();
-            }}>Save Defaults</button>
-        </div>
-    );
-
-    return (
-        <>
-            {optionsDropdownState === true && optionsHTML}
-
-        </>
-
-    );
-}
-
 export function getStartingValuesNestedArray(exercises: number, sets: number, value: number){
     let arrayOfValues: number[][] = [];
 

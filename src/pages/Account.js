@@ -321,7 +321,7 @@ async function handleSaveDefaults(reps: number, sets: number, exercises: number,
             success: "Saved",
             error: defaultToastPromiseErrorMessage,
         });
-        showResponseMessageWithCondition(response);
+        showResponseMessageWithCondition(response.data);
     } catch (e) {
         cc(e);
     }

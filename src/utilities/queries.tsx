@@ -91,17 +91,7 @@ export async function changeSessionDefaults(reps: number, sets:number, exercises
         "weight": weight,
     }
 
-    const response = await fetch(`${baseURL}/changesessiondefaults.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(entry),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`changesessiondefaults.php`, JSON.stringify(entry));
 }
 
 export async function createAccount(password: string, username: string, email: string){
