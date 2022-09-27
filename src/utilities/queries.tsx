@@ -76,17 +76,7 @@ export async function changeEmail(newEmail: string){
         newEmailAddress: newEmail,
     }
 
-    const response = await fetch(`${baseURL}/changeemail.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(email),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`changeemail.php`, JSON.stringify(email));
 }
 
 export async function getSessionDefaults(){

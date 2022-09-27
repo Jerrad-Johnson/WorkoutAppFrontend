@@ -183,12 +183,12 @@ function Account(){
             <h2>Change E-mail</h2>
             <form>
                 <TextField type={"text"} value={newEmailState} variant={"standard"} sx={{width: "100%"}} placeholder={"New E-mail"} onChange={(e) => {
-                    setNewPasswordVerifyState(e.target.value);
+                    setNewEmailState(e.target.value);
                 }}/>
                 <br/><br/>
 
                 <TextField type={"text"} value={newEmailVerifyState} variant={"standard"} sx={{width: "100%"}} placeholder={"Confirm New E-mail"} onChange={(e) => {
-                    setNewPasswordVerifyState(e.target.value);
+                    setNewEmailVerifyState(e.target.value);
                 }}/>
                 <br /><br />
 
@@ -262,7 +262,7 @@ function Account(){
                 },
                 error: defaultToastPromiseErrorMessage,
             });
-            showResponseMessageWithCondition(response);
+            showResponseMessageWithCondition(response.data);
         } catch (e) {
             cc(e);
         }
