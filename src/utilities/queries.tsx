@@ -109,16 +109,7 @@ export async function getWorkoutsForHeatmap(yearOrLast365: string){
 }
 
 export async function getYearsOfAllEntries(){
-    const response = await fetch(`${baseURL}/getallyearsofentries.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getallyearsofentries.php`);
 }
 
 export async function getSessionDataForOneRMCalculation(exercise: string){

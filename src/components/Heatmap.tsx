@@ -205,7 +205,7 @@ function combineEmptyAndRealHashmapData(emptyEntries: HeatmapByDate[], sortedAnd
 async function handleGetYearsOfAllEntries(setYearsOfEntriesState: Dispatch<SetStateAction<string[] | undefined>>){
     let response = await getYearsOfAllEntries();
 
-    setYearsOfEntriesState(response.data);
+    setYearsOfEntriesState(response.data.data);
 }
 
 
