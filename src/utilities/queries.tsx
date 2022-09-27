@@ -80,16 +80,7 @@ export async function changeEmail(newEmail: string){
 }
 
 export async function getSessionDefaults(){
-    const response = await fetch(`${baseURL}/getsessiondefaults.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getsessiondefaults.php`);
 }
 
 export async function changeSessionDefaults(reps: number, sets:number, exercises: number, weight: number){
