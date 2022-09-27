@@ -245,7 +245,7 @@ function Account(){
                 },
                 error: defaultToastPromiseErrorMessage,
             });
-            showResponseMessageWithCondition(response);
+            showResponseMessageWithCondition(response.data);
         } catch (e) {
             cc(e) //TODO handle error
         }

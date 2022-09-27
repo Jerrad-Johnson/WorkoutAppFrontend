@@ -68,17 +68,7 @@ export async function changePassword(oldPw: string, newPw: string){
         newPassword: newPw,
     }
 
-    const response = await fetch(`${baseURL}/changepassword2.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(passwords),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`changepassword.php`, JSON.stringify(passwords));
 }
 
 export async function changeEmail(newEmail: string){
