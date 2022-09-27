@@ -10,24 +10,6 @@ export async function loginQuery(data: LoginCredentials) {
     return await httpClient.post(`login.php`, JSON.stringify(data));
 }
 
-export async function loginV2(){
-    let entry: object = {
-        "password": "abc",
-        "username": "elseif",
-    };
-
-    const response = await fetch(`${baseURL}/login.php`, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(entry),
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json' }
-    });
-
-    return await response.json();
-}
-
 export async function submitSession(entries: SessionEntry) {
     let response = await fetch(`${baseURL}/sessionentry.php`, {
         method: 'POST',

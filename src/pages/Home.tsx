@@ -12,7 +12,6 @@ import {
 } from "../utilities/sharedFns";
 import {
     getRecentSessions,
-    loginV2,
     getExercises,
     getSpecificSession,
     submitSession,
