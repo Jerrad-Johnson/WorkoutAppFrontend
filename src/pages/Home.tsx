@@ -349,7 +349,7 @@ function Home(){
 
     async function loadExerciseList(){
         getExercises().then(exercises => {
-            sessionDispatch({type: "loadedExercises", payload: exercises.data})
+            sessionDispatch({type: "loadedExercises", payload: exercises.data.data})
         });
     }
 

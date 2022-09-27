@@ -18,16 +18,7 @@ export async function deleteSession(title: string, date: string) {
 }
 
 export async function getExercises(){
-    let response = await fetch(`${baseURL}/getexercises.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getexercises.php`);
 }
 
 export async function getExercisesFromSessionTable(){

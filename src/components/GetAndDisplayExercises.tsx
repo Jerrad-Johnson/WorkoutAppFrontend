@@ -46,10 +46,11 @@ function GetAndDisplaySessions(){
 
     async function handleGetExercises(){
         let response = await toast.promise(getExercises(), defaultToastMsg);
-        showResponseMessageWithCondition(response);
+        cc(response)
+        showResponseMessageWithCondition(response.data);
 
-        if (response?.data[0]) {
-            let listOfExercises: JSX.Element[] = response.data.map((e: string, k: number) => {
+        if (response?.data.data[0]) {
+            let listOfExercises: JSX.Element[] = response.data.data.map((e: string, k: number) => {
                 return (
                     <div key={k}>
                         <DeleteIcon onClick={(event) => {
@@ -60,7 +61,7 @@ function GetAndDisplaySessions(){
                 );
             });
             setDataState(listOfExercises);
-        } else if (response?.message === successMessage) {
+        } else if (response.data.message === successMessage) {
             setDataState(<span className={"listQuery"}>No Results.</span>)
         }
     }
@@ -76,8 +77,6 @@ function GetAndDisplaySessions(){
         setDeleteFunctionState(deleteSessionFunction);
         setConfirmationBoxState(true);
     }
-
-    //handleGetExercises();
 
     return (
         <>
