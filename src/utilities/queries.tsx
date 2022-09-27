@@ -1,9 +1,7 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 import httpClient from "../common/httpClient";
-import * as http from "http";
 let cc = console.log;
- //let baseURL: string = "/php";
 let baseURL: string = "http://localhost:80/php";
 
 export async function loginQuery(data: LoginCredentials) {
@@ -16,18 +14,7 @@ export async function submitSession(entries: SessionEntry) {
 
 export async function deleteSession(title: string, date: string) {
     let entry: SessionToDelete = {"title": title, "date": date};
-
-    let response = await fetch(`${baseURL}/sessiondelete.php`, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(entry),
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return await response.json();
+    return await httpClient.post(`sessiondelete.php`, JSON.stringify(entry));
 }
 
 export async function getExercises(){

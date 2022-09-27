@@ -66,9 +66,10 @@ function GetAndDisplaySessions(){
     function handleDeleteSessionRequest(title: string, date: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
-            showResponseMessageWithCondition(response);
+            showResponseMessageWithCondition(response.data);
+            cc(response)
 
-            if (response.message === "Success") handleGetSessions();
+            if (response?.data?.message === "Success") handleGetSessions();
         });
 
         setDeleteFunctionState(deleteSessionFunction);
