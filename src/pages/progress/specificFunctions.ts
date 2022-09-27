@@ -30,8 +30,8 @@ export async function handleGetListOfExercises(setExerciseListState: Dispatch<Se
 
     try {
         let response = await getExercisesFromSessionTable();
-        if (response?.data[0]) setExerciseListState(response.data);
-        if (response?.data[0]) setOneRMExerciseSelectorState(response.data[0]);
+        if (response?.data.data[0]) setExerciseListState(response.data.data);
+        if (response?.data.data[0]) setOneRMExerciseSelectorState(response.data.data[0]);
         setOneRMExerciseLoadingState("Loaded");
     } catch (e) {
         cc(e)

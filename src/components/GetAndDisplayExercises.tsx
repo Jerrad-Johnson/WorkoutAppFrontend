@@ -69,9 +69,9 @@ function GetAndDisplaySessions(){
     function handleDeleteExerciseRequest(exercise: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteExercise(exercise), defaultToastMsg);
-            showResponseMessageWithCondition(response);
+            showResponseMessageWithCondition(response.data);
 
-            if (response.message === "Success") handleGetExercises();
+            if (response.data.message === "Success") handleGetExercises();
         });
 
         setDeleteFunctionState(deleteSessionFunction);

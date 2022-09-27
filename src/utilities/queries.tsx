@@ -22,30 +22,11 @@ export async function getExercises(){
 }
 
 export async function getExercisesFromSessionTable(){
-    let response = await fetch(`${baseURL}/getexercisesfromsessiontable.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getexercisesfromsessiontable.php`);
 }
 
 export async function deleteExercise(exercise: string){
-    let response = await fetch(`${baseURL}/exercisedelete.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(exercise),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`exercisedelete.php`, JSON.stringify(exercise));
 }
 
 export async function getRecentSessions(){
