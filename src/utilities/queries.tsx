@@ -1,8 +1,7 @@
-import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
+import {SessionEntry, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
 import httpClient from "../common/httpClient";
 let cc = console.log;
-let baseURL: string = "http://localhost:80/php";
 
 export async function loginQuery(data: LoginCredentials) {
     return await httpClient.post(`login.php`, JSON.stringify(data));
