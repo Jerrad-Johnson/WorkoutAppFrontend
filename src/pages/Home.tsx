@@ -58,17 +58,21 @@ function Home(){
 
     const [showPreviousSessionElementsState, setShowPreviousSessionElementsState] = useState<boolean>(false);
 
-    let defaultExercises: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultExercises") !== (null || undefined)) defaultExercises = +JSON.parse(localStorage.getItem("defaultExercises"));
+    let defaultExercises: number = 2; //@ts-ignore
+    let storedExerciseValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    if ((storedExerciseValue !== null) && (storedExerciseValue !== undefined)) defaultExercises = +storedExerciseValue;
 
     let defaultSets: number = 3; //@ts-ignore
-    if (localStorage.getItem("defaultSets") !== (null || undefined)) defaultSets = +JSON.parse(localStorage.getItem("defaultSets"));
+    let storedSetValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    if ((storedSetValue !== null) && (storedSetValue !== undefined)) defaultSets = +storedSetValue;
 
     let defaultReps: number = 5; //@ts-ignore
-    if (localStorage.getItem("defaultReps") !== (null || undefined)) defaultReps = +JSON.parse(localStorage.getItem("defaultReps"));
+    let storedRepValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    if ((storedRepValue !== null) && (storedRepValue !== undefined)) defaultReps = +storedRepValue;
 
     let defaultWeight: number = 100; //@ts-ignore
-    if (localStorage.getItem("defaultWeight") !== (null || undefined)) defaultWeight = +JSON.parse(localStorage.getItem("defaultWeight"));
+    let storedWeightValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    if ((storedWeightValue !== null) && (storedWeightValue !== undefined)) defaultWeight = +storedWeightValue;
 
     const defaultOptions: OptionsData = {
         exercises: defaultExercises, //@ts-ignore
@@ -536,6 +540,7 @@ function Home(){
         }}>Load Now</Button>
       </>
     );
+
 
 
     return (
