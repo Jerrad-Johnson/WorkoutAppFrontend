@@ -190,7 +190,6 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                                                         payload: {index: parentIndex, value: e.target.value}
                                                     })
                                                 }}>
-                                            <MenuItem value={""}></MenuItem>
                                             {previousExercises}
                                         </Select>
                                     </FormControl>
