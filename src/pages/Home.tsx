@@ -528,7 +528,6 @@ function Home(){
                     onChange={(e) => {
                         sessionDispatch({type: "sessionLoadSelector", payload: e.target.value});
                     }}>
-                <MenuItem value={""}></MenuItem>
                 {previousSessionOptions} {/*TODO Add error handling*/}
             </Select>
         </FormControl>
