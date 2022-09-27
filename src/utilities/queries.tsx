@@ -105,17 +105,7 @@ export async function createAccount(password: string, username: string, email: s
 }
 
 export async function getWorkoutsForHeatmap(yearOrLast365: string){
-    const response = await fetch(`${baseURL}/getworkoutcount.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(yearOrLast365),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getworkoutcount.php`, JSON.stringify(yearOrLast365));
 }
 
 export async function getYearsOfAllEntries(){

@@ -100,7 +100,7 @@ export async function handleGetWorkoutsForHeatmap(setHeatmapState: Dispatch<SetS
     let response = await getWorkoutsForHeatmap(selectedYearOfEntriesState);
 
     let sessionDatesAndCount: SessionDateHashmap = {};
-    response.data.forEach((e: {session_date: string; session_title: string}) => {
+    response.data.data.forEach((e: {session_date: string; session_title: string}) => {
         sessionDatesAndCount[e.session_date] ? sessionDatesAndCount[e.session_date] += 1 : sessionDatesAndCount[e.session_date] = 1;
     });
 
