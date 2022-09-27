@@ -125,17 +125,7 @@ export async function getSingleSessionNote(id: string){
 }
 
 export async function requestPasswordReset(email: string){
-    const response = await fetch(`${baseURL}/passwordresetrequest.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(email),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`passwordresetrequest.php`, JSON.stringify(email));
 }
 
 export async function setNewPassword(resetKey: string, newPassword: string, email: string){

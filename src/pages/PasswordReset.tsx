@@ -32,7 +32,7 @@ function PasswordReset(){
 
 async function handleResetPasswordRequest(emailState: string, setEmailState: Dispatch<SetStateAction<string>>){
     let response = await requestPasswordReset(emailState);
-    showResponseMessageWithoutCondition(response);
+    showResponseMessageWithoutCondition(response.data);
     setEmailState("");
 }
 
