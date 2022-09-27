@@ -60,7 +60,7 @@ async function handleCreateAccount(passwordState: string, passwordVerifyState: s
             error: defaultToastPromiseErrorMessage,
         });
 
-        if (response.message === "Success"){
+        if (response.data.message === "Success"){
             toast.success("Account Created. Redirecting.")
             setTimeout(() => { window.location.href="/" }, 2000);
         }
