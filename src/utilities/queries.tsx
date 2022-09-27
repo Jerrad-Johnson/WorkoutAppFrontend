@@ -7,17 +7,7 @@ let cc = console.log;
 let baseURL: string = "http://localhost:80/php";
 
 export async function loginQuery(data: LoginCredentials) {
-    let response = await fetch(`${baseURL}/login.php`, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(data),
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`login.php`, JSON.stringify(data));
 }
 
 export async function loginV2(){
@@ -154,53 +144,15 @@ export async function getAllSessions(){
 }
 
 export async function getAllSessionNames(){
-    const response = await httpClient.post(`${baseURL}/getallsessionnames.php`);
-    return response;
+    return await httpClient.post(`getallsessionnames.php`);
 }
-
-/*export async function getAllSessionNames(){
-    const response = await fetch(`${baseURL}/getallsessionnames.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-
-    return await response.json();
-}*/
 
 export async function getAllSessionsByName(title: string){
-    const response = await httpClient.post(`${baseURL}/getallsessionsbyname.php`, JSON.stringify(title));
-    return response;
+    return await httpClient.post(`getallsessionsbyname.php`, JSON.stringify(title));
 }
 
-/*export async function getAllSessionsByName(title: string){
-    const response = await fetch(`${baseURL}/getallsessionsbyname.php`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(title),
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return await response.json();
-}*/
-
 export async function logout(){
-    const response = await fetch(`${baseURL}/logout.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`logout.php`);
 }
 
 export async function queryCheckLogin(){
@@ -335,25 +287,8 @@ export async function getYearsOfAllEntries(){
 }
 
 export async function getSessionDataForOneRMCalculation(exercise: string){
-    const response = await httpClient.post(`${baseURL}/getsessiondataforonermcalculation.php`, JSON.stringify(exercise));
-
-    return response;
+    return await httpClient.post(`getsessiondataforonermcalculation.php`, JSON.stringify(exercise));
 }
-
-
-/*export async function getSessionDataForOneRMCalculation(exercise: string){
-    const response = await fetch(`${baseURL}/getsessiondataforonermcalculation.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(exercise),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
-}*/
 
 export async function getSessionDatesAndTitlesOfAllNotes(){
     const response = await fetch(`${baseURL}/getdatesofallnotes.php`, {

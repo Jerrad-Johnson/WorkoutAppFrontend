@@ -23,14 +23,14 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
         success: "Checking login.",
         error: defaultToastPromiseErrorMessage,
     });
-    showResponseMessageWithCondition(response)
+    showResponseMessageWithCondition(response.data);
 
-    if (response.message === "Already logged in.") {
+    if (response?.data?.message === "Already logged in.") {
         window.location.href="Home";
         return;
     }
 
-    if (response.message === "Wrong password.") return;
+    if (response.data.message === "Wrong password.") return;
 
     let confirmLoggedIn = await checkLogin();
 

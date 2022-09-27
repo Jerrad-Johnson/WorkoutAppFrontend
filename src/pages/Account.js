@@ -309,7 +309,7 @@ function Account(){
 
 async function handleLogout(){
     let response = await toast.promise(logout().then(response => {
-        if (response.data.loggedout === "true") window.location.href="/";
+        if (response?.data?.data?.loggedout === "true") window.location.href="/";
     }), defaultToastMsg);
     showResponseMessageWithCondition(response);
 }
