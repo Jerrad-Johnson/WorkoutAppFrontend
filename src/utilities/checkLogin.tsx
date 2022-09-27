@@ -4,7 +4,7 @@ let cc = console.log;
 
 async function checkLogin(){
     let response = await queryCheckLogin();
-    return response;
+    return response.data;
 }
 
 export default checkLogin

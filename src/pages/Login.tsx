@@ -74,7 +74,7 @@ async function handleCheckIfLoggedIn(response: StandardBackendResponse, firstLoa
 async function checkLogin(){
     let response = await queryCheckLogin();
 
-    return response;
+    return response.data;
 }
 
 async function doLogin(usernameState: string, passwordState: string){

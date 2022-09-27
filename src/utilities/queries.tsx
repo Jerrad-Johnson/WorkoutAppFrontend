@@ -59,16 +59,7 @@ export async function logout(){
 }
 
 export async function queryCheckLogin(){
-    const response = await fetch(`${baseURL}/checklogin.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`checklogin.php`);
 }
 
 export async function changePassword(oldPw: string, newPw: string){
