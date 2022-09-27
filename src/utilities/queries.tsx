@@ -145,15 +145,5 @@ export async function setNewPassword(resetKey: string, newPassword: string, emai
         "email": email,
     }
 
-    const response = await fetch(`${baseURL}/passwordresetsubmit.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(userData),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`passwordresetsubmit.php`, JSON.stringify(userData));
 }

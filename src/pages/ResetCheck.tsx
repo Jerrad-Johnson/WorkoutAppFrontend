@@ -65,7 +65,7 @@ async function handleSetNewPassword(newPasswordState: string, newPasswordConfirm
                 duration: 1,
             }
         });
-        showResponseMessageWithCondition(result);
+        showResponseMessageWithCondition(result.data);
     } catch (e) {
         cc(e);
     }
