@@ -416,7 +416,7 @@ function Home(){
 
         try {
             let response = await toast.promise(submitSession(entries).then(data => {
-                showResponseMessageWithoutCondition(data);
+                showResponseMessageWithoutCondition(data.data);
             }), {
                 loading: 'Please wait',
                 success: 'Finished',

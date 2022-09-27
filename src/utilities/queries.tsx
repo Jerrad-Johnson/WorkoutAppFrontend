@@ -11,17 +11,7 @@ export async function loginQuery(data: LoginCredentials) {
 }
 
 export async function submitSession(entries: SessionEntry) {
-    let response = await fetch(`${baseURL}/sessionentry.php`, {
-        method: 'POST',
-        mode: 'cors',
-        body: JSON.stringify(entries),
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return await response.json();
+    return await httpClient.post(`sessionentry.php`, JSON.stringify(entries));
 }
 
 export async function deleteSession(title: string, date: string) {
