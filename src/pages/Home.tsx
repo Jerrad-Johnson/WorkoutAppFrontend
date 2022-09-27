@@ -63,15 +63,15 @@ function Home(){
     if ((storedExerciseValue !== null) && (storedExerciseValue !== undefined)) defaultExercises = +storedExerciseValue;
 
     let defaultSets: number = 3; //@ts-ignore
-    let storedSetValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    let storedSetValue: string | undefined | null = localStorage.getItem("defaultSets");
     if ((storedSetValue !== null) && (storedSetValue !== undefined)) defaultSets = +storedSetValue;
 
     let defaultReps: number = 5; //@ts-ignore
-    let storedRepValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    let storedRepValue: string | undefined | null = localStorage.getItem("defaultReps");
     if ((storedRepValue !== null) && (storedRepValue !== undefined)) defaultReps = +storedRepValue;
 
     let defaultWeight: number = 100; //@ts-ignore
-    let storedWeightValue: string | undefined | null = localStorage.getItem("defaultExercises");
+    let storedWeightValue: string | undefined | null = localStorage.getItem("defaultWeight");
     if ((storedWeightValue !== null) && (storedWeightValue !== undefined)) defaultWeight = +storedWeightValue;
 
     const defaultOptions: OptionsData = {

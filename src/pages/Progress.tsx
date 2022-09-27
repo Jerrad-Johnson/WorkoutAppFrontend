@@ -165,6 +165,9 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
         <>
             <Nav title={"Progress"}/>
             <div className={"basicContainer"}>
+                <button onClick={(e) => {
+                    cc(oneRMExerciseListLoadingState)
+                }}>Log</button>
                 <Heatmap
                     heatmapState = {heatmapState}
                     setHeatmapState = {setHeatmapState}
