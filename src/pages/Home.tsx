@@ -442,7 +442,7 @@ function Home(){
                 throw new Error(msg);
             }
 
-            if (entries.exercises[i] === ""){
+            if (entries.exercises[i] === "" || entries.exercises[i] === undefined){
                 let msg: string = "Use an exercise name in every section.";
                 toast.error(msg);
                 throw new Error(msg);
