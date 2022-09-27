@@ -121,17 +121,7 @@ export async function getSessionDatesAndTitlesOfAllNotes(){
 }
 
 export async function getSingleSessionNote(id: string){
-    const response = await fetch(`${baseURL}/getsinglesessionnote.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: id,
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getsinglesessionnote.php`, JSON.stringify(id));
 }
 
 export async function requestPasswordReset(email: string){

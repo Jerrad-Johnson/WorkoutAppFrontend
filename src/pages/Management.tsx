@@ -72,9 +72,9 @@ async function handleGetListOfNotesBySessionDateAndTitle(setNotesListState: Disp
 
 async function handleGetSessionNotes(setNotesDataState: Dispatch<SetStateAction<string>>, id: string){
     try {
-        let response: StandardBackendResponse = await toast.promise(getSingleSessionNote(id), defaultToastMsg);
-        setNotesDataState(response.data);
-        showResponseMessageWithCondition(response);
+        let response = await toast.promise(getSingleSessionNote(id), defaultToastMsg);
+        setNotesDataState(response.data.data);
+        showResponseMessageWithCondition(response.data);
     } catch (e) {
         cc(e);
     }
