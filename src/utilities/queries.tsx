@@ -30,16 +30,7 @@ export async function deleteExercise(exercise: string){
 }
 
 export async function getRecentSessions(){
-    const response = await fetch(`${baseURL}/getrecentsessions.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getrecentsessions.php`);
 }
 
 export async function getSpecificSession(sessionDate: string, sessionTitle: string){
@@ -48,30 +39,11 @@ export async function getSpecificSession(sessionDate: string, sessionTitle: stri
         date: sessionDate
     }
 
-    const response = await fetch(`${baseURL}/getspecificsession.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        body: JSON.stringify(titleAndDate),
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return await response.json();
+    return await httpClient.post(`getspecificsession.php`, JSON.stringify(titleAndDate));
 }
 
 export async function getAllSessions(){
-    const response = await fetch(`${baseURL}/getallsessions.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-
-    return await response.json();
+    return await httpClient.post(`getallsessions.php`);
 }
 
 export async function getAllSessionNames(){

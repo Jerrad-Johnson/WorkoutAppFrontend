@@ -344,7 +344,7 @@ function Home(){
     }
 
     async function loadPrevSessions(){
-        await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data}));
+        await getRecentSessions().then(prevSessions => sessionDispatch({type: "loadedPrevSessions", payload: prevSessions.data.data}));
     }
 
     async function loadExerciseList(){
@@ -384,7 +384,7 @@ function Home(){
         if (sessionState.selectedSessionToLoad !== "" && sessionState.selectedSessionToLoad.length !== 0) {
             let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
             let sessionResponseFromDB = await toast.promise(getSpecificSession(sessionDate, sessionTitle).then(response => {
-                sessionDispatch({type: "insertPreviousSession", payload: response.data});
+                sessionDispatch({type: "insertPreviousSession", payload: response.data.data});
                 setShowPreviousSessionElementsState(false);
                 }), defaultToastMsg);
         }

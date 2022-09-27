@@ -44,10 +44,10 @@ function GetAndDisplaySessions(){
 
     async function handleGetSessions(){
         let response = await toast.promise(getAllSessions(), defaultToastMsg);
-        showResponseMessageWithCondition(response);
+        showResponseMessageWithCondition(response.data);
 
-        if (response?.data[0]) {
-            let listOfSessions: JSX.Element[] = response.data.map((entry: any, k: number) => {
+        if (response?.data.data[0]) {
+            let listOfSessions: JSX.Element[] = response.data.data.map((entry: any, k: number) => {
                 return (
                     <div key={k}>
                         <DeleteIcon onClick={() => {
@@ -58,7 +58,7 @@ function GetAndDisplaySessions(){
                 );
             });
             setDataState(listOfSessions);
-        } else if (response?.message === successMessage) {
+        } else if (response?.data.message === successMessage) {
             setDataState(<span className={"listQuery"}>No Results.</span>)
         }
     }
