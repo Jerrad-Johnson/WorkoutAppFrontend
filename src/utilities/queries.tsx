@@ -117,16 +117,7 @@ export async function getSessionDataForOneRMCalculation(exercise: string){
 }
 
 export async function getSessionDatesAndTitlesOfAllNotes(){
-    const response = await fetch(`${baseURL}/getdatesofallnotes.php`, {
-        method: 'POST',
-        credentials: 'include',
-        mode: 'cors',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    });
-
-    return await response.json();
+    return await httpClient.post(`getdatesofallnotes.php`);
 }
 
 export async function getSingleSessionNote(id: string){

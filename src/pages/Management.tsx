@@ -66,8 +66,8 @@ function Management(){
 }
 
 async function handleGetListOfNotesBySessionDateAndTitle(setNotesListState: Dispatch<SetStateAction<string[]>>){
-    let response: StandardBackendResponse = await getSessionDatesAndTitlesOfAllNotes();
-    setNotesListState(response.data);
+    let response = await getSessionDatesAndTitlesOfAllNotes();
+    setNotesListState(response.data.data);
 }
 
 async function handleGetSessionNotes(setNotesDataState: Dispatch<SetStateAction<string>>, id: string){
