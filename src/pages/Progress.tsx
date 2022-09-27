@@ -24,14 +24,14 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
     const [oneRMExerciseListLoadingState, setOneRMExerciseListLoadingState] = useState<string>("Loading");
     
     const [oneRMExerciseData, setOneRMExerciseData] = useState<any>(undefined); //TODO Add type
-    const [oneRMExerciseDataLoadingState, setOneRMExerciseDataLoadingState] = useState<string>("Loading");
+    const [oneRMExerciseDataLoadingState, setOneRMExerciseDataLoadingState] = useState<string>("Loaded");
 
     const [workoutListState, setWorkoutListState] = useState<string[]>([""]);
     const [workoutSessionSelectorState, setWorkoutSessionSelectorState] = useState<string>("");
     const [workoutSessionSelectorLoadingState, setWorkoutSessionSelectorLoadingState] = useState<string>("Loading");
 
     const [workoutSessionState, setWorkoutSessionState] = useState<any>();
-    const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("Loading");
+    const [workoutSessionLoadingState, setWorkoutSessionLoadingState] = useState<string>("");
 
     useEffect(() => {
         handleGetWorkoutsForHeatmap(setHeatmapState, "Last 365 Days");
@@ -93,7 +93,7 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
             <Select value={oneRMExerciseSelectorState} className={"genericBottomMargin"} onChange={(e) => {
                 setOneRMExerciseSelectorState(e.target.value);
             }}>
-                <MenuItem value={""}></MenuItem>
+                {/*<MenuItem value={""}></MenuItem>*/}
                 {exerciseOptions}
             </Select>
         </FormControl>
@@ -166,7 +166,7 @@ function Progress(){ //TODO Switch to Reducer for loading states, in order to si
             <Nav title={"Progress"}/>
             <div className={"basicContainer"}>
                 <button onClick={(e) => {
-                    cc(oneRMExerciseListLoadingState)
+                    cc(workoutSessionLoadingState)
                 }}>Log</button>
                 <Heatmap
                     heatmapState = {heatmapState}

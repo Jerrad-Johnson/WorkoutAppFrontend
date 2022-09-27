@@ -7,14 +7,14 @@ import {
 let cc = console.log;
 
 export async function handleOneRMSelection(setOneRMExerciseData: Dispatch<SetStateAction<any>>,
-                                    oneRMExerciseChosenState: string,
-                                    setOneRMExerciseDataLoadingState: Dispatch<SetStateAction<string>>){
-    setOneRMExerciseDataLoadingState("Loading");
+                                           oneRMExerciseSelectorState: string,
+                                           setOneRMExerciseDataLoadingState: Dispatch<SetStateAction<string>>){
 
-    if (oneRMExerciseChosenState !== ""){
+    if (oneRMExerciseSelectorState !== ""){
+        setOneRMExerciseDataLoadingState("Loading");
         try {
-            let response = await getSessionDataForOneRMCalculation(oneRMExerciseChosenState);
-            formatOneRMData(response, setOneRMExerciseData, setOneRMExerciseDataLoadingState);
+            let response = await getSessionDataForOneRMCalculation(oneRMExerciseSelectorState);
+            formatOneRMData(response.data, setOneRMExerciseData, setOneRMExerciseDataLoadingState);
         } catch (e) {
             cc(e);
             setOneRMExerciseDataLoadingState("Failed");
@@ -110,13 +110,14 @@ export async function handleGetListOfSessionsByName(setWorkoutListState: Dispatc
 ){
     try {
         let response = await getAllSessionNames();
-        let listOfSesssionsByName: string[] = response.data.map((e: any) => {
+
+        let listOfSesssionsByName: string[] = response?.data?.data?.map((e: any) => {
             return (e.session_title);
         });
 
         setWorkoutListState(listOfSesssionsByName);
-        if (response.data[0]?.session_title) {
-            setWorkoutSessionSelectorState(response.data[0].session_title);
+        if (response?.data?.data) {
+            setWorkoutSessionSelectorState(response?.data?.data[0]?.session_title);
             setWorkoutSessionSelectorLoadingState("Loaded");
         }
     } catch (e) {
@@ -128,11 +129,14 @@ export async function handleGetListOfSessionsByName(setWorkoutListState: Dispatc
 export async function handleOneSessionNameAllDataSelection(setWorkoutSessionState: Dispatch<SetStateAction<any>>,
                                                     workoutSessionSelectorState: string,
                                                     setWorkoutSessionLoadingState: Dispatch<SetStateAction<string>>){
+    cc(5)
+    if (workoutSessionSelectorState === "") return;
     setWorkoutSessionLoadingState("Loading");
 
     try {
         let response = await getAllSessionsByName(workoutSessionSelectorState);
-        let reformattedData = reformatSessionData(response.data);
+        cc(response)
+        let reformattedData = reformatSessionData(response.data.data);
         setWorkoutSessionState(reformattedData);
         setWorkoutSessionLoadingState("Loaded");
     } catch (e) {

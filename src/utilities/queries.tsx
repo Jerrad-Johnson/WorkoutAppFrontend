@@ -1,5 +1,7 @@
 import {SessionEntry, submissionData, LoginCredentials, SessionToDelete} from "./interfaces";
 import {specificSessionOutput} from "./interfaces";
+import httpClient from "../common/httpClient";
+import * as http from "http";
 let cc = console.log;
  //let baseURL: string = "/php";
 let baseURL: string = "http://localhost:80/php";
@@ -152,19 +154,29 @@ export async function getAllSessions(){
 }
 
 export async function getAllSessionNames(){
+    const response = await httpClient.post(`${baseURL}/getallsessionnames.php`);
+    return response;
+}
+
+/*export async function getAllSessionNames(){
     const response = await fetch(`${baseURL}/getallsessionnames.php`, {
         method: 'POST',
         credentials: 'include',
         mode: 'cors',
         headers: {
             'Content-Type': 'application/json'
-        }
+        },
     })
 
     return await response.json();
-}
+}*/
 
 export async function getAllSessionsByName(title: string){
+    const response = await httpClient.post(`${baseURL}/getallsessionsbyname.php`, JSON.stringify(title));
+    return response;
+}
+
+/*export async function getAllSessionsByName(title: string){
     const response = await fetch(`${baseURL}/getallsessionsbyname.php`, {
         method: 'POST',
         credentials: 'include',
@@ -176,7 +188,7 @@ export async function getAllSessionsByName(title: string){
     })
 
     return await response.json();
-}
+}*/
 
 export async function logout(){
     const response = await fetch(`${baseURL}/logout.php`, {
@@ -323,6 +335,13 @@ export async function getYearsOfAllEntries(){
 }
 
 export async function getSessionDataForOneRMCalculation(exercise: string){
+    const response = await httpClient.post(`${baseURL}/getsessiondataforonermcalculation.php`, JSON.stringify(exercise));
+
+    return response;
+}
+
+
+/*export async function getSessionDataForOneRMCalculation(exercise: string){
     const response = await fetch(`${baseURL}/getsessiondataforonermcalculation.php`, {
         method: 'POST',
         credentials: 'include',
@@ -334,7 +353,7 @@ export async function getSessionDataForOneRMCalculation(exercise: string){
     });
 
     return await response.json();
-}
+}*/
 
 export async function getSessionDatesAndTitlesOfAllNotes(){
     const response = await fetch(`${baseURL}/getdatesofallnotes.php`, {
