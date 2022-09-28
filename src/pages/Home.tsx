@@ -112,8 +112,6 @@ function Home(){
         notes: "",
         previousSessions: undefined,
         selectedSessionToLoad: "",
-        staticExerciseNames: [], //TODO Remove; unused.
-
     }
 
     const [sessionState, sessionDispatch] = useReducer(sessionReducer, defaultSession);
@@ -184,7 +182,7 @@ function Home(){
                 return {...state, previousSessions: action.payload}
             case "loadedExercises":
                 let decoupledArray: string[] = action.payload.slice(0);
-                return {...state, exerciseNames: action.payload, staticExerciseNames: decoupledArray}
+                return {...state, exerciseNames: action.payload}
             case "exerciseNameChange":
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
@@ -200,8 +198,7 @@ function Home(){
             case "sessionLoadSelector":
                 return {...state, selectedSessionToLoad: action.payload}
             case "insertPreviousSession":
-                cc(action.payload);
-                let combinedExercises = combineExerciseLists(state.staticExerciseNames, action.payload);
+                let combinedExercises = combineExerciseLists(state.exerciseNames, action.payload);
                 let allReps: number[][] = [];
                 let allWeights: number[][] = [];
                 let numbersOfSets: number[] = [];
