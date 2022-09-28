@@ -6,9 +6,12 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from "@mui/icons-material/Delete";
 import swal from "sweetalert";
 import {getLatestVersionOfExercise} from "../../utilities/queries";
+import Divider from "@mui/material/Divider";
 let cc = console.log;
 
 export function getStartingValuesNestedArray(exercises: number, sets: number, value: number){
@@ -53,6 +56,8 @@ export function getDefaultExerciseKeysArray(exerciseCount: number){
 export function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
                               {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
                                   loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){
+
+    const [counter, setCounter] = useState(0);
 
     const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
         return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
@@ -242,7 +247,8 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                                  topIndex: parentIndex,
                                  value: -1,
                              }});
-                     }}>-</Fab>
+                     }}> -
+                </Fab>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <Fab variant="extended" size="medium" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
                      onClick={(e) => {
@@ -250,18 +256,39 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                                  topIndex: parentIndex,
                                  value: 1,
                              }});
-                     }}>+</Fab>
-            </div>
-            <div className={"setsCompletedCounter"}>
-                {/*Sets Completed Counter goes here*/}
+                     }}> +
+                </Fab>
             </div>
 
+            <Divider sx={{marginTop: "20px"}}/>
             <div className={"exerciseContainerOptions"}>
-                {sessionState.exerciseSelectorOrInput[parentIndex] === 0 &&
-                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
-                        handleLoadLatestVersionOfExercise(parentIndex, sessionState.exerciseNames[parentIndex], sessionDispatch);
-                    }}>Load Latest</Button>
-                }
+                <div className={"mt-8"}>
+                    {sessionState.exerciseSelectorOrInput[parentIndex] === 0 &&
+                        <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
+                            handleLoadLatestVersionOfExercise(parentIndex, sessionState.exerciseNames[parentIndex], sessionDispatch);
+                        }}>Load Latest</Button>
+                    }
+                </div>
+                <div className={"setsFinishedCounter"}>
+                    <div>
+                        Sets Finished
+                    </div>
+                    <div className={"mt-2"}>
+                        <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                             onClick={(e) => {
+                                 if (counter === 0) return;
+                                 setCounter((prev) => prev - 1);
+                             }}> -
+                        </Fab>
+                        <span className={"setsFinishedText"}>{counter}</span>
+                        <Fab variant="extended" size="small" color="primary" aria-label="add" className={"addAndSubtractButtons subtractButton"}
+                             onClick={(e) => {
+                                 if (counter === sessionState.sets[parentIndex]) return;
+                                 setCounter((prev) => prev + 1)
+                             }}> +
+                        </Fab>
+                    </div>
+                </div>
             </div>
         </>
     );

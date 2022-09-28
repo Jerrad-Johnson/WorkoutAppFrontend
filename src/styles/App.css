@@ -295,4 +295,19 @@ h2{
 .exerciseContainerOptions{
     @apply
     mt-4
+    flex
+    justify-around
+
+}
+
+.setsFinishedCounter{
+    text-align: center;
+}
+
+.setsFinishedText{
+    font-family: monospace;
+    @apply
+    mx-3
+    font-semibold
+    text-lg
 }
