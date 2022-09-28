@@ -634,10 +634,7 @@ function Home(){
                                sessionDispatch({type: "notes", payload: e.target.value});
                            }}
                 />
-
-                <input type={"text"} className={"notes"} onChange={(e) => {
-                    sessionDispatch({type: "notes", payload: e.target.value});
-                }}/>
+                <br />
                 <br />
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
                     handleSessionSubmission();
