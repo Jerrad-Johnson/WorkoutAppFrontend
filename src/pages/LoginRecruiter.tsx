@@ -1,7 +1,7 @@
 import {StandardBackendResponse, LoginCredentials} from "../utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {CircularProgress, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
 import Button from "@mui/material/Button";
 import {
@@ -20,30 +20,23 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
 
     let response = await toast.promise(doLogin(usernameState.toLowerCase(), passwordState), {
         loading: defaultToastPromiseLoadingMessage,
-        success: "Checking login.",
+        success: "Finished.",
         error: defaultToastPromiseErrorMessage,
     });
-    showResponseMessageWithCondition(response.data);
 
     if (response?.data?.message === "Already logged in.") {
         window.location.href="Home";
         return;
     }
 
-    if (response.data.message === "Wrong password.") return;
+    if (response.data.message === "Wrong password.") {
+        showResponseMessageWithCondition(response.data);
+        return;
+    }
 
     let confirmLoggedIn = await checkLogin();
 
-    await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState), {
-        loading: defaultToastPromiseLoadingMessage,
-        success: "",
-        error: defaultToastPromiseErrorMessage,
-    }, {
-        success: {
-            duration: 1,
-        }
-    });
-
+    await handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState);
 }
 
 function checkFormEntry(usernameState: string, passwordState: string){
@@ -138,4 +131,4 @@ function Login() {
     );
 }
 
-export default Login
+export default Login;

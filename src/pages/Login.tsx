@@ -1,7 +1,7 @@
 import {StandardBackendResponse, LoginCredentials} from "../utilities/interfaces";
 import {Dispatch, SetStateAction, useEffect, useState} from "react";
 import {Link} from "react-router-dom";
-import {CircularProgress, TextField} from "@mui/material";
+import {TextField} from "@mui/material";
 import {getSessionDefaults, loginQuery, queryCheckLogin} from "../utilities/queries";
 import Button from "@mui/material/Button";
 import {
