@@ -45,9 +45,10 @@ function GetAndDisplaySessions(){
     );
 
     async function handleGetExercises(){
-        let response = await toast.promise(getExercises(), defaultToastMsg);
-        cc(response)
-        showResponseMessageWithCondition(response.data);
+        let response = await getExercises();
+        if (response.status !== 200) {
+            showResponseMessageWithCondition(response.data);
+        }
 
         if (response?.data.data[0]) {
             let listOfExercises: JSX.Element[] = response.data.data.map((e: string, k: number) => {
