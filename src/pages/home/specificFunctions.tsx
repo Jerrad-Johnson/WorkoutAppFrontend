@@ -1,14 +1,11 @@
 import React, {Dispatch, useState} from "react";
-import {DatabaseData, GenericAction, OptionsData, SessionData} from "../../utilities/interfaces";
-import {arrayOfOptions} from "../../utilities/sharedFns";
-import {changeSessionDefaults} from "../../utilities/queries";
+import {DatabaseData, GenericAction, SessionData} from "../../utilities/interfaces";
 import MenuItem from "@mui/material/MenuItem";
 import {Fab} from "@mui/material";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Home from "../Home";
 import DeleteIcon from "@mui/icons-material/Delete";
 import swal from "sweetalert";
 let cc = console.log;
@@ -55,8 +52,6 @@ export function getDefaultExerciseKeysArray(exerciseCount: number){
 export function ExerciseElements({parentIndex, sessionState, sessionDispatch, loaderDispatcher, loaderState}:
                               {parentIndex: number, sessionState: SessionData, sessionDispatch: Dispatch<GenericAction>,
                                   loaderDispatcher: Dispatch<GenericAction>, loaderState: DatabaseData}){
-
-    const [counterState, setCounterState] = useState<number>(0);
 
     const repOptions: JSX.Element[] = Array.from({length: 20}).map((_e, k) => {
         return (<MenuItem key={k} value={k+1}>{k+1}</MenuItem>);
