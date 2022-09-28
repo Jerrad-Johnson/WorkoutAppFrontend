@@ -1,4 +1,4 @@
-import React, {Dispatch, useState} from "react";
+import React, {Dispatch, SetStateAction, useState} from "react";
 import {DatabaseData, GenericAction, SessionData} from "../../utilities/interfaces";
 import MenuItem from "@mui/material/MenuItem";
 import {Fab} from "@mui/material";
@@ -259,7 +259,7 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
             <div className={"exerciseContainerOptions"}>
                 {sessionState.exerciseSelectorOrInput[parentIndex] === 0 &&
                     <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
-                        handleLoadLatestVersionOfExercise(parentIndex);
+                        handleLoadLatestVersionOfExercise(parentIndex, sessionState.exerciseNames[parentIndex], sessionDispatch);
                     }}>Load Latest</Button>
                 }
             </div>
@@ -277,6 +277,22 @@ export function addArrayEntryToSession(arrayLength: number, value: number){
     return temp;
 }
 
-function handleLoadLatestVersionOfExercise(parentIndex: number, ){
-    getLatestVersionOfExercise(parentIndex);
+async function handleLoadLatestVersionOfExercise(parentIndex: number, exerciseName: string, sessionDispatch: Dispatch<GenericAction>){
+    let result = await getLatestVersionOfExercise(exerciseName);
+    if (!result?.data?.data?.[0]?.weight_lifted) return;
+
+    let [weights, reps]: number[][] = splitCountsInSessionData(result.data.data[0]);
+    let sets: number = reps.length;
+
+    sessionDispatch({type: "loadLatestOfOneExercise", payload: {index: parentIndex, "reps": reps,
+            "weights": weights, "sets": sets }});
+}
+
+function splitCountsInSessionData(results: {weight_lifted: string; reps: string;}){
+    let weights: string[] = results.weight_lifted.split(",");
+    let weightsAsNumberArr: number[] = weights.map((e) => { return +e; })
+    let reps: string[] = results.reps.split(",");
+    let repsAsNumberArr: number[] = reps.map((e) => { return +e; })
+
+    return [weightsAsNumberArr, repsAsNumberArr] ;
 }

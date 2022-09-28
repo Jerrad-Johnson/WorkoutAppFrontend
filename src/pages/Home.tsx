@@ -42,7 +42,7 @@ import {
     addArrayEntryToSession,
     getDefaultExerciseKeysArray,
 } from "./home/specificFunctions";
-import {parseISO} from "date-fns";
+import {format, parseISO} from "date-fns";
 
 const primary = red[500]; // #f44336
 const accent = purple['A200']; // #e040fb
@@ -199,7 +199,9 @@ function Home(){
             case "sessionLoadSelector":
                 return {...state, selectedSessionToLoad: action.payload}
             case "insertPreviousSession":
-                let combinedExercises = combineExerciseLists(state.exerciseNames, action.payload);
+                let combinedExercises = combineExerciseLists(state.staticExerciseNames, action.payload);
+                let currentExercises = currentExercisesDelineator(action.payload);
+                cc(action.payload)
                 let allReps: number[][] = [];
                 let allWeights: number[][] = [];
                 let numbersOfSets: number[] = [];
@@ -218,9 +220,17 @@ function Home(){
                     allWeights.push(weightsAsNumbers);
                 }
 
-                return {...state, reps: allReps, weights: allWeights, exerciseNames: combinedExercises,
-                    exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle,
+                return {...state, reps: allReps, weights: allWeights, staticExerciseNames: combinedExercises,
+                    exerciseCount: allReps.length, sets: numbersOfSets, title: newTitle, exerciseNames: currentExercises,
                     exerciseSelectorOrInput: selectorOrInput}
+            case "loadLatestOfOneExercise":
+                let delinkedReps = structuredClone(state.reps);
+                let delinkedWeights = structuredClone(state.weights);
+                let delinkedSets = structuredClone(state.sets);
+                delinkedReps[action.payload.index] = action.payload.reps;
+                delinkedWeights[action.payload.index] = action.payload.weights;
+                delinkedSets[action.payload.index] = action.payload.sets;
+                return {...state, reps: delinkedReps, weights: delinkedWeights, sets: delinkedSets}
             default:
                 return state;
         }
@@ -304,6 +314,17 @@ function Home(){
         newArrayOfExercises = newArrayOfExercises.concat(duplicatesRemoved);
 
         return newArrayOfExercises;
+    }
+
+    function currentExercisesDelineator(data: any){
+        let delinkedData = structuredClone(data);
+        let exerciseNames = [];
+
+        for (let entry of delinkedData){
+            exerciseNames.push(entry.exercise);
+        }
+
+        return exerciseNames;
     }
 
 
@@ -398,13 +419,14 @@ function Home(){
 
     async function handleSessionSubmission(){
         let entries: SessionEntry = {
-            date: sessionState.date,
+            date: format(sessionState.date, 'yyyy-MM-dd'),
             title: sessionState.title,
             reps: sessionState.reps,
             weights: sessionState.weights,
             exercises: sessionState.exerciseNames,
             notes: sessionState.notes,
         }
+
         let errorCheckStatus;
 
         try {
@@ -545,8 +567,10 @@ function Home(){
     return (
         <>
             <Nav title={"Add Workout"}/>
-
             <div className={"basicContainer"}>
+                {/*<button onClick={() => {
+                    cc(sessionState);
+                }}>Log</button>*/}
                 <h2>Current Session Details</h2>
                 <span className={"selectorTitle"}>Session Title</span>
                 <TextField type={"text"} sx={{width: "100%"}} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
