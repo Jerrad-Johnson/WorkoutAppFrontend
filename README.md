@@ -31,5 +31,4 @@ The app also graphs your progress with each exercise, showing your calculated 1R
 - MUI button recoloring needed for home page.
 - Many DOM elements should fade upon data load / etc.
 - Needs Cypress tests.
-- Add a per-card counter to allow users to track how many sets they've completed during the current workout.
-- Add an alert when attempting to navigate away with unsaved data.
+- Add an alert when attempting to navigate away, with unsaved data.
