@@ -138,5 +138,7 @@ export async function setNewPassword(resetKey: string, newPassword: string, emai
 }
 
 export async function getLatestVersionOfExercise(exerciseName: string){
+
+    cc(exerciseName)
     return await httpClient.post(`getlatestversionofexercise.php`, JSON.stringify(exerciseName));
 }

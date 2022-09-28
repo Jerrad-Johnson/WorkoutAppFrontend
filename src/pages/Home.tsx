@@ -418,8 +418,12 @@ function Home(){
     }
 
     async function handleSessionSubmission(){
+        let delinkedDate: string = structuredClone(sessionState.date);
+        let dateString: number = Date.parse(delinkedDate);
+        let dateReformatted: string = format(new Date(dateString),'yyyy-MM-dd');
+
         let entries: SessionEntry = {
-            date: format(sessionState.date, 'yyyy-MM-dd'),
+            date: dateReformatted,
             title: sessionState.title,
             reps: sessionState.reps,
             weights: sessionState.weights,
@@ -427,7 +431,6 @@ function Home(){
             notes: sessionState.notes,
         }
 
-        cc(sessionState)
 
         let errorCheckStatus;
 
@@ -637,7 +640,6 @@ function Home(){
                 }}/>
                 <br />
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
-                    cc(sessionState)
                     handleSessionSubmission();
                 }}>Submit Session</Button>
             </div>
