@@ -181,7 +181,6 @@ function Home(){
             case "loadedPrevSessions":
                 return {...state, previousSessions: action.payload}
             case "loadedExercises":
-                let decoupledArray: string[] = action.payload.slice(0);
                 return {...state, exerciseNames: action.payload}
             case "exerciseNameChange":
                 let newExerciseNames: string[] = state.exerciseNames;

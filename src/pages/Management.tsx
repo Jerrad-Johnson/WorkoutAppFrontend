@@ -26,7 +26,7 @@ function Management(){
         handleGetListOfNotesBySessionDateAndTitle(setNotesListState);
     }, []);
 
-    let menuItemsOfNotesDateAndTitle: JSX.Element[] = notesListState.map((e, k) => {
+    let menuItemsOfNotesDateAndTitle: JSX.Element[] = notesListState?.map((e, k) => {
         let dateAndTitleCombined: string = e.session_date + " / " + e.session_title;
         return (
            <MenuItem key={k} value={e.id}>{dateAndTitleCombined}</MenuItem>

@@ -177,7 +177,7 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
                             <>
                                 <div className={"leftSideOfExerciseInputs"}>
                                     <FormControl variant={"standard"}>
-                                        <Select label={"Exercise"} value={sessionState.exerciseNames[parentIndex] || ""}
+                                        <Select label={"Exercise"} value={sessionState.exerciseNames?.[parentIndex] || ""}
                                                 className={"selectOrAddExercise selectOrAddExerciseSelector"}
                                                 onChange={(e) => {
                                                     sessionDispatch({
