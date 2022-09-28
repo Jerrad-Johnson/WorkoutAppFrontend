@@ -20,30 +20,23 @@ async function handleLoginFormEntry(usernameState: string, passwordState: string
 
     let response = await toast.promise(doLogin(usernameState.toLowerCase(), passwordState), {
         loading: defaultToastPromiseLoadingMessage,
-        success: "Checking login.",
+        success: "Finished.",
         error: defaultToastPromiseErrorMessage,
     });
-    showResponseMessageWithCondition(response.data);
 
     if (response?.data?.message === "Already logged in.") {
         window.location.href="Home";
         return;
     }
 
-    if (response.data.message === "Wrong password.") return;
+    if (response.data.message === "Wrong password.") {
+        showResponseMessageWithCondition(response.data);
+        return;
+    }
 
     let confirmLoggedIn = await checkLogin();
 
-    await toast.promise(handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState), {
-        loading: defaultToastPromiseLoadingMessage,
-        success: "",
-        error: defaultToastPromiseErrorMessage,
-    }, {
-        success: {
-            duration: 1,
-        }
-    });
-
+    await handleCheckIfLoggedIn(confirmLoggedIn, firstLoadState, setFirstLoadState);
 }
 
 function checkFormEntry(usernameState: string, passwordState: string){

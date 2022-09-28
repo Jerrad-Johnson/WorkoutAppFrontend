@@ -44,7 +44,10 @@ function GetAndDisplaySessions(){
 
     async function handleGetSessions(){
         let response = await toast.promise(getAllSessions(), defaultToastMsg);
-        showResponseMessageWithCondition(response.data);
+        if (response.status !== 200){
+            showResponseMessageWithCondition(response.data);
+            cc(response);
+        }
 
         if (response?.data.data[0]) {
             let listOfSessions: JSX.Element[] = response.data.data.map((entry: any, k: number) => {
@@ -66,8 +69,11 @@ function GetAndDisplaySessions(){
     function handleDeleteSessionRequest(title: string, date: string) {
         let deleteSessionFunction = (() => async () => {
             let response = await toast.promise(deleteSession(title, date), defaultToastMsg);
-            showResponseMessageWithCondition(response.data);
-            cc(response)
+            cc(response);
+            if (response.status !== 200){
+                showResponseMessageWithCondition(response.data);
+                cc(response);
+            }
 
             if (response?.data?.message === "Success") handleGetSessions();
         });

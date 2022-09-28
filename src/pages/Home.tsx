@@ -44,8 +44,6 @@ import {
 } from "./home/specificFunctions";
 import {format, parseISO} from "date-fns";
 
-const primary = red[500]; // #f44336
-const accent = purple['A200']; // #e040fb
 let cc = console.log;
 
 //TODO !important Upon adding exercise title, selector for existing titles loses entries; they get set to empty strings.
@@ -106,7 +104,7 @@ function Home(){
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
         staticExerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
         exerciseKeys: getDefaultExerciseKeysArray(optionsState.exercises),
-        exerciseSelectorOrInput: [0, 0],
+        exerciseSelectorOrInput: getStartingValuesArray(optionsState.exercises, 0),
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
         reps: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.reps),
         weights: getStartingValuesNestedArray(optionsState.exercises, optionsState.sets, optionsState.weights),
@@ -247,6 +245,7 @@ function Home(){
             sessionAsPBV.sets.pop();
             sessionAsPBV.exerciseKeys.pop();
             sessionAsPBV.exerciseNames.pop();
+            sessionAsPBV.exerciseSelectorOrInput.pop();
         }
 
         while (sessionAsPBV.reps.length < newExerciseCount){
@@ -255,6 +254,7 @@ function Home(){
             sessionAsPBV.sets = [...sessionAsPBV.sets, optionsState.sets];
             sessionAsPBV.exerciseNames.push("");
             sessionAsPBV.exerciseKeys.push(+currentKeyValue);
+            sessionAsPBV.exerciseSelectorOrInput.push(0);
 
             currentKeyValue++;
         }
@@ -426,6 +426,8 @@ function Home(){
             exercises: sessionState.exerciseNames,
             notes: sessionState.notes,
         }
+
+        cc(sessionState)
 
         let errorCheckStatus;
 
@@ -635,6 +637,7 @@ function Home(){
                 }}/>
                 <br />
                 <Button variant={"contained"} size={"small"} onClick={(e) => {
+                    cc(sessionState)
                     handleSessionSubmission();
                 }}>Submit Session</Button>
             </div>

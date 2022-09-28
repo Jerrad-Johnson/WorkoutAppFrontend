@@ -1,3 +1,5 @@
+import {parseISO} from "date-fns";
+
 export function todaysDateForHTMLCalendar(){
     let date: Date = new Date();
     let DD: number | string = date.getDate();
@@ -6,5 +8,5 @@ export function todaysDateForHTMLCalendar(){
     if (MM < 10) MM = ("0" + MM);
     let yyyy: number = date.getFullYear()
 
-    return (`${yyyy}-${MM}-${DD}`);
+    return (parseISO(`${yyyy}-${MM}-${DD}`));
 }
