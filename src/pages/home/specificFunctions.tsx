@@ -8,6 +8,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import swal from "sweetalert";
+import {getLatestVersionOfExercise} from "../../utilities/queries";
 let cc = console.log;
 
 export function getStartingValuesNestedArray(exercises: number, sets: number, value: number){
@@ -130,8 +131,8 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
 
     let previousExercises: JSX.Element[] = [];
 
-    if (Array.isArray(sessionState.exerciseNames)) {
-        previousExercises = sessionState.exerciseNames.map((e, k) => {
+    if (Array.isArray(sessionState.staticExerciseNames)) {
+        previousExercises = sessionState.staticExerciseNames.map((e, k) => {
             return (
                 <MenuItem key={k} value={e}>{e}</MenuItem>
             );
@@ -254,6 +255,14 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
             <div className={"setsCompletedCounter"}>
                 {/*Sets Completed Counter goes here*/}
             </div>
+
+            <div className={"exerciseContainerOptions"}>
+                {sessionState.exerciseSelectorOrInput[parentIndex] === 0 &&
+                    <Button variant={"contained"} size={"small"} className={"selectOrAddExerciseFieldChangeButton"} onClick={(e) => {
+                        handleLoadLatestVersionOfExercise(parentIndex);
+                    }}>Load Latest</Button>
+                }
+            </div>
         </>
     );
 }
@@ -266,4 +275,8 @@ export function addArrayEntryToSession(arrayLength: number, value: number){
     }
 
     return temp;
+}
+
+function handleLoadLatestVersionOfExercise(parentIndex: number, ){
+    getLatestVersionOfExercise(parentIndex);
 }

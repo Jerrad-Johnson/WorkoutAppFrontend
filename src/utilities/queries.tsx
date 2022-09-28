@@ -136,3 +136,7 @@ export async function setNewPassword(resetKey: string, newPassword: string, emai
 
     return await httpClient.post(`passwordresetsubmit.php`, JSON.stringify(userData));
 }
+
+export async function getLatestVersionOfExercise(parentIndex: number){
+    return await httpClient.post(`getlatestversionofexercise.php`, JSON.stringify(parentIndex));
+}

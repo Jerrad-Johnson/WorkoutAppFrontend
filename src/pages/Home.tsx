@@ -104,6 +104,7 @@ function Home(){
         date: todaysDateForHTMLCalendar(),
         exerciseCount: optionsState.exercises,
         exerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
+        staticExerciseNames: getStartingValuesStringArray(optionsState.exercises, ""),
         exerciseKeys: getDefaultExerciseKeysArray(optionsState.exercises),
         exerciseSelectorOrInput: [0, 0],
         sets: getStartingValuesArray(optionsState.exercises, optionsState.sets),
@@ -181,7 +182,8 @@ function Home(){
             case "loadedPrevSessions":
                 return {...state, previousSessions: action.payload}
             case "loadedExercises":
-                return {...state, exerciseNames: action.payload}
+                let staticExercises = structuredClone(action.payload);
+                return {...state, exerciseNames: action.payload, staticExerciseNames: staticExercises}
             case "exerciseNameChange":
                 let newExerciseNames: string[] = state.exerciseNames;
                 newExerciseNames[action.payload.index] = action.payload.value;
@@ -546,7 +548,6 @@ function Home(){
 
             <div className={"basicContainer"}>
                 <h2>Current Session Details</h2>
-
                 <span className={"selectorTitle"}>Session Title</span>
                 <TextField type={"text"} sx={{width: "100%"}} variant={"standard"} className={"Title"} value={sessionState.title} onChange={(e) => {
                     sessionDispatch({type: "title", payload: e.target.value});

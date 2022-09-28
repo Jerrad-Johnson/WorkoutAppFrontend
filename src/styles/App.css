@@ -291,3 +291,8 @@ h2{
     @apply
     mt-4
 }
+
+.exerciseContainerOptions{
+    @apply
+    mt-4
+}
