@@ -135,8 +135,8 @@ export function ExerciseElements({parentIndex, sessionState, sessionDispatch, lo
 
     let previousExercises: JSX.Element[] = [];
 
-    if (Array.isArray(sessionState.staticExerciseNames)) {
-        previousExercises = sessionState.staticExerciseNames.map((e, k) => {
+    if (Array.isArray(sessionState.exerciseNames)) {
+        previousExercises = sessionState.exerciseNames.map((e, k) => { //Note: On 9/27/22, changed from staticExerciseNames to exerciseNames. If errors, return here.
             return (
                 <MenuItem key={k} value={e}>{e}</MenuItem>
             );

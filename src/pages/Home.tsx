@@ -200,6 +200,7 @@ function Home(){
             case "sessionLoadSelector":
                 return {...state, selectedSessionToLoad: action.payload}
             case "insertPreviousSession":
+                cc(action.payload);
                 let combinedExercises = combineExerciseLists(state.staticExerciseNames, action.payload);
                 let allReps: number[][] = [];
                 let allWeights: number[][] = [];
@@ -383,7 +384,9 @@ function Home(){
     async function applySpecificSessionHandler(){
         if (sessionState.selectedSessionToLoad !== "" && sessionState.selectedSessionToLoad.length !== 0) {
             let [sessionTitle, sessionDate]: string[] = getSelectorSession(sessionState.selectedSessionToLoad);
-            let sessionResponseFromDB = await toast.promise(getSpecificSession(sessionDate, sessionTitle).then(response => {
+
+            /*let sessionResponseFromDB = */
+            await toast.promise(getSpecificSession(sessionDate, sessionTitle).then(response => {
                 sessionDispatch({type: "insertPreviousSession", payload: response.data.data});
                 setShowPreviousSessionElementsState(false);
                 }), defaultToastMsg);
